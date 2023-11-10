@@ -98,6 +98,10 @@ def riwayatuser():
 def artikel():
     return render_template('artikel.html')
 
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
 ### Start API CRUD Artikel Kesehatan
 
 # Route untuk mengambil artikel (API)
