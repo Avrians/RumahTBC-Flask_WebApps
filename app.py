@@ -106,6 +106,10 @@ def register():
 def login():
     return render_template('login.html')
 
+@app.route('/detailartikel')
+def detailartikel():
+    return render_template('detailartikel.html')
+
 ### Start API CRUD Artikel Kesehatan
 
 # Route untuk mengambil artikel (API)
