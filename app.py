@@ -74,15 +74,20 @@ def processimg(img):
 def index():
     return render_template("index.html")
 
-# Fungsi route untuk halaman home
+# Fungsi route untuk halaman home dokter
 @app.route('/home')
 def home():
-    return render_template('dashboard_dokter.html')
+    return render_template('dokter_dashboard.html')
 
 # Fungsi route untuk halaman deteksi dokter
 @app.route('/deteksi')
 def deteksi():
-    return render_template('deteksi_dokter.html')
+    return render_template('dokter_deteksi.html')
+
+# Fungsi route untuk halaman artikel dokter
+@app.route('/artikeldokter')
+def artikeldokter():
+    return render_template('dokter_artikel.html')
 
 # Fungsi route untuk halaman tentang user
 @app.route('/tentang')
@@ -94,24 +99,28 @@ def tentang():
 def riwayatuser():
     return render_template('riwayatuser.html')
 
+# Fungsi route untuk halaman artikel kesehatan user
 @app.route('/artikel')
 def artikel():
     return render_template('artikel.html')
 
+# Fungsi route untuk halaman pendaftaran user
 @app.route('/register')
 def register():
     return render_template('register.html')
 
+# Fungsi route untuk halaman login user
 @app.route('/login')
 def login():
     return render_template('login.html')
 
+# Fungsi route untuk halaman  detail artikel
 @app.route('/detailartikel')
 def detailartikel():
     return render_template('detailartikel.html')
 
-### Start API CRUD Artikel Kesehatan
 
+### Start API CRUD Artikel Kesehatan
 # Route untuk mengambil artikel (API)
 @app.route('/api/artikel', methods=['GET'])
 def get_all_tbc_data():
@@ -178,7 +187,6 @@ def delete_tbc_data(data_id):
     db.session.commit()
 
     return jsonify({'message': 'Data berhasil dihapus!'})
-
 ### Finish API CRUD Artikel Kesehatan
 
 # Fungsi route untuk memproses deteksi TBC dokter
@@ -214,7 +222,7 @@ def upload():
     predicted=classes[result[0]]
     plot_dest = "/".join([target, "result.png"])
 
-    return render_template("hasildeteksi_dokter.html", pred=predicted,pos=pos,neg=neg, filename=filename)
+    return render_template("dokter_hasildeteksi.html", pred=predicted,pos=pos,neg=neg, filename=filename)
 
 if __name__ == '__main__':
     app.run(debug=True)

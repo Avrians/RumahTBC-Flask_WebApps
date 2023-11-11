@@ -1,0 +1,102 @@
+{%extends "dokter_deteksi.html"%}
+{%block content%}
+<div class="main-panel">
+	<div class="content">
+		<div class="page-inner">
+			<div class="page-header">
+				<h4 class="page-title">Deteksi</h4>
+				<ul class="breadcrumbs">
+					<li class="nav-home">
+						<a href="/home">
+							<i class="flaticon-home"></i>
+						</a>
+					</li>
+					<li class="separator">
+						<i class="flaticon-right-arrow"></i>
+					</li>
+					<li class="nav-item">
+						<a href="/deteksi">Deteksi</a>
+					</li>
+					<li class="separator">
+						<i class="flaticon-right-arrow"></i>
+					</li>
+					<li class="nav-item">
+						<a href="#">Hasil Deteksi</a>
+				</ul>
+			</div>
+			<div class="row">
+				<div class="col-md-4">
+					<div class="card">
+						<div class="card-body">
+							<h5 class="card-title mb-3">Upload File Rontgen</h5>
+							<form
+								id="upload-form"
+								action="{{url_for('upload')}}"
+								method="POST"
+								enctype="multipart/form-data"
+							>
+								<input
+									type="file"
+									class="btn-dark form-control-file"
+									name="file"
+									accept="image/*"
+								/>
+								<input
+									type="submit"
+									class="btn btn-outline-light rounded mt-3"
+									value="Diagnose"
+								/>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-8">
+					<div class="card">
+						<div class="card-body">
+							<h5 class="card-title">Hasil Deteksi</h5>
+							<section class="section-dark" style="text-align: center;">
+								<br><br>
+								<h3 >This is a {{pred}} case of Pulmonary Tuberculosis</h3><br>
+								<h4>Chances of TB positive is: {{pos}}<br>
+								<!-- <p>The accuracy of X-ray being negative is {{neg}}</p> -->
+								<p><h3>The Xray that you uploaded</h3></p>		
+								<figure><img src="../static/xray/file.png" style="width: 360px; height: 360px"></figure><br>
+								<!-- <p><h3>The metrics of the model</h3></p>
+								<img src="../static/img/metrics.png" style="width: 450px; height: 300px;"> </b>
+								<img src="../static/img/accuracy.png" style="width: 450px; height: 300px;"> -->
+							</section>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row row-card-no-pd">
+				<div class="col-md-12">
+					<div class="card">
+						<div class="card-header">
+							<div class="card-head-row">
+								<h5 class="card-title">Riwayat Hasil Deteksi</h5>
+							</div>
+						</div>
+						<div class="card-body">aaaa</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer class="footer">
+		<div class="container-fluid">
+			<div class="copyright ml-auto">
+				2023, made with <i class="fa fa-heart heart text-danger"></i> by
+				<a href="">RumahTBC</a>
+			</div>
+		</div>
+	</footer>
+</div>
+
+
+
+
+
+
+{%endblock%}
