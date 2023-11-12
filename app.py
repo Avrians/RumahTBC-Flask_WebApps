@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify,request, redirect, url_for
+from flask import Flask, render_template, jsonify,request, redirect, url_for, flash, session
 import os,cv2
 from keras.models import Model,load_model
 # from keras.preprocessing.image import img_to_array
@@ -9,6 +9,9 @@ import tensorflow as tf
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from datetime import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_bcrypt import Bcrypt
+
 
 
 app = Flask(__name__)
@@ -23,6 +26,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:rootku@localhost/rumahtbc'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
+bcrypt = Bcrypt(app)
 migrate = Migrate(app, db)
 
 # Model untuk tabel artikel kesehatan
@@ -216,6 +220,28 @@ def delete_tbc_data(data_id):
     return jsonify({'message': 'Data berhasil dihapus!'})
 ### Finish API CRUD Artikel Kesehatan
 
+# Fungsi route untuk memproses halaman login admin
+@app.route('/admin', methods=['GET', 'POST'])
+def loginadmin():
+    
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        user = Users.query.filter_by(username=username).first()
+
+        print(f"Upaya login untuk username: {username}, password: {password}")
+        print(f"User ditemukan: {user}")
+        
+        if user and bcrypt.check_password_hash(user.password, password):
+            flash('Login berhasil!', 'success')
+            return redirect(url_for('home'))
+        else:
+            flash('Login gagal. Periksa kembali username dan password Anda.', 'danger')
+
+    return render_template('login_admin.html')
+
+
 # Fungsi route untuk memproses deteksi TBC dokter
 @app.route("/upload", methods=['POST'])
 def upload():
@@ -251,5 +277,24 @@ def upload():
 
     return render_template("dokter_hasildeteksi.html", pred=predicted,pos=pos,neg=neg, filename=filename)
 
+# Bikin
+@app.route('/adduser', methods=['GET', 'POST'])
+def add_user():    
+    if request.method == 'POST':
+        nik = request.form['nik']
+        username = request.form['username']
+        password = request.form['password']
+        email = request.form['email']
+
+        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+
+        new_user = Users(nik=nik, username=username, password=hashed_password, email=email)
+        db.session.add(new_user)
+        db.session.commit()
+
+        flash('User added successfully!', 'success')
+        return redirect(url_for('home'))
+
+    return render_template('add_user.html')
 if __name__ == '__main__':
     app.run(debug=True)
