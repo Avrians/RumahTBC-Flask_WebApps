@@ -28,7 +28,7 @@
         </div>
       </div>
       <div class="card-body">
-        <div class="table-responsive ">
+        <div class="table-responsive">
           <div
             id="add-row_wrapper"
             class="dataTables_wrapper container-fluid dt-bootstrap4"
@@ -82,9 +82,21 @@
                         colspan="1"
                         aria-sort="ascending"
                         aria-label="Name: activate to sort column descending"
+                        style="width: 35px"
+                      >
+                        No
+                      </th>
+                      <th
+                        class="sorting_asc"
+                        tabindex="0"
+                        aria-controls="add-row"
+                        rowspan="1"
+                        colspan="1"
+                        aria-sort="ascending"
+                        aria-label="Name: activate to sort column descending"
                         style="width: 359.125px"
                       >
-                        Name
+                        Judul
                       </th>
                       <th
                         class="sorting"
@@ -95,7 +107,7 @@
                         aria-label="Position: activate to sort column ascending"
                         style="width: 523.891px"
                       >
-                        Position
+                        Penulis
                       </th>
                       <th
                         class="sorting"
@@ -106,7 +118,18 @@
                         aria-label="Office: activate to sort column ascending"
                         style="width: 305.641px"
                       >
-                        Office
+                        Kategori
+                      </th>
+                      <th
+                        class="sorting"
+                        tabindex="0"
+                        aria-controls="add-row"
+                        rowspan="1"
+                        colspan="1"
+                        aria-label="Office: activate to sort column ascending"
+                        style="width: 305.641px"
+                      >
+                        Tanggal Publikasi
                       </th>
                       <th
                         style="width: 122.344px"
@@ -122,10 +145,13 @@
                     </tr>
                   </thead>
                   <tbody>
+                    {% for article in artikel %}
                     <tr role="row" class="odd">
-                      <td class="sorting_1">Airi Satou</td>
-                      <td>Accountant</td>
-                      <td>Tokyo</td>
+                      <td class="sorting_1">{{ article.id }}</td>
+                      <td>{{ article.judul }}</td>
+                      <td>{{ article.penulis }}</td>
+                      <td>{{ article.kategori }}</td>
+                      <td>{{ article.tanggal_publikasi }}</td>
                       <td>
                         <div class="form-button-action">
                           <button
@@ -149,6 +175,8 @@
                         </div>
                       </td>
                     </tr>
+                  {% endfor %}
+
                   </tbody>
                 </table>
               </div>

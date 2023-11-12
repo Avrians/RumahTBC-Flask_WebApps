@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify,request
+from flask import Flask, render_template, jsonify,request, redirect, url_for
 import os,cv2
 from keras.models import Model,load_model
 # from keras.preprocessing.image import img_to_array
@@ -8,6 +8,7 @@ import numpy as np
 import tensorflow as tf
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from datetime import datetime
 
 
 app = Flask(__name__)
@@ -92,7 +93,28 @@ def artikelform():
 # Fungsi route untuk halaman daftar artikel dokter
 @app.route('/artikeldokter')
 def artikeldaftar():
-    return render_template('dokter_artikeldaftar.html')
+    articles = ArtikelKesehatan.query.all()
+    return render_template('dokter_artikeldaftar.html', artikel=articles)
+
+# Fungsi route untuk membuat artikel baru dokter
+@app.route('/artikeldoktersubmit', methods=['POST'])
+def artikeldoktersubmit():
+    # Ambil data dari form
+    judul = request.form['judul']
+    penulis = request.form['penulis']
+    isi = request.form['isi']
+    tanggal_publikasi = datetime.now()  # Gunakan tanggal dan waktu saat ini
+    kategori = request.form['kategori']
+
+    # Buat objek Artikel
+    artikel_baru = ArtikelKesehatan(judul=judul, penulis=penulis, isi=isi, tanggal_publikasi=tanggal_publikasi, kategori=kategori)
+
+    # Simpan artikel ke database
+    db.session.add(artikel_baru)
+    db.session.commit()
+
+    # Redirect ke halaman utama atau halaman detail artikel
+    return redirect(url_for('artikeldaftar'))
 
 # Fungsi route untuk halaman tentang user
 @app.route('/tentang')

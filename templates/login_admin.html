@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>Login Admin</title>
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <!-- Font Awesome CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <style>
+      body {
+        background-color: #1a1a1a;
+        color: #ffffff;
+      }
+
+      .login-container {
+        margin-top: 100px;
+      }
+
+      .login-form {
+        background-color: #333333;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .login-form h2 {
+        color: #28a745;
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .login-form p {
+        text-align: center;
+        color: #ffffff;
+        font-size: 16px;
+        margin-bottom: 20px;
+      }
+
+      .login-form label {
+        color: #ffffff;
+      }
+
+      .login-form input {
+        margin-bottom: 20px;
+        padding: 10px;
+        border-radius: 5px;
+      }
+
+      .login-form button {
+        background-color: #28a745;
+        color: #ffffff;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4 login-container">
+          <h3 class="text-center">Selamat Datang di RumahTBC</h3>
+          <br />
+          <h2><i class="fas fa-lock"></i> Login</h2>
+          {% with messages = get_flashed_messages() %} {% if messages %}
+          <ul>
+            {% for message in messages %}
+            <li style="color: red">{{ message }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %} {% endwith %}
+          <form class="login-form" method="POST">
+            <div class="form-group">
+              <label for="username"
+                ><i class="fas fa-user"></i> Username:</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="username"
+                name="username"
+                placeholder="Masukan username kamu"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="password"><i class="fas fa-key"></i> Password:</label>
+              <input
+                type="password"
+                class="form-control"
+                id="password"
+                name="password"
+                placeholder="Masukan password kamu"
+                required
+              />
+            </div>
+            <button type="submit" class="btn btn-block">
+              <i class="fas fa-sign-in-alt"></i> Login
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies (jQuery, Popper.js) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- Font Awesome JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+  </body>
+</html>
