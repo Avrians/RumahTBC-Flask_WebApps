@@ -138,7 +138,7 @@
                           />
                         </div>
                         <div class="u-text">
-                          <h4>Hizrian</h4>
+                          <h4>Dr. Hizrian</h4>
                           <p class="text-muted">hello@example.com</p>
                         </div>
                       </div>
@@ -176,7 +176,7 @@
                   aria-expanded="true"
                 >
                   <span>
-                    Hizrian
+                    Dr. Hizrian
                     <span class="user-level">Dokter Spesialis</span>
                   </span>
                 </a>
@@ -189,16 +189,20 @@
                 </span>
                 <h4 class="text-section">Menu</h4>
               </li>
-              <li class="nav-item">
+              <li class="nav-item active">
                 <a href="/home" active>
                   <i class="fas fa-layer-group"></i>
                   <p>Dashboard</p>
                 </a>
+              </li>
+              <li class="nav-item">
                 <a href="/deteksi">
                   <i class="fas fa-layer-group"></i>
                   <p>Deteksi</p>
                 </a>
-                <a href="/dataartikel">
+              </li>
+              <li class="nav-item">
+                <a href="/artikelform">
                   <i class="fas fa-layer-group"></i>
                   <p>Data Artikel</p>
                 </a>
@@ -208,8 +212,8 @@
         </div>
       </div>
       <!-- End Sidebar -->
-      {%block content%}
       <div class="main-panel">
+        {%block content%}
         <div class="content">
           <div class="page-inner">
             <div class="mt-2 mb-4">

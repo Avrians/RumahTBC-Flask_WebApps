@@ -85,9 +85,9 @@ def deteksi():
     return render_template('dokter_deteksi.html')
 
 # Fungsi route untuk halaman artikel dokter
-@app.route('/artikeldokter')
-def artikeldokter():
-    return render_template('dokter_artikel.html')
+@app.route('/artikelform')
+def artikelform():
+    return render_template('dokter_artikelform.html')
 
 # Fungsi route untuk halaman tentang user
 @app.route('/tentang')

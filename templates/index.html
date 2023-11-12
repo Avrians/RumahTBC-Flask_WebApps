@@ -9,8 +9,14 @@
     <meta content="" name="keywords" />
 
     <!-- Favicons -->
-    <link href="{{ url_for('static', filename='assets/img/favicon.png') }}" rel="icon" />
-    <link href="{{ url_for('static', filename='assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon" />
+    <link
+      href="{{ url_for('static', filename='assets/img/favicon.png') }}"
+      rel="icon"
+    />
+    <link
+      href="{{ url_for('static', filename='assets/img/apple-touch-icon.png') }}"
+      rel="apple-touch-icon"
+    />
 
     <!-- Google Fonts -->
     <link
@@ -19,7 +25,10 @@
     />
 
     <!-- Vendor CSS Files -->
-    <link href="{{ url_for('static', filename='assets/vendor/animate.css/animate.min.css') }}" rel="stylesheet" />
+    <link
+      href="{{ url_for('static', filename='assets/vendor/animate.css/animate.min.css') }}"
+      rel="stylesheet"
+    />
     <link
       href="{{ url_for('static', filename='assets/vendor/bootstrap/css/bootstrap.min.css') }}"
       rel="stylesheet"
@@ -28,20 +37,29 @@
       href="{{ url_for('static', filename='assets/vendor/bootstrap-icons/bootstrap-icons.css') }}"
       rel="stylesheet"
     />
-    <link href="{{ url_for('static', filename='assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet" />
+    <link
+      href="{{ url_for('static', filename='assets/vendor/boxicons/css/boxicons.min.css') }}"
+      rel="stylesheet"
+    />
     <link
       href="{{ url_for('static', filename='assets/vendor/glightbox/css/glightbox.min.css') }}"
       rel="stylesheet"
     />
-    <link href="{{ url_for('static', filename='assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet" />
+    <link
+      href="{{ url_for('static', filename='assets/vendor/swiper/swiper-bundle.min.css') }}"
+      rel="stylesheet"
+    />
 
     <!-- Custom CSS -->
-    <link href="{{ url_for('static', filename='assets/css/style.css') }}" rel="stylesheet" />
+    <link
+      href="{{ url_for('static', filename='assets/css/style.css') }}"
+      rel="stylesheet"
+    />
   </head>
 
   <body>
     <!-- ======= Header ======= -->
-    <header id="header" class="d-flex align-items-center" >
+    <header id="header" class="d-flex align-items-center">
       <div class="container d-flex align-items-center">
         <h1 class="logo me-auto"><a href="index.html">RumahTBC</a></h1>
         <!-- Uncomment below if you prefer to use an image logo -->
@@ -50,21 +68,38 @@
         <nav id="navbar" class="navbar">
           <ul>
             <li><a class="nav-link scrollto" href="/">Home</a></li>
-            <li><a class="nav-link scrollto" href="/artikel">Artikel Kesehatan</a></li>
-            <li><a class="nav-link scrollto" href="/riwayatuser">Riwayat Skrining</a></li>
-            <li><a class="nav-link scrollto" href="/tentang">Tentang Kami</a></li>
+            <li>
+              <a class="nav-link scrollto" href="/artikel">Artikel Kesehatan</a>
+            </li>
+            <li>
+              <a class="nav-link scrollto" href="/riwayatuser"
+                >Riwayat Skrining</a
+              >
+            </li>
+            <li>
+              <a class="nav-link scrollto" href="/tentang">Tentang Kami</a>
+            </li>
             <li><a class="getstarted" href="/login">Masuk</a></li>
             <li><a class="getregis" href="/register">Daftar</a></li>
           </ul>
           <i class="bi bi-list mobile-nav-toggle"></i>
         </nav>
-        <hr style="position: absolute; bottom: 0; left: 0; width: 100%; height: 3px; background-color: #006400; margin: 0;">
+        <hr
+          style="
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: #006400;
+            margin: 0;
+          "
+        />
         <!-- .navbar -->
       </div>
     </header>
     <!-- End Header -->
-    {%block content%} 
-  
+    {%block content%}
 
     <!-- ======= Hero Section ======= -->
     <section id="hero">
@@ -88,16 +123,16 @@
                   Welcome to <span>RumahTBC</span>
                 </h2>
                 <p class="animate__animated animate__fadeInUp">
-                  Ut velit est quam dolor ad a aliquid qui aliquid. Sequi ea ut
-                  et est quaerat sequi nihil ut aliquam. Occaecati alias dolorem
-                  mollitia ut. Similique ea voluptatem. Esse doloremque
-                  accusamus repellendus deleniti vel. Minus et tempore modi
-                  architecto.
+                  Selamat datang di RumahTBC, platform kesehatan yang
+                  didedikasikan untuk deteksi dan rehabilitasi penyakit
+                  Tuberkulosis (TBC). Kami berkomitmen untuk memberikan
+                  informasi, layanan, dan dukungan yang Anda butuhkan dalam
+                  perjuangan melawan penyakit TBC.
                 </p>
                 <a
                   href="#about"
                   class="btn-get-started animate__animated animate__fadeInUp scrollto"
-                  >Read More</a
+                  >Daftar Sekarang</a
                 >
               </div>
             </div>
@@ -111,19 +146,19 @@
             <div class="carousel-container">
               <div class="container">
                 <h2 class="animate__animated animate__fadeInDown">
-                  Lorem Ipsum Dolor
+                  Welcome to <span>RumahTBC</span>
                 </h2>
                 <p class="animate__animated animate__fadeInUp">
-                  Ut velit est quam dolor ad a aliquid qui aliquid. Sequi ea ut
-                  et est quaerat sequi nihil ut aliquam. Occaecati alias dolorem
-                  mollitia ut. Similique ea voluptatem. Esse doloremque
-                  accusamus repellendus deleniti vel. Minus et tempore modi
-                  architecto.
+                  Selamat datang di RumahTBC, platform kesehatan yang
+                  didedikasikan untuk deteksi dan rehabilitasi penyakit
+                  Tuberkulosis (TBC). Kami berkomitmen untuk memberikan
+                  informasi, layanan, dan dukungan yang Anda butuhkan dalam
+                  perjuangan melawan penyakit TBC.
                 </p>
                 <a
                   href="#about"
                   class="btn-get-started animate__animated animate__fadeInUp scrollto"
-                  >Read More</a
+                  >Daftar Sekarang</a
                 >
               </div>
             </div>
@@ -137,19 +172,19 @@
             <div class="carousel-container">
               <div class="container">
                 <h2 class="animate__animated animate__fadeInDown">
-                  Sequi ea ut et est quaerat
+                  Welcome to <span>RumahTBC</span>
                 </h2>
                 <p class="animate__animated animate__fadeInUp">
-                  Ut velit est quam dolor ad a aliquid qui aliquid. Sequi ea ut
-                  et est quaerat sequi nihil ut aliquam. Occaecati alias dolorem
-                  mollitia ut. Similique ea voluptatem. Esse doloremque
-                  accusamus repellendus deleniti vel. Minus et tempore modi
-                  architecto.
+                  Selamat datang di RumahTBC, platform kesehatan yang
+                  didedikasikan untuk deteksi dan rehabilitasi penyakit
+                  Tuberkulosis (TBC). Kami berkomitmen untuk memberikan
+                  informasi, layanan, dan dukungan yang Anda butuhkan dalam
+                  perjuangan melawan penyakit TBC.
                 </p>
                 <a
                   href="#about"
                   class="btn-get-started animate__animated animate__fadeInUp scrollto"
-                  >Read More</a
+                  >Daftar Sekarang</a
                 >
               </div>
             </div>
@@ -193,16 +228,22 @@
                 <div class="icon"><i class="bi bi-laptop"></i></div>
                 <h4 class="title"><a href="">Informasi Lengkap</a></h4>
                 <p class="description">
-                  Informasi Lengkap: Menyediakan informasi lengkap mengenai TBC, termasuk gejala, diagnosis, dan pengobatan, sehingga membantu meningkatkan kesadaran masyarakat tentang penyakit ini.
+                  Informasi Lengkap: Menyediakan informasi lengkap mengenai TBC,
+                  termasuk gejala, diagnosis, dan pengobatan, sehingga membantu
+                  meningkatkan kesadaran masyarakat tentang penyakit ini.
                 </p>
               </div>
             </div>
             <div class="col-lg-4 col-md-6">
               <div class="icon-box">
-                <div class="icon"><i class="bi bi-clipboard2-pulse-fill"></i></div>
+                <div class="icon">
+                  <i class="bi bi-clipboard2-pulse-fill"></i>
+                </div>
                 <h4 class="title"><a href="">Riwayat Skrining</a></h4>
                 <p class="description">
-                  Memberikan akses ke riwayat skrining sebelumnya, memungkinkan pasien untuk melacak perkembangan kondisi kesehatan terkait TBC.
+                  Memberikan akses ke riwayat skrining sebelumnya, memungkinkan
+                  pasien untuk melacak perkembangan kondisi kesehatan terkait
+                  TBC.
                 </p>
               </div>
             </div>
@@ -211,7 +252,9 @@
                 <div class="icon"><i class="bi bi-clock-history"></i></div>
                 <h4 class="title"><a href="">Dukungan 24/7</a></h4>
                 <p class="description">
-                  Terdapat Fitur Chatbot yang dapat memberikan dukungan dan informasi kapanpun, sehingga pengguna dapat mengakses bantuan dan jawaban atas pertanyaan mereka.
+                  Terdapat Fitur Chatbot yang dapat memberikan dukungan dan
+                  informasi kapanpun, sehingga pengguna dapat mengakses bantuan
+                  dan jawaban atas pertanyaan mereka.
                 </p>
               </div>
             </div>
@@ -231,7 +274,11 @@
                 <div class="card-body">
                   <h5 class="card-title">Judul Artikel 1</h5>
                   <p class="card-text">
-                    Ut velit est quam dolor ad a aliquid qui aliquid. Sequi ea ut et est quaerat sequi nihil ut aliquam. Occaecati alias dolorem mollitia ut. Similique ea voluptatem. Esse doloremque accusamus repellendus deleniti vel. Minus et tempore modi architecto.
+                    Ut velit est quam dolor ad a aliquid qui aliquid. Sequi ea
+                    ut et est quaerat sequi nihil ut aliquam. Occaecati alias
+                    dolorem mollitia ut. Similique ea voluptatem. Esse
+                    doloremque accusamus repellendus deleniti vel. Minus et
+                    tempore modi architecto.
                   </p>
                   <a href="#" class="btn btn-success">Baca Selengkapnya</a>
                 </div>
@@ -243,7 +290,11 @@
                 <div class="card-body">
                   <h5 class="card-title">Judul Artikel 2</h5>
                   <p class="card-text">
-                    Ut velit est quam dolor ad a aliquid qui aliquid. Sequi ea ut et est quaerat sequi nihil ut aliquam. Occaecati alias dolorem mollitia ut. Similique ea voluptatem. Esse doloremque accusamus repellendus deleniti vel. Minus et tempore modi architecto.
+                    Ut velit est quam dolor ad a aliquid qui aliquid. Sequi ea
+                    ut et est quaerat sequi nihil ut aliquam. Occaecati alias
+                    dolorem mollitia ut. Similique ea voluptatem. Esse
+                    doloremque accusamus repellendus deleniti vel. Minus et
+                    tempore modi architecto.
                   </p>
                   <a href="#" class="btn btn-success">Baca Selengkapnya</a>
                 </div>
@@ -255,7 +306,11 @@
                 <div class="card-body">
                   <h5 class="card-title">Judul Artikel 3</h5>
                   <p class="card-text">
-                    Ut velit est quam dolor ad a aliquid qui aliquid. Sequi ea ut et est quaerat sequi nihil ut aliquam. Occaecati alias dolorem mollitia ut. Similique ea voluptatem. Esse doloremque accusamus repellendus deleniti vel. Minus et tempore modi architecto.
+                    Ut velit est quam dolor ad a aliquid qui aliquid. Sequi ea
+                    ut et est quaerat sequi nihil ut aliquam. Occaecati alias
+                    dolorem mollitia ut. Similique ea voluptatem. Esse
+                    doloremque accusamus repellendus deleniti vel. Minus et
+                    tempore modi architecto.
                   </p>
                   <a href="#" class="btn btn-success">Baca Selengkapnya</a>
                 </div>
@@ -267,7 +322,11 @@
                 <div class="card-body">
                   <h5 class="card-title">Judul Artikel 4</h5>
                   <p class="card-text">
-                    Ut velit est quam dolor ad a aliquid qui aliquid. Sequi ea ut et est quaerat sequi nihil ut aliquam. Occaecati alias dolorem mollitia ut. Similique ea voluptatem. Esse doloremque accusamus repellendus deleniti vel. Minus et tempore modi architecto.
+                    Ut velit est quam dolor ad a aliquid qui aliquid. Sequi ea
+                    ut et est quaerat sequi nihil ut aliquam. Occaecati alias
+                    dolorem mollitia ut. Similique ea voluptatem. Esse
+                    doloremque accusamus repellendus deleniti vel. Minus et
+                    tempore modi architecto.
                   </p>
                   <a href="#" class="btn btn-success">Baca Selengkapnya</a>
                 </div>
@@ -355,12 +414,6 @@
         <div class="container">
           <div class="section-title">
             <h2>Contact</h2>
-            <p>
-              Magnam dolores commodi suscipit. Necessitatibus eius consequatur
-              ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam
-              quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea.
-              Quia fugiat sit in iste officiis commodi quidem hic quas.
-            </p>
           </div>
 
           <div class="row">
@@ -465,8 +518,7 @@
       <div class="container">
         <h3>RumahTBC</h3>
         <p>
-          Et aut eum quis fuga eos sunt ipsa nihil. Labore corporis magni
-          eligendi fuga maxime saepe commodi placeat.
+          Platform kesehatan yang didedikasikan untuk deteksi dan rehabilitasi penyakit Tuberkulosis (TBC).
         </p>
         <div class="social-links">
           <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
