@@ -77,7 +77,14 @@ def processimg(img):
 # Fungsi route untuk halaman index
 @app.route("/")
 def index():
-    return render_template("index.html")
+    # Ambil 4 data terbaru dari tabel Artikel
+    latest_articles = ArtikelKesehatan.query.order_by(ArtikelKesehatan.tanggal_publikasi.desc()).limit(4).all()
+    return render_template('index.html', latest_articles=latest_articles)
+
+# Fungsi route untuk halaman dashboard admin
+@app.route('/dashboard')
+def dashboard():
+    return render_template('admin_dashboard.html')
 
 # Fungsi route untuk halaman home dokter
 @app.route('/home')
@@ -120,6 +127,17 @@ def dokter_artikel_submit():
     # Redirect ke halaman utama atau halaman detail artikel
     return redirect(url_for('dokter_artikel'))
 
+# Fungsi route untuk halaman daftar artikel admin
+@app.route('/admin/artikel')
+def admin_artikel():
+    articles = ArtikelKesehatan.query.all()
+    return render_template('admin_artikeldaftar.html', artikel=articles)
+
+# Fungsi route untuk halaman buat artikel admin
+@app.route('/admin/artikel/form')
+def admin_artikel_form():
+    return render_template('admin_artikelform.html')
+
 # Fungsi route untuk halaman tentang user
 @app.route('/tentang')
 def tentang():
@@ -148,8 +166,13 @@ def login():
 # Fungsi route untuk halaman  detail artikel
 @app.route('/detailartikel')
 def detailartikel():
-    return render_template('detailartikel.html')
+    return render_template('detailartikel2.html')
 
+# Fungsi route untuk halaman artikel kesehatan user
+@app.route('/detailartikel/<int:article_id>')
+def artikel_by_id(article_id):
+    article = ArtikelKesehatan.query.filter_by(id=article_id).first_or_404()
+    return render_template('detailartikel.html', article=article)
 
 ### Start API CRUD Artikel Kesehatan
 # Route untuk mengambil artikel (API)

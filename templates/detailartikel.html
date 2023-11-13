@@ -8,20 +8,14 @@
                   <div class="card">
                       <div class="card-body">
                         <div class="section-title">
-                          <h2>Tuberkulosis (TBC)</h2>
-                          <h6 class="card-subtitle mb-2 text-muted text-center">Penulis: Admin</h6>
+                          <h2>{{ article.judul }}</h2>
+                          <h6 class="card-subtitle mb-2 text-muted text-center">Penulis: {{ article.penulis }}</h6>
                         </div>
-                          <p class="card-text">Tuberkulosis (TBC) adalah penyakit infeksi bakteri yang disebabkan oleh
-                              Mycobacterium tuberculosis. Penyakit ini biasanya menyerang paru-paru, tetapi juga dapat
-                              menyerang bagian tubuh lain seperti ginjal, tulang belakang, dan otak.</p>
-                          <p class="card-text">Gejala utama TBC meliputi batuk yang berkepanjangan, demam, penurunan berat
-                              badan, dan kelelahan. Penyakit ini dapat menular melalui udara saat seseorang yang
-                              terinfeksi batuk atau bersin.</p>
-                          <p class="card-text">Pencegahan dan pengobatan TBC melibatkan penggunaan antibiotik selama jangka
-                              waktu yang cukup lama. Vaksinasi juga dapat membantu melindungi individu dari
-                              infeksi TBC.</p>
-                          <p class="card-text"><small class="text-muted">Tanggal Publikasi: 10 November 2023</small> <br>
-                            <small class="text-muted">Kategori: Kesehatan</small></p>
+                          <p class="card-text">
+                            {{ article.isi }}
+                          </p>
+                          <p class="card-text"><small class="text-muted">Tanggal Publikasi: {{ article.tanggal_publikasi }}</small> <br>
+                            <small class="text-muted">Kategori: {{ article.kategori }}</small></p>
                       </div>
                   </div>
             </div>
