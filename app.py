@@ -85,24 +85,24 @@ def home():
     return render_template('dokter_dashboard.html')
 
 # Fungsi route untuk halaman deteksi dokter
-@app.route('/deteksi')
-def deteksi():
+@app.route('/dokter/deteksi')
+def dokter_deteksi():
     return render_template('dokter_deteksi.html')
 
 # Fungsi route untuk halaman buat artikel dokter
-@app.route('/artikelform')
-def artikelform():
+@app.route('/dokter/artikel/form')
+def dokter_artikel_form():
     return render_template('dokter_artikelform.html')
 
 # Fungsi route untuk halaman daftar artikel dokter
-@app.route('/artikeldokter')
-def artikeldaftar():
+@app.route('/dokter/artikel')
+def dokter_artikel():
     articles = ArtikelKesehatan.query.all()
     return render_template('dokter_artikeldaftar.html', artikel=articles)
 
 # Fungsi route untuk membuat artikel baru dokter
-@app.route('/artikeldoktersubmit', methods=['POST'])
-def artikeldoktersubmit():
+@app.route('/dokter/artikel/submit', methods=['POST'])
+def dokter_artikel_submit():
     # Ambil data dari form
     judul = request.form['judul']
     penulis = request.form['penulis']
@@ -118,7 +118,7 @@ def artikeldoktersubmit():
     db.session.commit()
 
     # Redirect ke halaman utama atau halaman detail artikel
-    return redirect(url_for('artikeldaftar'))
+    return redirect(url_for('dokter_artikel'))
 
 # Fungsi route untuk halaman tentang user
 @app.route('/tentang')
@@ -243,7 +243,7 @@ def loginadmin():
 
 
 # Fungsi route untuk memproses deteksi TBC dokter
-@app.route("/upload", methods=['POST'])
+@app.route("/dokter/upload", methods=['POST'])
 def upload():
     model=load_model('modelTBC.h5')   
     print("model_loaded")
