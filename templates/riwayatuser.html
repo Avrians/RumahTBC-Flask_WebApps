@@ -17,9 +17,9 @@
                           <th scope="col">Nomor</th>
                           <th scope="col">NIK Pasien</th>
                           <th scope="col">Tanggal Pemeriksaan</th>
-                          <th scope="col">Rumah Sakit</th>
-                          <th scope="col">Dokter</th>
-                          <th scope="col">Gambar Rontgen</th>
+                          <th scope="col" width="150px">Tenaga Medis</th>
+                          <th scope="col">Status</th>
+                          <th scope="col" width="100px">Gambar Rontgen</th>
                           <th scope="col">Hasil Analisa</th>
                       </tr>
                       </thead>
@@ -30,10 +30,20 @@
                           <td>SKR001</td>
                           <td>1234567890</td>
                           <td>2023-11-14</td>
-                          <td>Rumah Sakit XYZ</td>
-                          <td>Dr. John Doe</td>
-                          <td><img src="gambar_rontgen.jpg" alt="Gambar Rontgen" style="max-width: 100px;"></td>
-                          <td>Hasil analisa akan ditampilkan di sini</td>
+                          <td>Rumah Sakit XYZ<br>
+                            Oleh Dr. John Doe</td>
+                          
+                          <td><button class="btn btn-danger">Positive</button></td>
+                          <td ><img src="{{ url_for('static', filename='xray/file.png') }}" alt="Gambar Rontgen" style="max-width: 200px;">
+											    <a href="URL_GAMBAR" download>Download X-Ray</a>
+                          </td>
+                          <td>Setelah melakukan pemeriksaan dan analisis, pasien ditemukan memiliki indikasi Tuberkulosis (TBC). Beberapa temuan klinis yang mendukung diagnosa ini termasuk:
+                            Gambar rontgen menunjukkan adanya infiltrasi, kavitasi, atau opasitas yang konsisten dengan infeksi tuberkulosis.
+                            Pasien mengalami gejala seperti batuk yang berkepanjangan, berat badan menurun, demam, dan kelelahan.
+                            Hasil tes laboratorium menunjukkan adanya Mycobacterium tuberculosis. <br>
+                            <strong>Rekomendasi:</strong>
+                            Pasien direkomendasikan untuk segera memulai pengobatan Tuberkulosis di bawah pengawasan dokter spesialis paru. Pengobatan yang tepat dan konsisten sangat penting untuk mengatasi infeksi dan mencegah penyebaran lebih lanjut.
+                            Kami menyarankan agar pasien segera menjadwalkan konsultasi lebih lanjut dengan dokter spesialis paru untuk perencanaan pengobatan yang lebih rinci dan pemantauan kondisi kesehatan secara berkala.</td>
                       </tr>
                       <!-- Tambahkan baris ini untuk setiap data riwayat skrining yang ada -->
               

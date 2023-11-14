@@ -14,7 +14,7 @@
 						<i class="flaticon-right-arrow"></i>
 					</li>
 					<li class="nav-item">
-						<a href="/deteksi">Deteksi</a>
+						<a href="/dokter/deteksi">Deteksi</a>
 					</li>
 					<li class="separator">
 						<i class="flaticon-right-arrow"></i>
@@ -52,17 +52,35 @@
 				<div class="col-md-8">
 					<div class="card">
 						<div class="card-body">
-							<h5 class="card-title">Hasil Deteksi</h5>
-							<section class="section-dark" style="text-align: center;">
-								<br><br>
-								<h3 >This is a {{pred}} case of Pulmonary Tuberculosis</h3><br>
-								<h4>Chances of TB positive is: {{pos}}<br>
-								<!-- <p>The accuracy of X-ray being negative is {{neg}}</p> -->
-								<p><h3>The Xray that you uploaded</h3></p>		
-								<figure><img src="../static/xray/file.png" style="width: 360px; height: 360px"></figure><br>
-								<!-- <p><h3>The metrics of the model</h3></p>
-								<img src="../static/img/metrics.png" style="width: 450px; height: 300px;"> </b>
-								<img src="../static/img/accuracy.png" style="width: 450px; height: 300px;"> -->
+							<h5 class="card-title" style="text-align: center;">Hasil Deteksi</h5>
+							<section class="section-dark" >
+								<div class="row">
+									<div class="col-6" style="text-align: center;">
+										<br><br> <label>
+										<h4>
+										Ini adalah kasus <strong> {{pred}} </strong> dari Tuberkulosis Paru<br>
+										Kemungkinan positif TBC adalah : <strong> {{pos}} </strong><br>
+										Xray yang Anda unggah</h4></label>
+										<figure><img src="../static/xray/file.png" style="width: 360px; height: 360px"></figure><br>
+										<!-- <p><h3>The metrics of the model</h3></p>
+										<img src="../static/img/metrics.png" style="width: 450px; height: 300px;"> </b>
+										<img src="../static/img/accuracy.png" style="width: 450px; height: 300px;"> -->
+									</div>
+									<div class="col-6">
+										<br>
+										<div class="form-group">
+											<label for="analisa"><h4>Hasil Analisa</h4></label>
+											<textarea class="form-control" id="comment" rows="12">
+											</textarea>
+											<input
+											type="submit"
+											class="btn btn-outline-light rounded mt-3"
+											value="Kirim"
+											/>
+										</div>
+
+									</div>
+								</div>
 							</section>
 						</div>
 					</div>
@@ -77,7 +95,47 @@
 								<h5 class="card-title">Riwayat Hasil Deteksi</h5>
 							</div>
 						</div>
-						<div class="card-body">aaaa</div>
+						<div class="card-body">
+							<table class="table">
+								<thead>
+								<tr>
+										<th scope="col">#</th>
+										<th scope="col">Nomor</th>
+										<th scope="col">NIK Pasien</th>
+										<th scope="col">Tanggal Pemeriksaan</th>
+										<th scope="col" width="150px">Tenaga Medis</th>
+										<th scope="col">Status</th>
+										<th scope="col" width="100px">Gambar Rontgen</th>
+										<th scope="col">Hasil Analisa</th>
+								</tr>
+								</thead>
+								<tbody>
+								<!-- Data riwayat skrining akan ditampilkan di sini -->
+								<tr>
+										<th scope="row">1</th>
+										<td>SKR001</td>
+										<td>1234567890</td>
+										<td>2023-11-14</td>
+										<td>Rumah Sakit XYZ<br>
+											Oleh Dr. John Doe</td>
+										
+										<td><button class="btn btn-danger">Positive</button></td>
+										<td ><img src="{{ url_for('static', filename='xray/file.png') }}" alt="Gambar Rontgen" style="max-width: 200px;">
+										<a href="URL_GAMBAR" download>Download X-Ray</a>
+										</td>
+										<td>Setelah melakukan pemeriksaan dan analisis, pasien ditemukan memiliki indikasi Tuberkulosis (TBC). Beberapa temuan klinis yang mendukung diagnosa ini termasuk:
+											Gambar rontgen menunjukkan adanya infiltrasi, kavitasi, atau opasitas yang konsisten dengan infeksi tuberkulosis.
+											Pasien mengalami gejala seperti batuk yang berkepanjangan, berat badan menurun, demam, dan kelelahan.
+											Hasil tes laboratorium menunjukkan adanya Mycobacterium tuberculosis. <br>
+											<strong>Rekomendasi:</strong>
+											Pasien direkomendasikan untuk segera memulai pengobatan Tuberkulosis di bawah pengawasan dokter spesialis paru. Pengobatan yang tepat dan konsisten sangat penting untuk mengatasi infeksi dan mencegah penyebaran lebih lanjut.
+											Kami menyarankan agar pasien segera menjadwalkan konsultasi lebih lanjut dengan dokter spesialis paru untuk perencanaan pengobatan yang lebih rinci dan pemantauan kondisi kesehatan secara berkala.</td>
+								</tr>
+								<!-- Tambahkan baris ini untuk setiap data riwayat skrining yang ada -->
+				
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 			</div>
