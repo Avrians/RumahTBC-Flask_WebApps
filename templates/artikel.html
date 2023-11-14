@@ -21,53 +21,34 @@
               </div>
 
               <div class="row">
+
+                {% for article in latest_articles %}
                 <div class="col-md-6 mb-4">
                   <div class="card border-0">
                     <div class="card-body">
-                      <h4 class="card-title">Judul Artikel 1</h4>
-                      <p class="card-text">
-                        Ut velit est quam dolor ad a aliquid qui aliquid. Sequi ea ut et est quaerat sequi nihil ut aliquam. Occaecati alias dolorem mollitia ut. Similique ea voluptatem. Esse doloremque accusamus repellendus deleniti vel. Minus et tempore modi architecto.
-                      </p>
-                      <a href="#" class="btn btn-success">Baca Selengkapnya</a>
-                    </div>
-                  </div>
-                </div>
+                      <h4 class="card-title">{{ article.judul }}</h4>
+                      <div class="row"> 
+                        <div class="col-6">
+                          <h6 class="card-subtitle mb-2 text-muted">
+                            Penulis : {{ article.penulis }}
+                          </h6>
+                        </div>
+                        <div class="col-6">
+                          <h6 class="card-subtitle mb-2 text-muted">
+                            Kategori : {{ article.kategori }}
+                          </h6>
+                        </div>
+                      </div>
     
-                <div class="col-md-6 mb-4">
-                  <div class="card border-0">
-                    <div class="card-body">
-                      <h4 class="card-title">Judul Artikel 2</h4>
                       <p class="card-text">
-                        Ut velit est quam dolor ad a aliquid qui aliquid. Sequi ea ut et est quaerat sequi nihil ut aliquam. Occaecati alias dolorem mollitia ut. Similique ea voluptatem. Esse doloremque accusamus repellendus deleniti vel. Minus et tempore modi architecto.
+                        {{ article.isi }}
                       </p>
                       <a href="#" class="btn btn-success">Baca Selengkapnya</a>
                     </div>
                   </div>
                 </div>
+                {% endfor %}
     
-                <div class="col-md-6">
-                  <div class="card border-0">
-                    <div class="card-body">
-                      <h4 class="card-title">Judul Artikel 3</h4>
-                      <p class="card-text">
-                        Ut velit est quam dolor ad a aliquid qui aliquid. Sequi ea ut et est quaerat sequi nihil ut aliquam. Occaecati alias dolorem mollitia ut. Similique ea voluptatem. Esse doloremque accusamus repellendus deleniti vel. Minus et tempore modi architecto.
-                      </p>
-                      <a href="#" class="btn btn-success">Baca Selengkapnya</a>
-                    </div>
-                  </div>
-                </div>
-    
-                <div class="col-md-6">
-                  <div class="card border-0">
-                    <div class="card-body">
-                      <h4 class="card-title">Judul Artikel 4</h4>
-                      <p class="card-text">
-                        Ut velit est quam dolor ad a aliquid qui aliquid. Sequi ea ut et est quaerat sequi nihil ut aliquam. Occaecati alias dolorem mollitia ut. Similique ea voluptatem. Esse doloremque accusamus repellendus deleniti vel. Minus et tempore modi architecto.
-                      </p>
-                      <a href="#" class="btn btn-success">Baca Selengkapnya</a>
-                    </div>
-                  </div>
-                </div>
               </div>
           </div>
       </div>

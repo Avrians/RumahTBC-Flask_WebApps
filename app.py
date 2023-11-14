@@ -151,7 +151,8 @@ def riwayatuser():
 # Fungsi route untuk halaman artikel kesehatan user
 @app.route('/artikel')
 def artikel():
-    return render_template('artikel.html')
+    latest_articles = ArtikelKesehatan.query.order_by(ArtikelKesehatan.tanggal_publikasi.desc()).limit(10).all()
+    return render_template('artikel.html', latest_articles=latest_articles)
 
 # Fungsi route untuk halaman pendaftaran user
 @app.route('/register')
