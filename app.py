@@ -65,7 +65,7 @@ class Users(db.Model):
 with app.app_context():
     db.create_all()
 
-# Fungsi untuk memproses gambar
+# Fungsi untuk memproses gambar deteksi
 def processimg(img):
     img=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
     img = cv2.resize(img, (size, size)) 
@@ -175,6 +175,11 @@ def artikel_by_id(article_id):
     article = ArtikelKesehatan.query.filter_by(id=article_id).first_or_404()
     return render_template('detailartikel.html', article=article)
 
+# Fungsi route untuk halaman tanya dokter
+@app.route('/chat')
+def chat():
+    return render_template('chat.html')
+
 ### Start API CRUD Artikel Kesehatan
 # Route untuk mengambil artikel (API)
 @app.route('/api/artikel', methods=['GET'])
@@ -269,18 +274,24 @@ def loginadmin():
 # Fungsi route untuk memproses deteksi TBC dokter
 @app.route("/dokter/upload", methods=['POST'])
 def upload():
+    #Memuat Model Deep Learning
     model=load_model('modelTBC.h5')   
     print("model_loaded")
+    # Mengatur Direktori Target untuk Berkas yang Diunggah
     target = os.path.join(APP_ROOT, 'static/xray/')
+    # Membuat Direktori Target Jika Belum Ada
     if not os.path.isdir(target):
         os.mkdir(target)
+    # Menyimpan Berkas yang Diunggah
     filename = ""
     for file in request.files.getlist("file"):
         filename = file.filename
         destination = "/".join([target, filename])
         file.save(destination)
+    # Menyiapkan Gambar untuk Prediksi Model
     img = cv2.imread(destination)
     cv2.imwrite('static/xray/file.png',img)
+    # Pemrosesan Gambar
     img= processimg(img)
     cv2.imwrite('static/xray/processedfile.png',img)
     img = img.astype('uint8')
@@ -290,11 +301,12 @@ def upload():
     img=img.reshape(1,size,size,3)
     img = img.astype('float32')
     img = img / 255.0
-    # result = model.predict_classes(img)
+    # Prediksi Model
     result = np.argmax(model.predict(img), axis=-1)
     pred=model.predict(img)
     neg=pred[0][0]
     pos=pred[0][1]
+    # Merender Template Hasil Deteksi
     classes=['Negative','Positive']
     predicted=classes[result[0]]
     plot_dest = "/".join([target, "result.png"])

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat Room</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  <style>
+    body {
+      background: #E5DDD5 url("https://www.toptal.com/designers/subtlepatterns/patterns/sports.png") fixed;
+    }
+
+    .page-header {
+      background: #006A4E;
+      margin: 0;
+      padding: 20px 0 10px;
+      color: #FFFFFF;
+      position: fixed;
+      width: 100%;
+      z-index: 1;
+    }
+
+    .main {
+      height: 100vh;
+      padding-top: 70px;
+    }
+
+    .chat-log {
+      padding: 40px 0 114px;
+      height: auto;
+      overflow: auto;
+    }
+
+    .chat-log__item {
+      background: #fafafa;
+      padding: 10px;
+      margin: 0 auto 20px;
+      max-width: 80%;
+      float: left;
+      border-radius: 4px;
+      box-shadow: 0 1px 2px rgba(0,0,0,.1);
+      clear: both;
+    }
+
+    .chat-log__item.chat-log__item--own {
+      float: right;
+      background: #DCF8C6;
+      text-align: right;
+    }
+
+    .chat-form {
+      background: #DDDDDD;
+      padding: 40px 0;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+
+    .chat-log__author {
+      margin: 0 auto .5em;
+      font-size: 14px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="page-header">
+    <div class="container">
+      <h2>RumahTBC</h2>
+    </div>
+  </header>
+
+  <div class="main">
+    <div class="container">
+      <div class="chat-log" id="chatLog">
+        <div class="chat-log__item chat-log__item--own">
+          <h3 class="chat-log__author">Fabrício <small>14:30</small></h3>
+          <div class="chat-log__message">Hi dok, boleh konsultasi</div>
+        </div>
+        <div class="chat-log__item">
+          <h3 class="chat-log__author">Dr. Kevin <small>14:30</small></h3>
+          <div class="chat-log__message">Boleh banget</div>
+        </div>
+
+      </div>
+    </div>
+    <div class="chat-form">
+      <div class="container">
+        <form class="form-horizontal" onsubmit="return sendMessage()">
+          <div class="row">
+            <div class="col-sm-10 col-xs-8">
+              <input type="text" class="form-control" id="messageInput" placeholder="Message" />
+            </div>
+            <div class="col-sm-2 col-xs-4">
+              <button type="submit" class="btn btn-success btn-block">Send</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS and Popper.js -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.8/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <script>
+    function sendMessage() {
+      var messageInput = document.getElementById("messageInput");
+      var chatLog = document.getElementById("chatLog");
+
+      if (messageInput.value.trim() !== "") {
+        var message = document.createElement("div");
+        message.className = "chat-log__item chat-log__item--own";
+        message.innerHTML = `
+          <h3 class="chat-log__author">You <small>${getCurrentTime()}</small></h3>
+          <div class="chat-log__message">${messageInput.value}</div>
+        `;
+        chatLog.appendChild(message);
+
+        // Clear the input field
+        messageInput.value = "";
+
+        // Scroll to the bottom of the chat log
+        chatLog.scrollTop = chatLog.scrollHeight;
+
+        // Prevent form submission
+        return false;
+      }
+
+      // If the input is empty, do not submit the form
+      return false;
+    }
+
+    function getCurrentTime() {
+      var now = new Date();
+      var hours = now.getHours();
+      var minutes = now.getMinutes();
+      var ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12;
+      hours = hours ? hours : 12; // the hour '0' should be '12'
+      minutes = minutes < 10 ? '0' + minutes : minutes;
+      var timeString = hours + ':' + minutes + ' ' + ampm;
+      return timeString;
+    }
+  </script>
+</body>
+</html>

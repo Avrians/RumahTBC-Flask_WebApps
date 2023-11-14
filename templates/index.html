@@ -67,17 +67,18 @@
 
         <nav id="navbar" class="navbar">
           <ul>
-            <li><a class="nav-link scrollto" href="/">Home</a></li>
+            <li><a class="nav-link" href="/">Home</a></li>
             <li>
-              <a class="nav-link scrollto" href="/artikel">Artikel Kesehatan</a>
+              <a class="nav-link" href="/artikel">Artikel Kesehatan</a>
             </li>
             <li>
-              <a class="nav-link scrollto" href="/riwayatuser"
-                >Riwayat Skrining</a
-              >
+              <a class="nav-link" href="/chat">Tanya Dokter</a>
             </li>
             <li>
-              <a class="nav-link scrollto" href="/tentang">Tentang Kami</a>
+              <a class="nav-link" href="/riwayatuser">Riwayat Skrining</a>
+            </li>
+            <li>
+              <a class="nav-link" href="/tentang">Tentang Kami</a>
             </li>
             <li><a class="getstarted" href="/login">Masuk</a></li>
             <li><a class="getregis" href="/register">Daftar</a></li>
@@ -226,11 +227,12 @@
             <div class="col-lg-4 col-md-6">
               <div class="icon-box">
                 <div class="icon"><i class="bi bi-laptop"></i></div>
-                <h4 class="title"><a href="">Artikel Kesehatan</a></h4>
+                <h4 class="title"><a href="">Tanya Dokter</a></h4>
                 <p class="description">
-                  Informasi Lengkap: Menyediakan informasi lengkap mengenai TBC,
-                  termasuk gejala, diagnosis, dan pengobatan, sehingga membantu
-                  meningkatkan kesadaran masyarakat tentang penyakit ini.
+                  Fitur chat memungkinkan pengguna untuk langsung berkomunikasi
+                  dengan dokter ahli dalam bidang TBC. Pengguna dapat mengajukan
+                  pertanyaan, membagikan gejala, atau mendiskusikan rencana
+                  pengobatan secara langsung melalui platform.
                 </p>
               </div>
             </div>
@@ -269,14 +271,13 @@
             <h2>Artikel Kesehatan</h2>
           </div>
           <div class="row">
-
             {% for article in latest_articles %}
 
             <div class="col-md-6 mb-4">
               <div class="card border-0">
                 <div class="card-body">
                   <h4 class="card-title">{{ article.judul }}</h4>
-                  <div class="row"> 
+                  <div class="row">
                     <div class="col-6">
                       <h6 class="card-subtitle mb-2 text-muted">
                         Penulis : {{ article.penulis }}
@@ -289,16 +290,13 @@
                     </div>
                   </div>
 
-                  <p class="card-text">
-                    {{ article.isi }}
-                  </p>
+                  <p class="card-text">{{ article.isi }}</p>
                   <a href="#" class="btn btn-success">Baca Selengkapnya</a>
                 </div>
               </div>
             </div>
 
             {% endfor %}
-
           </div>
         </div>
       </section>
@@ -499,7 +497,7 @@
           &copy; Copyright <strong><span>2023</span></strong
           >. All Rights Reserved
         </div>
-        <div>Design By RumahTBC</div>
+        <div>Design By Bootstrapmade</div>
       </div>
     </footer>
     <!-- End Footer -->
