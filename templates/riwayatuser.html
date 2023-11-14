@@ -2,7 +2,7 @@
 <main id="main">
   <section>
       <div class="row">
-          <div class="col-lg-8 offset-lg-2">
+          <div class="col-8 offset-2">
               <div class="section-title">
                 <h2>Riwayat Pemeriksaan</h2>
               </div>
@@ -11,14 +11,33 @@
                   <div class="col">
                     <h4>Data Pemeriksaan Terbaru</h4>
                     <table class="table">
+                      <thead>
                       <tr>
-                        <th>Tanggal Pemeriksaan</th>
-                        <th>Hasil Pemeriksaan</th>
+                          <th scope="col">#</th>
+                          <th scope="col">Nomor</th>
+                          <th scope="col">NIK Pasien</th>
+                          <th scope="col">Tanggal Pemeriksaan</th>
+                          <th scope="col">Rumah Sakit</th>
+                          <th scope="col">Dokter</th>
+                          <th scope="col">Gambar Rontgen</th>
+                          <th scope="col">Hasil Analisa</th>
                       </tr>
+                      </thead>
+                      <tbody>
+                      <!-- Data riwayat skrining akan ditampilkan di sini -->
                       <tr>
-                        <td>5 November 2023</td>
-                        <td>Negatif</td>
+                          <th scope="row">1</th>
+                          <td>SKR001</td>
+                          <td>1234567890</td>
+                          <td>2023-11-14</td>
+                          <td>Rumah Sakit XYZ</td>
+                          <td>Dr. John Doe</td>
+                          <td><img src="gambar_rontgen.jpg" alt="Gambar Rontgen" style="max-width: 100px;"></td>
+                          <td>Hasil analisa akan ditampilkan di sini</td>
                       </tr>
+                      <!-- Tambahkan baris ini untuk setiap data riwayat skrining yang ada -->
+              
+                      </tbody>
                     </table>
                   </div>
                 </div>

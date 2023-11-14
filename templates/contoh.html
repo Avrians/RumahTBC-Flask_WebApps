@@ -1,52 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Halaman Utama</title>
-  <!-- Bootstrap CSS link -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    /* Add your custom styles here */
-    body {
-      margin: 0;
-      padding: 0;
-    }
-    /* Konten halaman utama */
-    .content {
-      padding: 20px;
-      /* Tambahkan gaya sesuai kebutuhan Anda */
-    }
-    /* Chatbot */
-    .chatbot {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 300px;
-      height: 400px;
-      background-color: #ffffff;
-      border: 1px solid #ccc;
-      /* Tambahkan gaya sesuai kebutuhan Anda */
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <title>Riwayat Skrining</title>
 </head>
 <body>
 
-  <!-- Konten halaman utama -->
-  <div class="content">
-    <!-- Tambahkan konten halaman utama Anda di sini -->
-    <h1>Selamat datang di Halaman Utama</h1>
-    <!-- Contoh konten lainnya -->
-  </div>
+<div class="container mt-5">
+    <h2 class="mb-4">Riwayat Skrining</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nomor</th>
+            <th scope="col">NIK Pasien</th>
+            <th scope="col">Tanggal Pemeriksaan</th>
+            <th scope="col">Rumah Sakit</th>
+            <th scope="col">Dokter</th>
+            <th scope="col">Gambar Rontgen</th>
+            <th scope="col">Hasil Analisa</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Data riwayat skrining akan ditampilkan di sini -->
+        <tr>
+            <th scope="row">1</th>
+            <td>SKR001</td>
+            <td>1234567890</td>
+            <td>2023-11-14</td>
+            <td>Rumah Sakit XYZ</td>
+            <td>Dr. John Doe</td>
+            <td><img src="gambar_rontgen.jpg" alt="Gambar Rontgen" style="max-width: 100px;"></td>
+            <td>Hasil analisa akan ditampilkan di sini</td>
+        </tr>
+        <!-- Tambahkan baris ini untuk setiap data riwayat skrining yang ada -->
 
-  <!-- Chatbot -->
-  <div class="chatbot">
-    <!-- Tambahkan konten chatbot di sini -->
-    <h2>Chatbot</h2>
-    <!-- Contoh elemen chatbot lainnya -->
-  </div>
+        </tbody>
+    </table>
+</div>
 
-  <!-- Bootstrap JS script -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Optional: Bootstrap JS (tidak diperlukan untuk tabel) -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
 </body>
 </html>
