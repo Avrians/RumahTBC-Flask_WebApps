@@ -138,6 +138,11 @@ def admin_artikel():
 def admin_artikel_form():
     return render_template('admin_artikelform.html')
 
+# Fungsi route untuk halaman daftar pasien admin
+@app.route('/admin/pasien')
+def admin_pasiendaftar():
+    return render_template('admin_pasiendaftar.html')
+
 # Fungsi route untuk halaman tentang user
 @app.route('/tentang')
 def tentang():
