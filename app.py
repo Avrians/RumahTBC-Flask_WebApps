@@ -37,15 +37,18 @@ class ArtikelKesehatan(db.Model):
     isi = db.Column(db.Text, nullable=False)
     tanggal_publikasi = db.Column(db.Date, nullable=False)
     kategori = db.Column(db.String(50), nullable=True)
+    gambar = db.Column(db.String(255), nullable=True)  # Tambahkan kolom gambar dengan panjang maksimal 255 karakter
     created_at = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp(), nullable=False)
     updated_at = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp(), onupdate=db.func.current_timestamp(), nullable=False)
     
-    def __init__(self, judul, penulis, isi, tanggal_publikasi, kategori):
+    def __init__(self, judul, penulis, isi, tanggal_publikasi, kategori, gambar=None):  # Tambahkan parameter gambar dan set defaultnya ke None
         self.judul = judul
         self.penulis = penulis
         self.isi = isi
         self.tanggal_publikasi = tanggal_publikasi
         self.kategori = kategori
+        self.gambar = gambar  # Set nilai gambar dengan nilai yang diberikan atau None jika tidak ada gambar
+
         
 # Model untuk tabel user
 class Users(db.Model):
