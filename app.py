@@ -64,6 +64,26 @@ class Users(db.Model):
         self.password = password
         self.email = email
 
+# Model untuk tabel user
+class Pemeriksaan(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nik_pasien = db.Column(db.String(20), nullable=False)
+    tanggal_pemeriksaan = db.Column(db.Date, nullable=False)
+    id_dokter = db.Column(db.Integer, nullable=False)
+    status = db.Column(db.String(20), nullable=False)
+    persentase = db.Column(db.Float, nullable=True)
+    gambar_rontgen = db.Column(db.String(255), nullable=True)
+    hasil_analisa = db.Column(db.Text, nullable=True)
+
+    def __init__(self, nik_pasien, tanggal_pemeriksaan, id_dokter, status, persentase=None, gambar_rontgen=None, hasil_analisa=None):
+        self.nik_pasien = nik_pasien
+        self.tanggal_pemeriksaan = tanggal_pemeriksaan
+        self.id_dokter = id_dokter
+        self.status = status
+        self.persentase = persentase
+        self.gambar_rontgen = gambar_rontgen
+        self.hasil_analisa = hasil_analisa
+        
 # Untuk membuat tabel di database
 with app.app_context():
     db.create_all()
