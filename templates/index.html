@@ -24,6 +24,16 @@
       rel="stylesheet"
     />
 
+    <!-- Google Fonts Chatbot-->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0"
+    />
+
     <!-- Vendor CSS Files -->
     <link
       href="{{ url_for('static', filename='assets/vendor/animate.css/animate.min.css') }}"
@@ -50,6 +60,11 @@
       rel="stylesheet"
     />
 
+    <!-- Custom CSS Chatbot-->
+    <link
+      href="{{ url_for('static', filename='assets/css/style-chatbot.css') }}"
+      rel="stylesheet"
+    />
     <!-- Custom CSS -->
     <link
       href="{{ url_for('static', filename='assets/css/style.css') }}"
@@ -100,6 +115,34 @@
       </div>
     </header>
     <!-- End Header -->
+
+    <!-- Chatbot -->
+    <button class="chatbot-toggler">
+      <span class="material-symbols-rounded">mode_comment</span>
+      <span class="material-symbols-outlined">close</span>
+    </button>
+    <div class="chatbot">
+      <header>
+        <h2>Chatbot</h2>
+        <span class="close-btn material-symbols-outlined">close</span>
+      </header>
+      <ul class="chatbox">
+        <li class="chat incoming">
+          <span class="material-symbols-outlined">smart_toy</span>
+          <p>Hi there 👋<br />How can I help you today?</p>
+        </li>
+      </ul>
+      <div class="chat-input">
+        <textarea
+          placeholder="Enter a message..."
+          spellcheck="false"
+          required
+        ></textarea>
+        <span id="send-btn" class="material-symbols-rounded">send</span>
+      </div>
+    </div>
+    <!-- End Chatbot -->
+
     {%block content%}
 
     <!-- ======= Hero Section ======= -->
@@ -475,7 +518,6 @@
       <!-- End Contact Section -->
     </main>
     <!-- End #main -->
-
     {%endblock%}
 
     <!-- ======= Footer ======= -->
@@ -517,5 +559,8 @@
 
     <!-- Template Main JS File -->
     <script src="{{ url_for('static', filename='assets/js/script.js') }}"></script>
+
+    <!-- JS Chatbot-->
+    <script src="{{ url_for('static', filename='assets/js/script-chatbot.js') }}"></script>
   </body>
 </html>

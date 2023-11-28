@@ -64,7 +64,7 @@ class Users(db.Model):
         self.password = password
         self.email = email
 
-# Model untuk tabel user
+# Model untuk tabel pemeriksaan
 class Pemeriksaan(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nik_pasien = db.Column(db.String(20), nullable=False)
