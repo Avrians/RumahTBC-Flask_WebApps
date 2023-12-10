@@ -329,6 +329,7 @@ def upload():
     img=img.reshape(1,size,size,3)
     img = img.astype('float32')
     img = img / 255.0
+    # img = img / np.max(img)
     # Prediksi Model
     result = np.argmax(model.predict(img), axis=-1)
     pred=model.predict(img)
