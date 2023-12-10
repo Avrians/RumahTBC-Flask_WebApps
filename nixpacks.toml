@@ -1,0 +1,12 @@
+[nixpacks]
+version = "1.0"
+
+[setup]
+python38 = true
+gunicorn = true
+
+[install]
+command = "python -m venv --copies /opt/venv && . /opt/venv/bin/activate && pip install -r requirements.txt"
+
+[start]
+command = "gunicorn -b :8080 app:app"
