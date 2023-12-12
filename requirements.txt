@@ -1,7 +1,8 @@
+--upgrade pip
 absl-py==2.0.0
 alembic==1.12.1
 altair==5.2.0
-apturl==0.5.2
+apturl
 asttokens==2.4.1
 astunparse==1.6.3
 attrs==23.1.0
