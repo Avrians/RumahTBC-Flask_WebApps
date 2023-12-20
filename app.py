@@ -112,7 +112,9 @@ def dashboard():
 # Fungsi route untuk halaman home dokter
 @app.route('/home')
 def home():
-    return render_template('dokter_dashboard.html')
+    if 'username' in session:
+        return render_template('dokter_dashboard.html', username=session['username'])
+    return redirect(url_for('loginadmin'))
 
 # Fungsi route untuk halaman deteksi dokter
 @app.route('/dokter/deteksi')
@@ -291,6 +293,7 @@ def loginadmin():
         print(f"User ditemukan: {user}")
         
         if user and bcrypt.check_password_hash(user.password, password):
+            session['username'] = username  # Set the username in the session
             flash('Login berhasil!', 'success')
             return redirect(url_for('home'))
         else:
@@ -298,6 +301,10 @@ def loginadmin():
 
     return render_template('login_admin.html')
 
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    return redirect(url_for('login'))
 
 # Fungsi route untuk memproses deteksi TBC dokter
 @app.route("/dokter/upload", methods=['POST'])
@@ -341,6 +348,64 @@ def upload():
     plot_dest = "/".join([target, "result.png"])
 
     return render_template("dokter_hasildeteksi.html", pred=predicted,pos=pos,neg=neg, filename=filename)
+
+# API untuk memproses deteksi TBC dokter
+@app.route("/api/dokter/upload", methods=['POST'])
+def dokter_upload():
+    # Memuat Model Deep Learning
+    model = load_model('modelTBC.h5')
+    print("model_loaded")
+
+    # Mengatur Direktori Target untuk Berkas yang Diunggah
+    target = os.path.join(APP_ROOT, 'static/xray/')
+
+    # Membuat Direktori Target Jika Belum Ada
+    if not os.path.isdir(target):
+        os.mkdir(target)
+
+    try:
+        # Menyimpan Berkas yang Diunggah
+        file = request.files['file']
+        filename = file.filename
+        destination = os.path.join(target, filename)
+        file.save(destination)
+
+        # Menyiapkan Gambar untuk Prediksi Model
+        img = cv2.imread(destination)
+        cv2.imwrite('static/xray/file.png', img)
+
+        # Pemrosesan Gambar
+        img = processimg(img)
+        cv2.imwrite('static/xray/processedfile.png', img)
+        img = img.astype('uint8')
+        img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+        img = img_to_array(img)
+        img = cv2.resize(img, (size, size))
+        img = img.reshape(1, size, size, 3)
+        img = img.astype('float32')
+        img = img / 255.0
+
+        # Prediksi Model
+        result = np.argmax(model.predict(img), axis=-1)
+        pred = model.predict(img)
+        neg = pred[0][0]
+        pos = pred[0][1]
+
+        # Membuat respons JSON
+        classes = ['Negative', 'Positive']
+        predicted = classes[result[0]]
+        response_data = {
+            'prediction': predicted,
+            'positive_probability': float(pos),
+            'negative_probability': float(neg),
+            'filename': filename
+        }
+
+        return jsonify(response_data)
+
+    except Exception as e:
+        return jsonify({'error': str(e)})
+
 
 # Bikin
 @app.route('/adduser', methods=['GET', 'POST'])
