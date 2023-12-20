@@ -118,9 +118,9 @@ def index():
     latest_articles = ArtikelKesehatan.query.order_by(ArtikelKesehatan.tanggal_publikasi.desc()).limit(4).all()
     return render_template('index.html', latest_articles=latest_articles)
 
-# Fungsi route untuk memproses halaman login karyawan
-@app.route('/loginkaryawan', methods=['GET', 'POST'])
-def loginkaryawan():
+# Fungsi route untuk memproses halaman login 
+@app.route('/loginadmin', methods=['GET', 'POST'])
+def loginadmin():
     if 'username' in session:
         return redirect(url_for('home_dokter'))
     
@@ -163,13 +163,13 @@ def home():
             return redirect(url_for('logout'))
     else:
         flash('Anda harus login terlebih dahulu.', 'warning')
-        return redirect(url_for('loginkaryawan'))
+        return redirect(url_for('loginadmin'))
 
 # Fungsi route untuk keluar halaman admin/dokter
 @app.route('/logout')
 def logout():
     session.pop('username', None)
-    return redirect(url_for('loginkaryawan'))
+    return redirect(url_for('loginadmin'))
 
 
 # Fungsi route untuk halaman deteksi dokter
@@ -470,7 +470,7 @@ def add_karyawan():
         akun_karyawan = AkunKaryawan(nik=nik, username=username, password=hashed_password, hak_akses=hak_akses)
         db.session.add(akun_karyawan)
         db.session.commit()
-        return redirect(url_for('loginkaryawan'))
+        return redirect(url_for('loginadmin'))
 
     return render_template('add_akun_karyawan.html')
 
