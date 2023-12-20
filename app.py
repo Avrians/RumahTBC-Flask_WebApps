@@ -29,6 +29,20 @@ db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 migrate = Migrate(app, db)
 
+# Model untuk tabel karyawan
+class AkunKaryawan(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nik = db.Column(db.String(16), unique=True, nullable=False)
+    username = db.Column(db.String(50), unique=True, nullable=False)
+    password = db.Column(db.String(255), nullable=False)
+    hak_akses = db.Column(db.Enum('dokter', 'admin'), nullable=False)
+
+    def __init__(self, nik, username, password, hak_akses):
+        self.nik = nik
+        self.username = username
+        self.password = password
+        self.hak_akses = hak_akses
+
 # Model untuk tabel artikel kesehatan
 class ArtikelKesehatan(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -105,13 +119,13 @@ def index():
     return render_template('index.html', latest_articles=latest_articles)
 
 # Fungsi route untuk halaman dashboard admin
-@app.route('/dashboard')
-def dashboard():
+@app.route('/home/admin')
+def home_admin():
     return render_template('admin_dashboard.html')
 
 # Fungsi route untuk halaman home dokter
-@app.route('/home')
-def home():
+@app.route('/home/dokter')
+def home_dokter():
     if 'username' in session:
         return render_template('dokter_dashboard.html', username=session['username'])
     return redirect(url_for('loginadmin'))
@@ -280,28 +294,50 @@ def delete_tbc_data(data_id):
 ### Finish API CRUD Artikel Kesehatan
 
 # Fungsi route untuk memproses halaman login admin
-@app.route('/admin', methods=['GET', 'POST'])
+@app.route('/loginadmin', methods=['GET', 'POST'])
 def loginadmin():
     if 'username' in session:
-        return redirect(url_for('home'))
+        return redirect(url_for('home_dokter'))
     
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
 
-        user = Users.query.filter_by(username=username).first()
+        user = AkunKaryawan.query.filter_by(username=username).first()
 
         print(f"Upaya login untuk username: {username}, password: {password}")
         print(f"User ditemukan: {user}")
         
-        if user and bcrypt.check_password_hash(user.password, password):
+        if user and check_password_hash(user.password, password):
             session['username'] = username  # Set the username in the session
+            session['hak_akses'] = user.hak_akses 
+            print(f"Login berhasil untuk username: {username}")
             flash('Login berhasil!', 'success')
             return redirect(url_for('home'))
         else:
             flash('Login gagal. Periksa kembali username dan password Anda.', 'danger')
 
     return render_template('login_admin.html')
+
+@app.route('/home')
+def home():
+    if 'username' in session:
+        hak_akses = session.get('hak_akses')
+
+        if hak_akses is not None:
+            if hak_akses == 'admin':
+                return render_template('admin_dashboard.html', username=session['username'])
+            elif hak_akses == 'dokter':
+                return render_template('dokter_dashboard.html', username=session['username'])
+            else:
+                flash('Hak akses tidak valid.', 'danger')
+                return redirect(url_for('logout'))
+        else:
+            flash('Hak akses tidak tersedia.', 'danger')
+            return redirect(url_for('logout'))
+    else:
+        flash('Anda harus login terlebih dahulu.', 'warning')
+        return redirect(url_for('loginadmin'))
 
 @app.route('/logout')
 def logout():
@@ -425,8 +461,28 @@ def add_user():
         db.session.commit()
 
         flash('User added successfully!', 'success')
-        return redirect(url_for('home'))
+        return redirect(url_for('home_dokter'))
 
     return render_template('add_user.html')
+
+
+@app.route('/add_karyawan', methods=['GET', 'POST'])
+def add_karyawan():
+    if request.method == 'POST':
+        nik = request.form['nik']
+        username = request.form['username']
+        password = request.form['password']
+        hak_akses = request.form['hak_akses']
+
+        hashed_password = generate_password_hash(password)
+
+        akun_karyawan = AkunKaryawan(nik=nik, username=username, password=hashed_password, hak_akses=hak_akses)
+        db.session.add(akun_karyawan)
+        db.session.commit()
+        return redirect(url_for('loginadmin'))
+
+    return render_template('add_akun_karyawan.html')
+
+
 if __name__ == '__main__':
     app.run(debug=True)
