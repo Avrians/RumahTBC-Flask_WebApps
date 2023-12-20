@@ -282,6 +282,8 @@ def delete_tbc_data(data_id):
 # Fungsi route untuk memproses halaman login admin
 @app.route('/admin', methods=['GET', 'POST'])
 def loginadmin():
+    if 'username' in session:
+        return redirect(url_for('home'))
     
     if request.method == 'POST':
         username = request.form['username']
@@ -304,7 +306,7 @@ def loginadmin():
 @app.route('/logout')
 def logout():
     session.pop('username', None)
-    return redirect(url_for('login'))
+    return redirect(url_for('loginadmin'))
 
 # Fungsi route untuk memproses deteksi TBC dokter
 @app.route("/dokter/upload", methods=['POST'])
