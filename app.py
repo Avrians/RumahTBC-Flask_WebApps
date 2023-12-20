@@ -118,17 +118,59 @@ def index():
     latest_articles = ArtikelKesehatan.query.order_by(ArtikelKesehatan.tanggal_publikasi.desc()).limit(4).all()
     return render_template('index.html', latest_articles=latest_articles)
 
-# Fungsi route untuk halaman dashboard admin
-@app.route('/home/admin')
-def home_admin():
-    return render_template('admin_dashboard.html')
-
-# Fungsi route untuk halaman home dokter
-@app.route('/home/dokter')
-def home_dokter():
+# Fungsi route untuk memproses halaman login karyawan
+@app.route('/loginkaryawan', methods=['GET', 'POST'])
+def loginkaryawan():
     if 'username' in session:
-        return render_template('dokter_dashboard.html', username=session['username'])
-    return redirect(url_for('loginadmin'))
+        return redirect(url_for('home_dokter'))
+    
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        user = AkunKaryawan.query.filter_by(username=username).first()
+
+        print(f"Upaya login untuk username: {username}, password: {password}")
+        print(f"User ditemukan: {user}")
+        
+        if user and check_password_hash(user.password, password):
+            session['username'] = username  # Set the username in the session
+            session['hak_akses'] = user.hak_akses 
+            print(f"Login berhasil untuk username: {username}")
+            flash('Login berhasil!', 'success')
+            return redirect(url_for('home'))
+        else:
+            flash('Login gagal. Periksa kembali username dan password Anda.', 'danger')
+
+    return render_template('login_admin.html')
+
+# Fungsi route untuk halaman home dokter/admin
+@app.route('/home')
+def home():
+    if 'username' in session:
+        hak_akses = session.get('hak_akses')
+
+        if hak_akses is not None:
+            if hak_akses == 'admin':
+                return render_template('admin_dashboard.html', username=session['username'])
+            elif hak_akses == 'dokter':
+                return render_template('dokter_dashboard.html', username=session['username'])
+            else:
+                flash('Hak akses tidak valid.', 'danger')
+                return redirect(url_for('logout'))
+        else:
+            flash('Hak akses tidak tersedia.', 'danger')
+            return redirect(url_for('logout'))
+    else:
+        flash('Anda harus login terlebih dahulu.', 'warning')
+        return redirect(url_for('loginkaryawan'))
+
+# Fungsi route untuk keluar halaman admin/dokter
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    return redirect(url_for('loginkaryawan'))
+
 
 # Fungsi route untuk halaman deteksi dokter
 @app.route('/dokter/deteksi')
@@ -293,57 +335,6 @@ def delete_tbc_data(data_id):
     return jsonify({'message': 'Data berhasil dihapus!'})
 ### Finish API CRUD Artikel Kesehatan
 
-# Fungsi route untuk memproses halaman login admin
-@app.route('/loginadmin', methods=['GET', 'POST'])
-def loginadmin():
-    if 'username' in session:
-        return redirect(url_for('home_dokter'))
-    
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-
-        user = AkunKaryawan.query.filter_by(username=username).first()
-
-        print(f"Upaya login untuk username: {username}, password: {password}")
-        print(f"User ditemukan: {user}")
-        
-        if user and check_password_hash(user.password, password):
-            session['username'] = username  # Set the username in the session
-            session['hak_akses'] = user.hak_akses 
-            print(f"Login berhasil untuk username: {username}")
-            flash('Login berhasil!', 'success')
-            return redirect(url_for('home'))
-        else:
-            flash('Login gagal. Periksa kembali username dan password Anda.', 'danger')
-
-    return render_template('login_admin.html')
-
-@app.route('/home')
-def home():
-    if 'username' in session:
-        hak_akses = session.get('hak_akses')
-
-        if hak_akses is not None:
-            if hak_akses == 'admin':
-                return render_template('admin_dashboard.html', username=session['username'])
-            elif hak_akses == 'dokter':
-                return render_template('dokter_dashboard.html', username=session['username'])
-            else:
-                flash('Hak akses tidak valid.', 'danger')
-                return redirect(url_for('logout'))
-        else:
-            flash('Hak akses tidak tersedia.', 'danger')
-            return redirect(url_for('logout'))
-    else:
-        flash('Anda harus login terlebih dahulu.', 'warning')
-        return redirect(url_for('loginadmin'))
-
-@app.route('/logout')
-def logout():
-    session.pop('username', None)
-    return redirect(url_for('loginadmin'))
-
 # Fungsi route untuk memproses deteksi TBC dokter
 @app.route("/dokter/upload", methods=['POST'])
 def upload():
@@ -479,7 +470,7 @@ def add_karyawan():
         akun_karyawan = AkunKaryawan(nik=nik, username=username, password=hashed_password, hak_akses=hak_akses)
         db.session.add(akun_karyawan)
         db.session.commit()
-        return redirect(url_for('loginadmin'))
+        return redirect(url_for('loginkaryawan'))
 
     return render_template('add_akun_karyawan.html')
 
