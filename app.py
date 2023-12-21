@@ -553,9 +553,9 @@ def add_karyawan():
 @app.route('/tambah_review', methods=['POST'])
 def tambah_review():
     if request.method == 'POST':
-        nama = request.form['nama']
+        nama = request.form['name']
         email = request.form['email']
-        review_text = request.form['review']
+        review_text = request.form['message']
 
         # Memastikan semua data yang diperlukan telah diberikan
         if nama and email and review_text:
@@ -563,9 +563,11 @@ def tambah_review():
                 new_review = InputReview(nama=nama, email=email, review=review_text)
                 db.session.add(new_review)
                 db.session.commit()
-                return jsonify({'status': 'success', 'message': 'Ulasan berhasil ditambahkan'}), 201
+                flash('Ulasan dari kamu sudah terkirim. Terima kasih!', 'success')
+                return redirect(url_for('index'))
             except Exception as e:
-                return jsonify({'status': 'error', 'message': str(e)}), 500
+                flash(f'Error: {str(e)}', 'error')
+                return redirect(url_for('index'))
         else:
             return jsonify({'status': 'error', 'message': 'Semua field harus diisi'}), 400
 
