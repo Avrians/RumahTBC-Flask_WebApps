@@ -11,6 +11,14 @@ from flask_migrate import Migrate
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_bcrypt import Bcrypt
+from termcolor import colored
+import nltk
+from nltk.stem import WordNetLemmatizer
+import random
+from keras.models import load_model
+import pickle
+import json
+
 
 
 
@@ -98,6 +106,18 @@ class Pemeriksaan(db.Model):
         self.gambar_rontgen = gambar_rontgen
         self.hasil_analisa = hasil_analisa
         
+# untuk tabel input review
+class InputReview(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nama = db.Column(db.String(255), nullable=False)
+    email = db.Column(db.String(255), unique=True, nullable=False)
+    review = db.Column(db.Text, nullable=False)
+
+    def __init__(self, nama, email, review):
+        self.nama = nama
+        self.email = email
+        self.review = review
+        
 # Untuk membuat tabel di database
 with app.app_context():
     db.create_all()
@@ -111,12 +131,73 @@ def processimg(img):
     crop=cv2.resize(equalized_img,(size,size))
     return crop
 
+# Load intents and other required files
+intents_file = open('data.json',)
+intents = json.load(intents_file)
+
+model = load_model('chatbot_model.h5')
+words = pickle.load(open('words.pkl', 'rb'))
+classes = pickle.load(open('classes.pkl', 'rb'))
+
+lemmatizer = WordNetLemmatizer()
+nltk.download('punkt')
+
+
+def clean_up_sentence(sentence):
+    sentence_words = nltk.word_tokenize(sentence)
+    sentence_words = [lemmatizer.lemmatize(word.lower()) for word in sentence_words]
+    return sentence_words
+
+
+def bow(sentence, words, show_details=False):
+    sentence_words = clean_up_sentence(sentence)
+    bag = [0] * len(words)
+    for s in sentence_words:
+        for i, w in enumerate(words):
+            if w == s:
+                bag[i] = 1
+                if show_details:
+                    print('Found in %s' % w)
+    return bag
+
+
+def predict_class(sentence, model):
+    p = bow(sentence, words, show_details=False)
+    res = model.predict([p])[0]
+    ERROR_THRESHOLD = 0.25
+    results = [[i, r] for i, r in enumerate(res) if r > ERROR_THRESHOLD]
+    results.sort(key=lambda x: x[1], reverse=True)
+    return_list = []
+    for r in results:
+        return_list.append({"intent": classes[r[0]], "probability": str(r[1])})
+    return return_list
+
+
+def get_response(ints, intents_json):
+    tag = ints[0]['intent']
+    list_intents = intents_json['intents']
+    for i in list_intents:
+        if tag == i['tag']:
+            result = random.choice(i['responses'])
+            break
+    return result
+
+
 # Fungsi route untuk halaman index
 @app.route("/")
 def index():
     # Ambil 4 data terbaru dari tabel Artikel
     latest_articles = ArtikelKesehatan.query.order_by(ArtikelKesehatan.tanggal_publikasi.desc()).limit(4).all()
     return render_template('index.html', latest_articles=latest_articles)
+
+@app.route('/chat', methods=['POST'])
+def chat():
+    user_message = request.form['user_message']
+    print(f"Received user message: {user_message}")  # Tambahkan baris ini
+    ints = predict_class(user_message, model)
+    response = get_response(ints, intents)
+    print(f"Generated response: {response}")  # Tambahkan baris ini
+    return jsonify({'response': response})
 
 # Fungsi route untuk memproses halaman login 
 @app.route('/loginadmin', methods=['GET', 'POST'])
@@ -260,11 +341,6 @@ def detailartikel():
 def artikel_by_id(article_id):
     article = ArtikelKesehatan.query.filter_by(id=article_id).first_or_404()
     return render_template('detailartikel.html', article=article)
-
-# Fungsi route untuk halaman tanya dokter
-@app.route('/chat')
-def chat():
-    return render_template('chat.html')
 
 ### Start API CRUD Artikel Kesehatan
 # Route untuk mengambil artikel (API)
@@ -473,6 +549,25 @@ def add_karyawan():
         return redirect(url_for('loginadmin'))
 
     return render_template('add_akun_karyawan.html')
+
+@app.route('/tambah_review', methods=['POST'])
+def tambah_review():
+    if request.method == 'POST':
+        nama = request.form['nama']
+        email = request.form['email']
+        review_text = request.form['review']
+
+        # Memastikan semua data yang diperlukan telah diberikan
+        if nama and email and review_text:
+            try:
+                new_review = InputReview(nama=nama, email=email, review=review_text)
+                db.session.add(new_review)
+                db.session.commit()
+                return jsonify({'status': 'success', 'message': 'Ulasan berhasil ditambahkan'}), 201
+            except Exception as e:
+                return jsonify({'status': 'error', 'message': str(e)}), 500
+        else:
+            return jsonify({'status': 'error', 'message': 'Semua field harus diisi'}), 400
 
 
 if __name__ == '__main__':

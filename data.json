@@ -1,0 +1,445 @@
+{
+    "intents": [
+        {
+            "tag": "Hai",
+            "patterns": [
+                "Hello",
+                "Hi",
+                "Hey",
+                "Hallo"
+            ],
+            "responses": [
+                "Hallo! guys",
+                "Hai, Semuanya",
+                "Hallo, Hallo Siapa nama mu?"
+            ],
+            "context": [""]
+        },
+        {
+            "tag": "noanswer",
+            "patterns":[""],
+            "responses":[
+                "Maaf pertanyaan anda tidak sesuai, Tanyakan yang lain ..."],
+            "context" : [""]
+
+        },
+        {
+            "tag": "Nama",
+            "patterns": [
+                "Nama Saya",
+                "Panggilan Saya"
+            ],
+            "responses": [
+                "Senang Bertemu dengan mu",
+                "Namaku "
+            ],
+            "context": [""]
+        },
+        {
+            "tag": "bantuan",
+            "patterns": [
+                "saya butuh bantuan",
+                "bisakah kamu bantu saya",
+                "kamu bisa bantu saya?"
+            ],
+            "responses": [
+                "ya, saya bisa bantu anda",
+                "ya, apa itu?"
+            ],
+            "context": [""]
+        },
+        {
+            "tag": "about_tbc",
+            "patterns": [
+                "Apa itu TBC?",
+                "Tuberkulosis itu apa?",
+                "Saya ingin tahu tentang penyakit TBC."
+            ],
+            "responses": [
+                "TBC adalah penyakit infeksi yang disebabkan oleh bakteri Mycobacterium tuberculosis. Ini biasanya menyerang paru-paru, tetapi bisa memengaruhi organ lain.",
+                "Tuberkulosis, atau TBC, adalah penyakit menular yang dapat memengaruhi sistem pernapasan dan organ tubuh lainnya. Anda ingin tahu lebih banyak tentang gejala atau pengobatannya?"
+            ],
+            "context": [""]
+        },
+        {
+            "tag": "tbc_symptoms",
+            "patterns": [
+                "Apa gejala TBC?",
+                "Bagaimana cara mengenali gejala TBC?",
+                "Apa saja tanda-tanda TBC?"
+            ],
+            "responses": [
+                "Gejala TBC bisa meliputi batuk berkepanjangan, demam, penurunan berat badan, dan kelelahan. Jika Anda mengalami gejala ini, segera konsultasikan dengan dokter."
+            ],
+            "context": [""]
+        },
+        {
+            "tag": "tbc_treatment",
+            "patterns": [
+                "Bagaimana pengobatan TBC?",
+                "Apa jenis pengobatan yang digunakan untuk TBC?",
+                "Berapa lama pengobatan TBC??"
+            ],
+            "responses": [
+                "Pengobatan TBC melibatkan antibiotik yang diresepkan oleh dokter. Pengobatan biasanya berlangsung selama 6-9 bulan atau lebih, tergantung pada kasusnya."
+            ],
+            "context": [""]
+        },
+        {
+            "tag": "tbc_prevention",
+            "patterns": [
+                "Bagaimana mencegah TBC?",
+                "Apa yang bisa saya lakukan untuk mencegah TBC?",
+                "Apakah ada vaksin untuk TBC?"
+            ],
+            "responses": [
+                "Pencegahan TBC melibatkan vaksinasi BCG, identifikasi kasus, pemantauan kontak, dan praktik kebersihan. Ya, vaksinasi BCG tersedia untuk mencegah TBC."
+            ],
+            "context": [""]
+        },
+        {
+            "tag": "tbc_impact",
+            "patterns": [
+                "Bagaimana TBC memengaruhi hidup seseorang?",
+                "Apa dampak sosial TBC?",
+                "Bagaimana pengaruh TBC pada pekerjaan?"
+            ],
+            "responses": [
+                "TBC dapat memengaruhi kesehatan fisik dan mental seseorang, serta dapat mempengaruhi pekerjaan dan kehidupan sosial. Dukungan medis dan sosial penting selama pengobatan."
+            ],
+            "context": [""]
+        },
+        {
+            "tag": "tbc_diagnosis",
+            "patterns": [
+                "Bagaimana TBC didiagnosis?",
+                "Apa yang dilakukan dokter untuk mengidentifikasi TBC?",
+                "Proses diagnosa TBC."
+            ],
+            "responses": [
+                "TBC didiagnosis melalui pemeriksaan fisik, tes darah, foto rontgen, dan kultur dahak. Dokter akan menilai gejala dan hasil tes untuk menentukan diagnosis."
+            ],
+            "context": [""]
+        },
+        {
+            "tag": "tbc_vaccine",
+            "patterns": [
+                "Apakah vaksinasi BCG aman?",
+                "Bagaimana vaksin BCG bekerja?",
+                "Efek samping vaksin BCG."
+            ],
+            "responses": [
+                "Vaksinasi BCG umumnya aman dan efektif. Ini mengurangi risiko terkena bentuk berat TBC, seperti TBC milier. Efek sampingnya biasanya ringan seperti pembengkakan di area suntikan."
+            ],
+            "context": [""]
+        },
+        {
+            "tag": "tbc_drug_resistance",
+            "patterns": [
+                "Apa itu resistensi obat dalam TBC?",
+                "Bagaimana resistensi obat berkembang dalam TBC?",
+                "Pengobatan TBC resisten obat."
+            ],
+            "responses": [
+                "Resistensi obat dalam TBC terjadi ketika bakteri TBC menjadi tahan terhadap antibiotik. Pengobatan TBC resisten obat lebih kompleks dan memerlukan obat-obat khusus."
+            ],
+            "context": [""]
+        },
+        {
+            "tag": "tbc_contact_tracing",
+            "patterns": [
+                "Apa yang dilakukan dalam pelacakan kontak TBC?",
+                "Proses pelacakan kontak TBC.",
+                "Mengapa penting melacak kontak TBC?"
+            ],
+            "responses": [
+                "Pelacakan kontak TBC adalah upaya untuk mengidentifikasi orang yang mungkin terinfeksi oleh penderita TBC dan memberikan pencegahan atau pengobatan dini kepada mereka."
+            ],
+            "context": [""]
+        },
+        {
+            "tag": "tbc_childhood_tbc",
+            "patterns": [
+                "Bagaimana TBC memengaruhi anak-anak?",
+                "TBC pada anak-anak.",
+                "Apakah anak-anak lebih rentan terhadap TBC?"
+            ],
+            "responses": [
+                "TBC dapat memengaruhi anak-anak, dan mereka bisa lebih rentan terhadap TBC daripada orang dewasa. Pengobatan dan pemantauan khusus dibutuhkan untuk anak-anak yang terinfeksi."
+            ],
+            "context": [""]
+        },
+        {
+            "tag": "tbc_test",
+            "patterns": [
+                "Bagaimana cara mendapatkan tes TBC?",
+                "Prosedur tes TBC",
+                "Apakah tes TBC tersedia di puskesmas?"
+            ],
+            "responses": [
+                "Anda dapat mendapatkan tes TBC di fasilitas kesehatan, seperti rumah sakit atau puskesmas. Tes TBC melibatkan pemeriksaan dahak atau tes kulit. Dokter akan memberikan petunjuk lebih lanjut."
+            ],
+            "context": [""]
+        },
+        {
+            "tag": "tbc_infection_sources",
+            "patterns": [
+                "Dari mana sumber infeksi TBC biasanya berasal?",
+                "Bagaimana TBC menyebar?",
+                "Faktor risiko penularan TBC."
+            ],
+            "responses": [
+                "Sumber infeksi TBC biasanya berasal dari orang yang terinfeksi dan batuk atau bersin. Orang dengan sistem kekebalan tubuh yang lemah lebih rentan terhadap penularan TBC."
+            ],
+            "context": [""]
+        },
+        {
+            "tag": "tbc_contact_precautions",
+            "patterns": [
+                "Apa yang harus dilakukan jika saya berada dalam kontak dengan seseorang yang terinfeksi TBC?",
+                "Langkah-langkah pencegahan kontak TBC.",
+                "Cara melindungi diri dari penularan TBC."
+            ],
+            "responses": [
+                "Jika Anda berada dalam kontak dengan seseorang yang terinfeksi TBC, penting untuk mengikuti petunjuk medis dan menjalani tes jika diperlukan. Langkah pencegahan termasuk vaksinasi BCG dan kebersihan tangan."
+            ],
+            "context": [""]
+        },
+        {
+            "tag": "tbc_misconceptions",
+            "patterns": [
+                "Apa saja miskonsepsi umum tentang TBC?",
+                "Mitos seputar TBC",
+                "Pemahaman yang salah tentang TBC."
+            ],
+            "responses": [
+                "Salah satu miskonsepsi umum adalah bahwa TBC hanya menyerang paru-paru. TBC dapat memengaruhi berbagai organ. Hal ini penting untuk mendekonstruksi mitos seputar TBC."
+            ],
+            "context": [""]
+        },
+        {
+            "tag": "tbc_awareness",
+            "patterns": [
+                "Bagaimana meningkatkan kesadaran tentang TBC?",
+                "Program edukasi TBC",
+                "Peran masyarakat dalam pencegahan TBC."
+            ],
+            "responses": [
+                "Kesadaran tentang TBC dapat ditingkatkan melalui program edukasi, kampanye kesadaran, dan dukungan masyarakat. Setiap individu dapat berperan dalam upaya pencegahan TBC."
+            ],
+            "context": [""]
+        },
+        {
+            "tag": "tbc_risk_factors",
+            "patterns": [
+                "Apa saja faktor risiko TBC?",
+                "Siapa yang rentan terkena TBC?",
+                "Bagaimana melindungi diri dari TBC?"
+            ],
+            "responses": [
+                "Faktor risiko TBC meliputi paparan terhadap penderita TBC, sistem kekebalan tubuh yang lemah, penggunaan narkoba suntik, dan keadaan medis tertentu. Anda dapat melindungi diri dengan vaksinasi dan menjaga kebersihan."
+            ],
+            "context": [""]
+        },
+        {
+            "tag": "tbc_stigma",
+            "patterns": [
+                "Bagaimana mengatasi stigma sosial TBC?",
+                "Dampak stigma TBC",
+                "Sosialisasi dengan penderita TBC."
+            ],
+            "responses": [
+                "Stigma sosial adalah masalah dalam penanganan TBC. Dukungan sosial dan pemahaman masyarakat sangat penting untuk membantu orang yang terkena TBC merasa didukung dan terlibat dalam perawatan."
+            ],
+            "context": [""]
+        },
+        {
+            "tag": "tbc_treatment_success",
+            "patterns": [
+                "Apa yang menentukan keberhasilan pengobatan TBC?",
+                "Pentingnya ketaatan dalam pengobatan TBC",
+                "Faktor yang memengaruhi pemulihan TBC."
+            ],
+            "responses": [
+                "Ketaatan dalam pengobatan sangat penting untuk keberhasilan pengobatan TBC. Juga, pengobatan yang tepat, pemantauan dokter, dan dukungan sosial berperan dalam pemulihan."
+            ],
+            "context": [""]
+        },
+        {
+            "tag": "tbc_global_impact",
+            "patterns": [
+                "Bagaimana TBC memengaruhi populasi global?",
+                "Statistik TBC dunia",
+                "Upaya global untuk mengatasi TBC."
+            ],
+            "responses": [
+                "TBC tetap menjadi masalah kesehatan global dengan jutaan kasus setiap tahun. Upaya global termasuk program pengendalian, vaksinasi, dan dukungan dari organisasi kesehatan dunia."
+            ],
+            "context": [""]
+        },
+        {
+            "tag": "tbc_misdiagnosis",
+            "patterns": [
+                "Apakah TBC seringkali disalahdiagnosis?",
+                "Kesulitan dalam mendiagnosis TBC",
+                "Dampak kesalahan diagnosis TBC."
+            ],
+            "responses": [
+                "TBC dapat sulit didiagnosis karena gejalanya mirip dengan penyakit lain. Kesalahan diagnosis dapat menyebabkan keterlambatan dalam pengobatan. Penting untuk berkonsultasi dengan dokter yang berpengalaman."
+            ],
+            "context": [""]
+        },
+        {
+            "tag": "tbc_vs_covid19",
+            "patterns": [
+                "Apa perbedaan antara TBC dan COVID-19?",
+                "Gejala TBC dan COVID-19",
+                "Apa yang perlu diketahui tentang TBC dan pandemi COVID-19?"
+            ],
+            "responses": [
+                "TBC dan COVID-19 adalah dua penyakit yang berbeda. TBC disebabkan oleh bakteri, sementara COVID-19 disebabkan oleh virus. Mereka memiliki gejala yang berbeda dan memerlukan penanganan yang berbeda."
+            ],
+            "context": [""]
+        },
+        {
+            "tag": "tbc_support_groups",
+            "patterns": [
+                "Apakah ada kelompok dukungan untuk penderita TBC?",
+                "Dukungan sosial untuk TBC",
+                "Cara bergabung dengan kelompok dukungan TBC."
+            ],
+            "responses": [
+                "Ya, ada kelompok dukungan yang dapat membantu penderita TBC. Anda dapat mencari kelompok lokal atau online untuk berbagi pengalaman dan mendapatkan dukungan."
+            ],
+            "context": [""]
+        },
+        {
+            "tag": "tbc_public_health",
+            "patterns": [
+                "Peran kesehatan masyarakat dalam pengendalian TBC",
+                "Upaya pencegahan TBC di masyarakat",
+                "Program pengendalian TBC."
+            ],
+            "responses": [
+                "Kesehatan masyarakat memainkan peran penting dalam pengendalian TBC melalui program vaksinasi, pelacakan kontak, dan edukasi masyarakat. Program pengendalian TBC ada di banyak negara."
+            ],
+            "context": [""]
+        },
+        {
+            "tag": "tbc_research",
+            "patterns": [
+                "Apa yang sedang dikembangkan dalam penelitian TBC?",
+                "Inovasi terbaru dalam pengobatan TBC",
+                "Peran penelitian dalam memerangi TBC."
+            ],
+            "responses": [
+                "Penelitian terus berkembang dalam pengobatan TBC, termasuk pengembangan obat-obatan baru dan diagnosis cepat. Penelitian memainkan peran kunci dalam memerangi TBC."
+            ],
+            "context": [""]
+        },
+        {
+            "tag": "tbc_treatment_side_effects",
+            "patterns": [
+                "Apa saja efek samping pengobatan TBC?",
+                "Bagaimana mengatasi efek samping pengobatan TBC?",
+                "Perawatan efek samping TBC."
+            ],
+            "responses": [
+                "Pengobatan TBC bisa memiliki efek samping seperti mual, muntah, atau gangguan hati. Dokter dapat memberikan pengelolaan efek samping yang sesuai."
+            ],
+            "context": [""]
+        },
+        {
+            "tag": "tbc_contact_tracing",
+            "patterns": [
+                "Apa itu pelacakan kontak TBC?",
+                "Langkah-langkah pelacakan kontak TBC",
+                "Proses pelacakan kontak TBC."
+            ],
+            "responses": [
+                "Pelacakan kontak TBC adalah proses mengidentifikasi orang yang telah berada dalam kontak dekat dengan penderita TBC. Langkah-langkahnya melibatkan wawancara, pemeriksaan medis, dan tindakan pencegahan."
+            ],
+            "context": [""]
+        },
+        {
+            "tag": "tbc_family_support",
+            "patterns": [
+                "Bagaimana keluarga dapat mendukung penderita TBC?",
+                "Peran keluarga dalam pengobatan TBC",
+                "Dukungan keluarga untuk penderita TBC."
+            ],
+            "responses": [
+                "Keluarga memiliki peran penting dalam mendukung penderita TBC dengan memberikan dukungan emosional, memastikan ketaatan dalam pengobatan, dan menjaga kebersihan lingkungan."
+            ],
+            "context": [""]
+        },
+        {
+            "tag": "tbc_vulnerable_populations",
+            "patterns": [
+                "Siapa yang termasuk dalam populasi rentan terhadap TBC?",
+                "Populasi yang lebih rentan terhadap TBC",
+                "Upaya khusus untuk melindungi populasi rentan."
+            ],
+            "responses": [
+                "Populasi rentan termasuk anak-anak, lansia, pengguna narkoba suntik, dan orang dengan sistem kekebalan tubuh yang lemah. Upaya khusus diperlukan untuk melindungi mereka dari TBC."
+            ],
+            "context": [""]
+        },
+        {
+            "tag": "tbc_malnutrition",
+            "patterns": [
+                "Bagaimana malnutrisi memengaruhi risiko TBC?",
+                "Hubungan antara TBC dan malnutrisi",
+                "Cara mencegah TBC pada individu malnutrisi."
+            ],
+            "responses": [
+                "Malnutrisi dapat meningkatkan risiko tertular TBC dan mempersulit pengobatan. Makanan bergizi dan dukungan gizi dapat membantu mengurangi risiko ini."
+            ],
+            "context": [""]
+        },
+        {
+            "tag": "tbc_treatment_costs",
+            "patterns": [
+                "Berapa biaya pengobatan TBC?",
+                "Pengobatan TBC dan biaya",
+                "Cara mengakses pengobatan TBC yang terjangkau."
+            ],
+            "responses": [
+                "Biaya pengobatan TBC dapat bervariasi. Di banyak negara, ada program dukungan dan bantuan yang dapat membantu individu mendapatkan pengobatan TBC yang terjangkau."
+            ],
+            "context": [""]
+        },
+        {
+            "tag": "Terima kasih",
+            "patterns": [
+                "Makasih banyak",
+                "Terimakasih",
+                "Ini sangat menyanangkan Terimakasih banyak"
+            ],
+            "responses": [
+                "Samapai jumpa!",
+                "Sama-sama",
+                "Selamat datang!"
+            ],
+            "context": [""]
+        },
+        {
+            "tag": "Bye",
+            "patterns": [
+                "See you guys",
+                "Bye",
+                "Sehat-sehat ya!",
+                "Good bye",
+                "Semoha harimu menyenangkan",
+                "Aku duluan Ya",
+                "See you soon"
+            ],
+            "responses": [
+                "Goodbye",
+                "Sampai berjumpa kembali",
+                "See you next time"
+            ],
+            "context": [""]
+        }
+    ]
+}

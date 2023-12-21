@@ -5,6 +5,7 @@ const chatInput = document.querySelector(".chat-input textarea");
 const sendChatBtn = document.querySelector(".chat-input span");
 
 let userMessage = null; // Variable to store user's message
+const API_KEY = "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"; // Paste your API key here
 const inputInitHeight = chatInput.scrollHeight;
 
 const createChatLi = (message, className) => {
@@ -18,25 +19,29 @@ const createChatLi = (message, className) => {
 }
 
 const generateResponse = (chatElement) => {
+    const API_URL = "https://api.openai.com/v1/chat/completions";
     const messageElement = chatElement.querySelector("p");
 
-    // Send userMessage to Flask server and get response
-    fetch('/chat', {
-        method: 'POST',
+    // Define the properties and message for the API request
+    const requestOptions = {
+        method: "POST",
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${API_KEY}`
         },
-        body: 'user_message=' + userMessage,
-    })
-    .then(response => response.json())
-    .then(data => {
-        messageElement.textContent = data.response;
-        chatbox.scrollTo(0, chatbox.scrollHeight); // Scroll to bottom after updating content
-    })
-    .catch(() => {
+        body: JSON.stringify({
+            model: "gpt-3.5-turbo",
+            messages: [{role: "user", content: userMessage}],
+        })
+    }
+
+    // Send POST request to API, get response and set the reponse as paragraph text
+    fetch(API_URL, requestOptions).then(res => res.json()).then(data => {
+        messageElement.textContent = data.choices[0].message.content.trim();
+    }).catch(() => {
         messageElement.classList.add("error");
-        messageElement.textContent = "Ups! Ada yang salah. Silakan coba lagi.";
-    });
+        messageElement.textContent = "Oops! Something went wrong. Please try again.";
+    }).finally(() => chatbox.scrollTo(0, chatbox.scrollHeight));
 }
 
 const handleChat = () => {
