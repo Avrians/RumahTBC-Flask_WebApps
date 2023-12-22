@@ -423,8 +423,9 @@ def delete_tbc_data(data_id):
 ### Finish API CRUD Artikel Kesehatan
 
 # Fungsi route untuk memproses deteksi TBC dokter
-@app.route("/dokter/upload", methods=['POST'])
-def upload():
+@app.route("/dokter/deteksi/upload", methods=['POST'])
+def upload_tbc():
+    active = 'deteksi'
     #Memuat Model Deep Learning
     model=load_model('modelTBC.h5')   
     print("model_loaded")
@@ -463,7 +464,7 @@ def upload():
     predicted=classes[result[0]]
     plot_dest = "/".join([target, "result.png"])
 
-    return render_template("dokter_hasildeteksi.html", pred=predicted,pos=pos,neg=neg, filename=filename)
+    return render_template("dokter_hasildeteksi.html", pred=predicted,pos=pos,neg=neg, filename=filename, aktif=active)
 
 # API untuk memproses deteksi TBC dokter
 @app.route("/api/dokter/upload", methods=['POST'])
