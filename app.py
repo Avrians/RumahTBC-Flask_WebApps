@@ -313,6 +313,12 @@ def admin_pasiendaftar():
     active = 'pasien'
     return render_template('admin_pasiendaftar.html', aktif=active)
 
+# fungsi route untuk halaman daftar biki akun dokter/ admin
+@app.route('/admin/akunkaryawan')
+def admin_akunkaryawan():
+    active = 'akunkaryawan'
+    return render_template('admin_akunkaryawan.html', aktif=active)
+
 # Fungsi route untuk halaman tentang user
 @app.route('/tentang')
 def tentang():
