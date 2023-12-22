@@ -82,20 +82,20 @@
 
         <nav id="navbar" class="navbar">
           <ul>
-            <li><a class="nav-link" href="/">Home</a></li>
+            <li><a class="nav-link {{ 'active' if aktif == 'home' else '' }}" href="/">Home</a></li>
             <li>
-              <a class="nav-link" href="/artikel">Artikel Kesehatan</a>
+              <a class="nav-link {{ 'active' if aktif == 'artikel' else '' }}" href="/artikel">Artikel Kesehatan</a>
             </li>
             <li>
-              <a class="nav-link" href="http://localhost:5173/" target="_blank"
+              <a class="nav-link " href="http://localhost:5173/" target="_blank"
                 >Tanya Dokter</a
               >
             </li>
             <li>
-              <a class="nav-link" href="/riwayatuser">Riwayat Skrining</a>
+              <a class="nav-link {{ 'active' if aktif == 'riwayat' else '' }}" href="/riwayatuser">Riwayat Skrining</a>
             </li>
             <li>
-              <a class="nav-link" href="/tentang">Tentang Kami</a>
+              <a class="nav-link {{ 'active' if aktif == 'tentang' else '' }}" href="/tentang">Tentang Kami</a>
             </li>
             <li><a class="getstarted" href="/login">Masuk</a></li>
             <li><a class="getregis" href="/register">Daftar</a></li>

@@ -188,7 +188,8 @@ def get_response(ints, intents_json):
 def index():
     # Ambil 4 data terbaru dari tabel Artikel
     latest_articles = ArtikelKesehatan.query.order_by(ArtikelKesehatan.tanggal_publikasi.desc()).limit(4).all()
-    return render_template('index.html', latest_articles=latest_articles)
+    active = 'home'
+    return render_template('index.html', latest_articles=latest_articles, aktif=active)
 
 @app.route('/chat', methods=['POST'])
 def chat():
@@ -203,7 +204,7 @@ def chat():
 @app.route('/loginadmin', methods=['GET', 'POST'])
 def loginadmin():
     if 'username' in session:
-        return redirect(url_for('home_dokter'))
+        return redirect(url_for('home'))
     
     if request.method == 'POST':
         username = request.form['username']
@@ -228,14 +229,15 @@ def loginadmin():
 # Fungsi route untuk halaman home dokter/admin
 @app.route('/home')
 def home():
+    active = 'home'
     if 'username' in session:
         hak_akses = session.get('hak_akses')
 
         if hak_akses is not None:
             if hak_akses == 'admin':
-                return render_template('admin_dashboard.html', username=session['username'])
+                return render_template('admin_dashboard.html', username=session['username'], aktif=active)
             elif hak_akses == 'dokter':
-                return render_template('dokter_dashboard.html', username=session['username'])
+                return render_template('dokter_dashboard.html', username=session['username'], aktif=active)
             else:
                 flash('Hak akses tidak valid.', 'danger')
                 return redirect(url_for('logout'))
@@ -256,18 +258,21 @@ def logout():
 # Fungsi route untuk halaman deteksi dokter
 @app.route('/dokter/deteksi')
 def dokter_deteksi():
-    return render_template('dokter_deteksi.html')
+    active = 'deteksi'
+    return render_template('dokter_deteksi.html', aktif=active)
 
 # Fungsi route untuk halaman buat artikel dokter
 @app.route('/dokter/artikel/form')
 def dokter_artikel_form():
-    return render_template('dokter_artikelform.html')
+    active = 'artikel'
+    return render_template('dokter_artikelform.html', aktif=active)
 
 # Fungsi route untuk halaman daftar artikel dokter
 @app.route('/dokter/artikel')
 def dokter_artikel():
     articles = ArtikelKesehatan.query.all()
-    return render_template('dokter_artikeldaftar.html', artikel=articles)
+    active = 'artikel'
+    return render_template('dokter_artikeldaftar.html', artikel=articles,  aktif=active)
 
 # Fungsi route untuk membuat artikel baru dokter
 @app.route('/dokter/artikel/submit', methods=['POST'])
@@ -293,33 +298,39 @@ def dokter_artikel_submit():
 @app.route('/admin/artikel')
 def admin_artikel():
     articles = ArtikelKesehatan.query.all()
-    return render_template('admin_artikeldaftar.html', artikel=articles)
+    active = 'artikel'
+    return render_template('admin_artikeldaftar.html', artikel=articles, aktif=active)
 
 # Fungsi route untuk halaman buat artikel admin
 @app.route('/admin/artikel/form')
 def admin_artikel_form():
-    return render_template('admin_artikelform.html')
+    active = 'artikel'
+    return render_template('admin_artikelform.html', aktif=active)
 
 # Fungsi route untuk halaman daftar pasien admin
 @app.route('/admin/pasien')
 def admin_pasiendaftar():
-    return render_template('admin_pasiendaftar.html')
+    active = 'pasien'
+    return render_template('admin_pasiendaftar.html', aktif=active)
 
 # Fungsi route untuk halaman tentang user
 @app.route('/tentang')
 def tentang():
-    return render_template('tentang.html')
+    active = 'tentang'
+    return render_template('tentang.html', aktif=active)
 
 # Fungsi route untuk halaman riwayat user
 @app.route('/riwayatuser')
 def riwayatuser():
-    return render_template('riwayatuser.html')
+    active = 'riwayat'
+    return render_template('riwayatuser.html', aktif=active)
 
 # Fungsi route untuk halaman artikel kesehatan user
 @app.route('/artikel')
 def artikel():
     latest_articles = ArtikelKesehatan.query.order_by(ArtikelKesehatan.tanggal_publikasi.desc()).limit(10).all()
-    return render_template('artikel.html', latest_articles=latest_articles)
+    active = 'artikel'
+    return render_template('artikel.html', latest_articles=latest_articles, aktif=active)
 
 # Fungsi route untuk halaman pendaftaran user
 @app.route('/register')
@@ -528,7 +539,7 @@ def add_user():
         db.session.commit()
 
         flash('User added successfully!', 'success')
-        return redirect(url_for('home_dokter'))
+        return redirect(url_for('home'))
 
     return render_template('add_user.html')
 
