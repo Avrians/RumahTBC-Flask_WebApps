@@ -318,6 +318,12 @@ def tentang():
     active = 'tentang'
     return render_template('tentang.html', aktif=active)
 
+# route untuk halaman profile
+@app.route('/profiluser')
+def profiluser():
+    active = 'profil'
+    return render_template('profile.html', aktif=active)
+
 # Fungsi route untuk halaman riwayat user
 @app.route('/riwayatuser')
 def riwayatuser():

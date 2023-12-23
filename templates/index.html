@@ -76,9 +76,14 @@
     <!-- ======= Header ======= -->
     <header id="header" class="d-flex align-items-center">
       <div class="container d-flex align-items-center">
-        <h1 class="logo me-auto"><a href="/">RumahTBC</a></h1>
+        <!-- <h1 class="logo me-auto"><a href="/">RumahTBC</a></h1> -->
         <!-- Uncomment below if you prefer to use an image logo -->
-        <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+        <a href="/" class="logo me-auto"
+          ><img
+            src="{{ url_for('static', filename='assets/images/logorumahtbc.png') }}"
+            alt="logo"
+            class="img-fluid"
+        /></a>
 
         <nav id="navbar" class="navbar">
           <ul>
@@ -118,7 +123,7 @@
             {% if 'email' in session %}
             <!-- Jika pengguna sudah login -->
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <a class="nav-link {{ 'active' if aktif == 'profil' else '' }}" href="/profiluser">
                 <i class="bx bx-user-circle"></i> Akun
               </a>
             </li>
@@ -464,12 +469,13 @@
       <section id="contact" class="contact">
         <div class="container">
           <div class="section-title">
-            <h2>Contact dan Umpan Balik</h2>
+            <h2>Hubungi Kami</h2>
           </div>
 
           <div class="row">
             <div class="col-lg-5 d-flex align-items-stretch">
               <div class="info">
+                <center class="mb-4"><h5>Kontak</h5></center>
                 <div class="address">
                   <i class="bi bi-geo-alt"></i>
                   <h4>Lokasi:</h4>
@@ -507,6 +513,7 @@
                 role="form"
                 class="php-email-form"
               >
+                <center class="mb-4"><h5>Kritik dan Saran</h5></center>
                 <div class="row">
                   <div class="form-group col-md-6">
                     <label for="name">Nama Lengkap</label>
