@@ -3,7 +3,13 @@
   <section>
     <div class="row">
       <div class="col-5 offset-2">
-        <h3 class="display-7 fw-bold">RumahTBC</h3>
+        <center class="mb-3">
+          <img
+            src="{{ url_for('static', filename='assets/images/logorumahtbc.png') }}"
+            alt="logo"
+            height="60px"
+          />
+        </center>
         <p>
           Selamat datang di RumahTBC, platform kesehatan yang didedikasikan
           untuk deteksi dan rehabilitasi penyakit Tuberkulosis (TBC). Kami
@@ -39,14 +45,21 @@
       <div class="col-3">
         <!-- Form login goes here -->
         <h3 class="display-7 fw-bold">Login</h3>
-        <form>
+        <form class="login-form" action="{{ url_for('login') }}" method="POST">
+          {% with messages = get_flashed_messages() %} {% if messages %}
+          <ul>
+            {% for message in messages %}
+            <li style="color: red">{{ message }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %} {% endwith %}
           <div class="mb-3">
-            <label for="username" class="form-label">Username</label>
+            <label for="email" class="form-label">Email</label>
             <input
               type="text"
               class="form-control"
-              id="username"
-              name="username"
+              id="email"
+              name="email"
               required
             />
           </div>
@@ -60,7 +73,7 @@
               required
             />
           </div>
-          <button type="submit" class="btn btn-primary">Login</button>
+          <button type="submit" class="btn btn-success">Login</button>
         </form>
 
         <!-- Text for registration -->

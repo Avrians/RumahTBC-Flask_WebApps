@@ -3,7 +3,13 @@
   <section>
     <div class="row">
       <div class="col-5 offset-2">
-        <h3 class="display-7 fw-bold">RumahTBC</h3>
+        <center class="mb-3">
+          <img
+            src="{{ url_for('static', filename='assets/images/logorumahtbc.png') }}"
+            alt="logo"
+            height="60px"
+          />
+        </center>
         <p>
           Selamat datang di RumahTBC, platform kesehatan yang didedikasikan
           untuk deteksi dan rehabilitasi penyakit Tuberkulosis (TBC). Kami
@@ -13,13 +19,27 @@
 
         <h5>Apa yang Kami Tawarkan</h5>
         <ul>
-            <li>Deteksi Dini TBC: Kami menyediakan alat dan informasi yang diperlukan untuk mendeteksi gejala TBC lebih awal.</li>
-            <li>Informasi Pendidikan: Kami menyediakan informasi komprehensif tentang TBC, termasuk gejala, penyebab, dan cara mencegah penularan.</li>
-            <li>Dukungan dan Konseling: Kami memahami bahwa perjalanan melawan TBC bisa sangat menantang.</li>
-            <li>Rehabilitasi: Setelah diagnosis dan pengobatan, rehabilitasi adalah bagian penting dalam pemulihan.</li>
-            <li>Komunitas yang Mendukung: Kami membangun komunitas yang mendukung individu yang terkena TBC.</li>
+          <li>
+            Deteksi Dini TBC: Kami menyediakan alat dan informasi yang
+            diperlukan untuk mendeteksi gejala TBC lebih awal.
+          </li>
+          <li>
+            Informasi Pendidikan: Kami menyediakan informasi komprehensif
+            tentang TBC, termasuk gejala, penyebab, dan cara mencegah penularan.
+          </li>
+          <li>
+            Dukungan dan Konseling: Kami memahami bahwa perjalanan melawan TBC
+            bisa sangat menantang.
+          </li>
+          <li>
+            Rehabilitasi: Setelah diagnosis dan pengobatan, rehabilitasi adalah
+            bagian penting dalam pemulihan.
+          </li>
+          <li>
+            Komunitas yang Mendukung: Kami membangun komunitas yang mendukung
+            individu yang terkena TBC.
+          </li>
         </ul>
-
       </div>
 
       <div class="col-3">
@@ -28,17 +48,35 @@
         <form>
           <div class="mb-3">
             <label for="nik" class="form-label">NIK</label>
-            <input type="text" class="form-control" id="nik" name="nik" required>
+            <input
+              type="text"
+              class="form-control"
+              id="nik"
+              name="nik"
+              required
+            />
           </div>
           <div class="mb-3">
             <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" name="email" required>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              name="email"
+              required
+            />
           </div>
           <div class="mb-3">
             <label for="password" class="form-label">Password</label>
-            <input type="password" class="form-control" id="password" name="password" required>
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              name="password"
+              required
+            />
           </div>
-          <button type="submit" class="btn btn-primary">Register</button>
+          <button type="submit" class="btn btn-success">Register</button>
         </form>
 
         <p class="mt-3">
