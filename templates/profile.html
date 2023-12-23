@@ -16,25 +16,25 @@
                           <div class="row mb-3">
                               <label for="name" class="col-md-4 col-form-label text-md-end">Nama Lengkap</label>
                               <div class="col-md-6">
-                                  <input id="name" type="text" class="form-control" name="name" value="User Name" required>
+                                  <input id="name" type="text" class="form-control" name="name" value="{{ user_profile.nama_lengkap }}" required>
                               </div>
                           </div>
                           <div class="row mb-3">
                               <label for="nik" class="col-md-4 col-form-label text-md-end">NIK</label>
                               <div class="col-md-6">
-                                  <input id="nik" type="number" class="form-control" name="nik" value="09890983" required>
+                                  <input id="nik" type="number" class="form-control" name="nik" value="{{ user_profile.nik }}" required>
                               </div>
                           </div>
                           <div class="row mb-3">
                               <label for="email" class="col-md-4 col-form-label text-md-end">Email</label>
                               <div class="col-md-6">
-                                  <input id="email" type="email" class="form-control" name="email" value="user@example.com" required>
+                                  <input id="email" type="email" class="form-control" name="email" value="{{ user_profile.email }}" required>
                               </div>
                           </div>
                           <div class="row mb-3">
                               <label for="no_hp" class="col-md-4 col-form-label text-md-end">No HP</label>
                               <div class="col-md-6">
-                                  <input id="no_hp" type="number" class="form-control" name="no_hp" value="081234567890" required>
+                                  <input id="no_hp" type="number" class="form-control" name="no_hp" value="{{ user_profile.no_hp }}" required>
                               </div>
                           </div>
                           <!-- Field Jenis Kelamin -->
@@ -42,27 +42,28 @@
                               <label class="col-md-4 col-form-label text-md-end">Jenis Kelamin</label>
                               <div class="col-md-6">
                                   <div class="form-check form-check-inline">
-                                      <input class="form-check-input" type="radio" name="gender" id="male" value="male">
+                                      <input class="form-check-input" type="radio" name="gender" id="male" value="male" {% if user_profile.jenis_kelamin == 'lakilaki' %}checked{% endif %}>
                                       <label class="form-check-label" for="male">Laki-Laki</label>
                                   </div>
                                   <div class="form-check form-check-inline">
-                                      <input class="form-check-input" type="radio" name="gender" id="female" value="female">
+                                      <input class="form-check-input" type="radio" name="gender" id="female" value="female" {% if user_profile.jenis_kelamin == 'perempuan' %}checked{% endif %}>
                                       <label class="form-check-label" for="female">Perempuan</label>
                                   </div>
                               </div>
                           </div>
+                          
                           <!-- Field Tanggal Lahir -->
                           <div class="row mb-3">
                               <label for="birthdate" class="col-md-4 col-form-label text-md-end">Tanggal Lahir</label>
                               <div class="col-md-6">
-                                  <input id="birthdate" type="date" class="form-control" name="birthdate">
+                                  <input id="birthdate" type="date" class="form-control" name="birthdate" value="{{ user_profile.tanggal_lahir|default('') }}">
                               </div>
                           </div>
                           <!-- Field Alamat -->
                           <div class="row mb-3">
                               <label for="address" class="col-md-4 col-form-label text-md-end">Alamat</label>
                               <div class="col-md-6">
-                                  <textarea id="address" class="form-control" name="address" rows="3"></textarea>
+                                  <textarea id="address" class="form-control" name="address" rows="3">{{ user_profile.alamat }}</textarea>
                               </div>
                           </div>
                           <div class="row mb-3">

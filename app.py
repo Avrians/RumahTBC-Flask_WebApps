@@ -112,7 +112,7 @@ class DataPasien(db.Model):
     nama_lengkap = db.Column(db.String(100), nullable=True)
     email = db.Column(db.String(120), unique=True, nullable=True)
     no_hp = db.Column(db.String(15), nullable=True)
-    jenis_kelamin = db.Column(db.String(10), nullable=True)
+    jenis_kelamin = db.Column(db.Enum('lakilaki', 'perempuan'), nullable=True)
     tanggal_lahir = db.Column(db.Date, nullable=True)
     alamat = db.Column(db.Text, nullable=True)
     gambar = db.Column(db.String(255), nullable=True)
@@ -227,7 +227,8 @@ def login():
         print(f"User ditemukan: {user}")
         
         if user and check_password_hash(user.password, password):
-            session['id'] = user.id  
+            session['user_id'] = user.id  
+            session['nik'] = user.nik 
             session['email'] = email  
             session['hak_akses'] = user.hak_akses 
             print(f"Login berhasil untuk email: {email}")
@@ -379,7 +380,21 @@ def tentang():
 @app.route('/profiluser')
 def profiluser():
     active = 'profil'
-    return render_template('profile.html', aktif=active)
+    nik = session.get('nik')  # Ambil nik dari session
+
+    if nik:
+        # Cari data pengguna dari tabel Users berdasarkan nik
+        user = Users.query.filter_by(nik=nik).first()
+
+        if user:
+            # Cari data profil pasien dari tabel DataPasien berdasarkan nik pengguna
+            user_profile = DataPasien.query.filter_by(nik=user.nik).first()
+
+            if user_profile:
+                return render_template('profile.html', aktif=active, user_profile=user_profile)
+
+    # Jika nik tidak ada, data pengguna tidak ditemukan, atau data profil tidak ditemukan, bisa ditangani di sini
+    return redirect(url_for('login')) 
 
 # Fungsi route untuk halaman riwayat user
 @app.route('/riwayatuser')
