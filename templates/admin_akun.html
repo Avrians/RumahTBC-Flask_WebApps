@@ -2,7 +2,7 @@
 <div class="content">
   <div class="page-inner">
     <div class="page-header">
-      <h4 class="page-title">Akun Karyawan</h4>
+      <h4 class="page-title">Akun</h4>
       <ul class="breadcrumbs">
         <li class="nav-home">
           <a href="/home">
@@ -13,17 +13,17 @@
           <i class="flaticon-right-arrow"></i>
         </li>
         <li class="nav-item">
-          <a href="#">Daftar Akun Karyawan</a>
+          <a href="#">Daftar Akun</a>
         </li>
       </ul>
     </div>
     <div class="card">
       <div class="card-header">
         <div class="d-flex align-items-center">
-          <h4 class="card-title">Daftar Akun Karyawan</h4>
+          <h4 class="card-title">Daftar Akun</h4>
           <a class="btn btn-primary btn-round ml-auto" href="/admin/akunkaryawan/form">
             <i class="fa fa-plus"></i>
-            Tambah Akun Karyawan
+            Tambah Akun
           </a>
         </div>
       </div>
@@ -107,17 +107,6 @@
                         aria-label="Position: activate to sort column ascending"
                         style="width: 523.891px"
                       >
-                        Nama Lengkap
-                      </th>
-                      <th
-                        class="sorting"
-                        tabindex="0"
-                        aria-controls="add-row"
-                        rowspan="1"
-                        colspan="1"
-                        aria-label="Office: activate to sort column ascending"
-                        style="width: 305.641px"
-                      >
                         Email
                       </th>
                       <th
@@ -129,7 +118,7 @@
                         aria-label="Office: activate to sort column ascending"
                         style="width: 305.641px"
                       >
-                        Password
+                        Hak Akses
                       </th>
                       <th
                         style="width: 122.344px"
@@ -145,36 +134,36 @@
                     </tr>
                   </thead>
                   <tbody>
+                    {% for user in users %}
                     <tr role="row" class="odd">
-                      <td class="sorting_1">1. </td>
-                      <td>3329878787987</td>
-                      <td>Akhad Jaluli</td>
-                      <td>jajuli@gmail.com</td>
-                      <td>**********</td>
-                      <td>
-                        <div class="form-button-action">
-                          <button
-                            type="button"
-                            data-toggle="tooltip"
-                            title=""
-                            class="btn btn-link btn-primary btn-lg"
-                            data-original-title="Edit Task"
-                          >
-                            <i class="fa fa-edit"></i>
-                          </button>
-                          <button
-                            type="button"
-                            data-toggle="tooltip"
-                            title=""
-                            class="btn btn-link btn-danger"
-                            data-original-title="Remove"
-                          >
-                            <i class="fa fa-times"></i>
-                          </button>
-                        </div>
-                      </td>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.nik }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.hak_akses }}</td>
+                        <td>
+                          <div class="form-button-action">
+                            <button
+                              type="button"
+                              data-toggle="tooltip"
+                              title=""
+                              class="btn btn-link btn-primary btn-lg"
+                              data-original-title="Edit Task"
+                            >
+                              <i class="fa fa-edit"></i>
+                            </button>
+                            <button
+                              type="button"
+                              data-toggle="tooltip"
+                              title=""
+                              class="btn btn-link btn-danger"
+                              data-original-title="Remove"
+                            >
+                              <i class="fa fa-times"></i>
+                            </button>
+                          </div>
+                        </td>
                     </tr>
-
+                    {% endfor %}
                   </tbody>
                 </table>
               </div>

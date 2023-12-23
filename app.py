@@ -304,7 +304,8 @@ def admin_pasiendaftar():
 @app.route('/admin/akun')
 def admin_akun():
     active = 'akun'
-    return render_template('add_akun_karyawan.html', aktif=active)
+    users = Users.query.all()
+    return render_template('admin_akun.html', aktif=active, users=users)
 
 # Fungsi route untuk halaman tentang user
 @app.route('/tentang')
