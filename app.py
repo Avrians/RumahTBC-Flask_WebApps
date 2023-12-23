@@ -187,9 +187,14 @@ def chat():
     print(f"Generated response: {response}")  # Tambahkan baris ini
     return jsonify({'response': response})
 
-# Fungsi route untuk memproses halaman login 
-@app.route('/loginadmin', methods=['GET', 'POST'])
-def loginadmin():
+# Fungsi route untuk halaman pendaftaran user
+@app.route('/register')
+def register():
+    return render_template('register.html')
+
+# Fungsi route untuk halaman login
+@app.route('/login', methods=['GET', 'POST'])
+def login():
     if 'email' in session:
         return redirect(url_for('home'))
     
@@ -211,7 +216,7 @@ def loginadmin():
         else:
             flash('Login gagal. Periksa kembali username dan password Anda.', 'danger')
 
-    return render_template('login_admin.html')
+    return render_template('login.html')
 
 # Fungsi route untuk halaman home dokter/admin
 @app.route('/home')
@@ -225,6 +230,8 @@ def home():
                 return render_template('admin_dashboard.html', email=session['email'], aktif=active)
             elif hak_akses == 'dokter':
                 return render_template('dokter_dashboard.html', email=session['email'], aktif=active)
+            elif hak_akses == 'pengguna':
+                return render_template('index.html', email=session['email'], aktif=active)
             else:
                 flash('Hak akses tidak valid.', 'danger')
                 return redirect(url_for('logout'))
@@ -233,13 +240,13 @@ def home():
             return redirect(url_for('logout'))
     else:
         flash('Anda harus login terlebih dahulu.', 'warning')
-        return redirect(url_for('loginadmin'))
+        return redirect(url_for('login'))
 
 # Fungsi route untuk keluar halaman admin/dokter
 @app.route('/logout')
 def logout():
     session.pop('email', None)
-    return redirect(url_for('loginadmin'))
+    return redirect(url_for('login'))
 
 
 # Fungsi route untuk halaman deteksi dokter
@@ -336,16 +343,6 @@ def artikel():
     latest_articles = ArtikelKesehatan.query.order_by(ArtikelKesehatan.tanggal_publikasi.desc()).limit(10).all()
     active = 'artikel'
     return render_template('artikel.html', latest_articles=latest_articles, aktif=active)
-
-# Fungsi route untuk halaman pendaftaran user
-@app.route('/register')
-def register():
-    return render_template('register.html')
-
-# Fungsi route untuk halaman login user
-@app.route('/login')
-def login():
-    return render_template('login.html')
 
 # Fungsi route untuk halaman  detail artikel
 @app.route('/detailartikel')
