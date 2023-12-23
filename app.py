@@ -563,9 +563,9 @@ def admin_addakun():
 
     return redirect(url_for('admin_akun'))
 
-# fungsi untuk menghapus akun karyawan
+# fungsi untuk menghapus akun 
 @app.route('/admin/deleteakun/<int:user_id>', methods=['POST'])
-def delete_akun(user_id):
+def admin_deleteakun(user_id):
     try:
         user = Users.query.get(user_id)
         if user:
@@ -578,6 +578,13 @@ def delete_akun(user_id):
         flash('Terjadi kesalahan saat menghapus akun karyawan', 'danger')
         print(str(e))
     return redirect(url_for('admin_akun'))   
+
+# Rute untuk menampilkan formulir edit akun
+@app.route('/admin/editakun/<int:user_id>', methods=['GET'])
+def admin_editakun(user_id):
+    active = 'akun'
+    user = Users.query.get_or_404(user_id)
+    return render_template('admin_akunformupdate.html', user=user, aktif=active)
 
 @app.route('/tambah_review', methods=['POST'])
 def tambah_review():

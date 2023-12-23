@@ -19,7 +19,7 @@
           <i class="flaticon-right-arrow"></i>
         </li>
         <li class="nav-item">
-          <a href="#">Buat Akun</a>
+          <a href="#">Ubah Akun</a>
         </li>
       </ul>
     </div>
@@ -27,7 +27,7 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-header">
-            <div class="card-title">Form Daftar Akun</div>
+            <div class="card-title">Form Ubah Akun</div>
           </div>
           <form method="POST" action="{{ url_for('admin_addakun') }}">
             <div class="card-body">
@@ -39,6 +39,7 @@
                   class="form-control"
                   id="nik"
                   name="nik"
+                  value="{{ user.nik }}"
                   required
                 />
               </div>
@@ -51,6 +52,7 @@
                   class="form-control"
                   id="email"
                   name="email"
+                  value="{{ user.email }}"
                   required
                 />
               </div>
@@ -62,16 +64,16 @@
                   name="hak_akses"
                   required
                 >
-                  <option value="-">Pilih Salah Satu</option>
-                  <option value="dokter">Dokter</option>
-                  <option value="admin">Admin</option>
-                  <option value="pengguna">Pengguna</option>
+                <option value="-" {% if user.hak_akses == '-' %}selected{% endif %}>Pilih Salah Satu</option>
+                <option value="dokter" {% if user.hak_akses == 'dokter' %}selected{% endif %}>Dokter</option>
+                <option value="admin" {% if user.hak_akses == 'admin' %}selected{% endif %}>Admin</option>
+                <option value="pengguna" {% if user.hak_akses == 'pengguna' %}selected{% endif %}>Pengguna</option>
                 </select>
               </div>
 
               <!-- Password -->
               <div class="form-group">
-                <label for="password">Password</label>
+                <label for="password">Password Baru</label>
                 <input
                   type="password"
                   class="form-control"
@@ -83,8 +85,8 @@
             </div>
             <!-- Tombol Submit -->
             <div class="card-action">
-              <button type="submit" class="btn btn-success">Submit</button>
-              <a href="/admin/akun" class="btn btn-danger">Kembali</a>
+              <button type="submit" class="btn btn-success">Ubah</button>
+              <a href="/admin/akun" class="btn btn-danger">Batal</a>
             </div>
           </form>
         </div>
