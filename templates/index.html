@@ -82,23 +82,60 @@
 
         <nav id="navbar" class="navbar">
           <ul>
-            <li><a class="nav-link {{ 'active' if aktif == 'home' else '' }}" href="/">Home</a></li>
             <li>
-              <a class="nav-link {{ 'active' if aktif == 'artikel' else '' }}" href="/artikel">Artikel Kesehatan</a>
+              <a
+                class="nav-link {{ 'active' if aktif == 'home' else '' }}"
+                href="/"
+                >Home</a
+              >
             </li>
             <li>
-              <a class="nav-link " href="http://localhost:5173/" target="_blank"
+              <a
+                class="nav-link {{ 'active' if aktif == 'artikel' else '' }}"
+                href="/artikel"
+                >Artikel Kesehatan</a
+              >
+            </li>
+            <li>
+              <a class="nav-link" href="http://localhost:5173/" target="_blank"
                 >Tanya Dokter</a
               >
             </li>
             <li>
-              <a class="nav-link {{ 'active' if aktif == 'riwayat' else '' }}" href="/riwayatuser">Riwayat Skrining</a>
+              <a
+                class="nav-link {{ 'active' if aktif == 'riwayat' else '' }}"
+                href="/riwayatuser"
+                >Riwayat Skrining</a
+              >
             </li>
             <li>
-              <a class="nav-link {{ 'active' if aktif == 'tentang' else '' }}" href="/tentang">Tentang Kami</a>
+              <a
+                class="nav-link {{ 'active' if aktif == 'tentang' else '' }}"
+                href="/tentang"
+                >Tentang Kami</a
+              >
             </li>
-            <li><a class="getstarted" href="/login">Masuk</a></li>
-            <li><a class="getregis" href="/register">Daftar</a></li>
+            {% if 'email' in session %}
+            <!-- Jika pengguna sudah login -->
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <i class="bx bx-user-circle"></i> Akun
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/logout"
+                ><i class="bx bx-log-out"></i>Logout</a
+              >
+            </li>
+            {% else %}
+            <!-- Jika pengguna belum login -->
+            <li class="nav-item">
+              <a class="nav-link getstarted" href="/login">Masuk</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link getregis" href="/register">Daftar</a>
+            </li>
+            {% endif %}
           </ul>
           <i class="bi bi-list mobile-nav-toggle"></i>
         </nav>
@@ -336,7 +373,11 @@
                   </div>
 
                   <p class="card-text">{{ article.isi }}</p>
-                  <a href="/detailartikel/{{ article.id }}" class="btn btn-success">Baca Selengkapnya</a>
+                  <a
+                    href="/detailartikel/{{ article.id }}"
+                    class="btn btn-success"
+                    >Baca Selengkapnya</a
+                  >
                 </div>
               </div>
             </div>

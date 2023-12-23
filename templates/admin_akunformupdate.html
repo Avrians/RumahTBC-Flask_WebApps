@@ -29,7 +29,7 @@
           <div class="card-header">
             <div class="card-title">Form Ubah Akun</div>
           </div>
-          <form method="POST" action="{{ url_for('admin_addakun') }}">
+          <form method="POST" action="/admin/updateakun/{{ user.id }}">
             <div class="card-body">
               <!-- NIK Akun -->
               <div class="form-group">
@@ -79,7 +79,6 @@
                   class="form-control"
                   id="password"
                   name="password"
-                  required
                 />
               </div>
             </div>

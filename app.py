@@ -586,6 +586,32 @@ def admin_editakun(user_id):
     user = Users.query.get_or_404(user_id)
     return render_template('admin_akunformupdate.html', user=user, aktif=active)
 
+# Rute untuk menangani permintaan pembaruan akun
+@app.route('/admin/updateakun/<int:user_id>', methods=['POST'])
+def admin_updateakun(user_id):
+    user = Users.query.get_or_404(user_id)
+    
+    # Mengambil data dari formulir
+    user.nik = request.form['nik']
+    user.email = request.form['email']
+    user.hak_akses = request.form['hak_akses']
+
+    # Memeriksa apakah ada password baru yang dimasukkan
+    new_password = request.form['password']
+    if new_password:
+        user.password = generate_password_hash(new_password)
+
+    # Memperbarui data ke database
+    try:
+        db.session.commit()
+        flash('Akun karyawan berhasil diperbarui', 'success')
+    except Exception as e:
+        db.session.rollback()
+        flash('Terjadi kesalahan saat memperbarui akun karyawan', 'danger')
+        print(str(e))
+
+    return redirect(url_for('admin_akun'))
+
 @app.route('/tambah_review', methods=['POST'])
 def tambah_review():
     if request.method == 'POST':
