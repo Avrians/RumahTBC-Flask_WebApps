@@ -17,9 +17,6 @@
         </li>
       </ul>
     </div>
-    {% with messages = get_flashed_messages() %} {% if messages %}
-    <div class="alert alert-{{ messages[0][1] }}">{{ messages[0][0] }}</div>
-    {% endif %} {% endwith %}
     <div class="card">
       <div class="card-header">
         <div class="d-flex align-items-center">
@@ -31,6 +28,10 @@
         </div>
       </div>
       <div class="card-body">
+        <!-- Menampilkan Flash Messages -->
+        {% with messages = get_flashed_messages() %} {% if messages %}
+        <div class="alert alert-{{ messages[0][1] }}">{{ messages[0][0] }}</div>
+        {% endif %} {% endwith %}
         <div class="table-responsive">
           <div
             id="add-row_wrapper"
@@ -145,21 +146,22 @@
                       <td>{{ user.hak_akses }}</td>
                       <td>
                         <div class="form-button-action">
-                          <button
-                            type="button"
-                            data-toggle="tooltip"
-                            title=""
+                          <!-- Tombol Edit -->
+                          <a
+                            href="/admin/editakun/{{ user.id }}"
                             class="btn btn-link btn-primary btn-lg"
-                            data-original-title="Edit Task"
+                            data-toggle="tooltip"
+                            title="Edit Task"
                           >
                             <i class="fa fa-edit"></i>
-                          </button>
+                          </a>
+                          <!-- Tombol Hapus dengan Konfirmasi -->
                           <button
                             type="button"
-                            data-toggle="tooltip"
-                            title=""
                             class="btn btn-link btn-danger"
-                            data-original-title="Remove"
+                            data-toggle="tooltip"
+                            title="Remove"
+                            onclick="confirmDelete({{ user.id }})"
                           >
                             <i class="fa fa-times"></i>
                           </button>
@@ -234,4 +236,61 @@
     </div>
   </div>
 </div>
+
+
+<!-- Konfirmasi Hapus Modal -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmDeleteModalLabel">Konfirmasi Hapus Akun</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Apakah Anda yakin ingin menghapus akun ini?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+        <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Hapus</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Fungsi untuk menentukan URL yang akan diakses saat tombol Hapus diklik
+  function confirmDelete(userId) {
+    // Sesuaikan URL dengan rute Flask yang benar
+    var deleteUrl = '/admin/deleteakun/' + userId;
+
+    // Menampilkan modal konfirmasi
+    $('#confirmDeleteModal').modal('show');
+
+    // Menangani klik tombol Hapus pada modal konfirmasi
+    $('#confirmDeleteBtn').on('click', function () {
+      // Menggunakan AJAX untuk mengirim permintaan POST
+      $.ajax({
+        url: deleteUrl,
+        method: 'POST',
+        success: function (response) {
+          // Menutup modal konfirmasi setelah berhasil
+          $('#confirmDeleteModal').modal('hide');
+          // Refresh halaman atau lakukan tindakan lain sesuai kebutuhan
+          location.reload(true);
+        },
+        error: function (error) {
+          console.error('Error deleting account:', error);
+          // Menutup modal konfirmasi setelah error (opsional)
+          $('#confirmDeleteModal').modal('hide');
+          // Menampilkan pesan error (opsional)
+          alert('Terjadi kesalahan saat menghapus akun karyawan.');
+        }
+      });
+    });
+  }
+</script>
+
+
 {%endblock%}

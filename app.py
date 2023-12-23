@@ -545,7 +545,7 @@ def add_user():
         print(str(e))  # Cetak kesalahan ke konsol (boleh dihapus pada produksi)
         return redirect(url_for('admin_akun'))
 
-
+# fungsi untuk menambahkan akun baru
 @app.route('/admin/addakun', methods=['POST'])
 def admin_addakun():
     if request.method == 'POST':
@@ -562,7 +562,22 @@ def admin_addakun():
         return redirect(url_for('admin_akun'))
 
     return redirect(url_for('admin_akun'))
-    
+
+# fungsi untuk menghapus akun karyawan
+@app.route('/admin/deleteakun/<int:user_id>', methods=['POST'])
+def delete_akun(user_id):
+    try:
+        user = Users.query.get(user_id)
+        if user:
+            db.session.delete(user)
+            db.session.commit()
+            flash('Akun karyawan berhasil dihapus', 'success')
+        else:
+            flash('Akun karyawan tidak ditemukan', 'danger')
+    except Exception as e:
+        flash('Terjadi kesalahan saat menghapus akun karyawan', 'danger')
+        print(str(e))
+    return redirect(url_for('admin_akun'))   
 
 @app.route('/tambah_review', methods=['POST'])
 def tambah_review():
