@@ -45,11 +45,11 @@
       <div class="col-3">
         <!-- Form login goes here -->
         <h3 class="display-7 fw-bold">Register</h3>
-        <form>
+        <form method="POST" action="{{ url_for('registerakun') }}">
           <div class="mb-3">
             <label for="nik" class="form-label">NIK</label>
             <input
-              type="text"
+              type="number"
               class="form-control"
               id="nik"
               name="nik"

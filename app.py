@@ -248,6 +248,25 @@ def logout():
     session.pop('email', None)
     return redirect(url_for('login'))
 
+# fungsi untuk register akun pengguna
+@app.route('/registerakun', methods=['POST'])
+def registerakun():
+    if request.method == 'POST':
+        nik = request.form['nik']
+        email = request.form['email']
+        password = request.form['password']
+        hak_akses = "pengguna"
+
+        hashed_password = generate_password_hash(password)
+
+        akun_karyawan = Users(nik=nik, email=email, password=hashed_password, hak_akses=hak_akses)
+        db.session.add(akun_karyawan)
+        db.session.commit()
+        flash('Pendaftaran akun anda berhasil, silahkan login untuk masuk ke akun anda', 'success')  # Tambahkan flash message
+        return redirect(url_for('login'))
+
+    flash('Maaf pendaftaran akun anda gagal', 'danger')  # Tambahkan flash message
+    return redirect(url_for('register'))
 
 # Fungsi route untuk halaman deteksi dokter
 @app.route('/dokter/deteksi')
@@ -548,7 +567,7 @@ def add_user():
         print(str(e))  # Cetak kesalahan ke konsol (boleh dihapus pada produksi)
         return redirect(url_for('admin_akun'))
 
-# fungsi untuk menambahkan akun baru
+# fungsi untuk menambahkan akun baru via admin
 @app.route('/admin/addakun', methods=['POST'])
 def admin_addakun():
     if request.method == 'POST':
