@@ -21,14 +21,15 @@
     <form method="POST" action="{{ url_for('add_karyawan') }}">
         <label for="nik">NIK:</label>
         <input type="text" name="nik" required><br>
-        <label for="username">Username:</label>
-        <input type="text" name="username" required><br>
+        <label for="email">Email:</label>
+        <input type="text" name="email" required><br>
         <label for="password">Password:</label>
         <input type="password" name="password" required><br>
         <label for="hak_akses">Hak Akses:</label>
         <select name="hak_akses" required>
             <option value="admin">Admin</option>
             <option value="dokter">Dokter</option>
+            <option value="pengguna">Pengguna</option>
         </select><br>
         <button type="submit">Register</button>
     </form>
