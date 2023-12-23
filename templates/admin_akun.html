@@ -17,11 +17,14 @@
         </li>
       </ul>
     </div>
+    {% with messages = get_flashed_messages() %} {% if messages %}
+    <div class="alert alert-{{ messages[0][1] }}">{{ messages[0][0] }}</div>
+    {% endif %} {% endwith %}
     <div class="card">
       <div class="card-header">
         <div class="d-flex align-items-center">
           <h4 class="card-title">Daftar Akun</h4>
-          <a class="btn btn-primary btn-round ml-auto" href="/admin/akunkaryawan/form">
+          <a class="btn btn-primary btn-round ml-auto" href="/admin/akun/form">
             <i class="fa fa-plus"></i>
             Tambah Akun
           </a>
@@ -136,32 +139,32 @@
                   <tbody>
                     {% for user in users %}
                     <tr role="row" class="odd">
-                        <td>{{ user.id }}</td>
-                        <td>{{ user.nik }}</td>
-                        <td>{{ user.email }}</td>
-                        <td>{{ user.hak_akses }}</td>
-                        <td>
-                          <div class="form-button-action">
-                            <button
-                              type="button"
-                              data-toggle="tooltip"
-                              title=""
-                              class="btn btn-link btn-primary btn-lg"
-                              data-original-title="Edit Task"
-                            >
-                              <i class="fa fa-edit"></i>
-                            </button>
-                            <button
-                              type="button"
-                              data-toggle="tooltip"
-                              title=""
-                              class="btn btn-link btn-danger"
-                              data-original-title="Remove"
-                            >
-                              <i class="fa fa-times"></i>
-                            </button>
-                          </div>
-                        </td>
+                      <td>{{ user.id }}</td>
+                      <td>{{ user.nik }}</td>
+                      <td>{{ user.email }}</td>
+                      <td>{{ user.hak_akses }}</td>
+                      <td>
+                        <div class="form-button-action">
+                          <button
+                            type="button"
+                            data-toggle="tooltip"
+                            title=""
+                            class="btn btn-link btn-primary btn-lg"
+                            data-original-title="Edit Task"
+                          >
+                            <i class="fa fa-edit"></i>
+                          </button>
+                          <button
+                            type="button"
+                            data-toggle="tooltip"
+                            title=""
+                            class="btn btn-link btn-danger"
+                            data-original-title="Remove"
+                          >
+                            <i class="fa fa-times"></i>
+                          </button>
+                        </div>
+                      </td>
                     </tr>
                     {% endfor %}
                   </tbody>

@@ -307,6 +307,11 @@ def admin_akun():
     users = Users.query.all()
     return render_template('admin_akun.html', aktif=active, users=users)
 
+@app.route('/admin/akun/form')
+def admin_akun_form():
+    active = 'akun'
+    return render_template('admin_akunform.html', aktif=active)
+
 # Fungsi route untuk halaman tentang user
 @app.route('/tentang')
 def tentang():
@@ -521,25 +526,27 @@ def dokter_upload():
 # Bikin
 @app.route('/adduser', methods=['GET', 'POST'])
 def add_user():    
-    if request.method == 'POST':
+    try:
         nik = request.form['nik']
-        username = request.form['username']
-        password = request.form['password']
         email = request.form['email']
+        password = request.form['password']
+        hak_akses = request.form['hak_akses']
 
-        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+        hashed_password = generate_password_hash(password)
 
-        new_user = Users(nik=nik, username=username, password=hashed_password, email=email)
-        db.session.add(new_user)
+        akun = Users(nik=nik, email=email, password=hashed_password, hak_akses=hak_akses)
+        db.session.add(akun)
         db.session.commit()
 
-        flash('User added successfully!', 'success')
-        return redirect(url_for('home'))
+        flash('Akun karyawan berhasil ditambahkan', 'success')  # Tambahkan flash message
+        return redirect(url_for('admin_akun'))
+    except Exception as e:
+        flash('Terjadi kesalahan saat menambahkan akun karyawan', 'danger')  # Tambahkan flash message kesalahan
+        print(str(e))  # Cetak kesalahan ke konsol (boleh dihapus pada produksi)
+        return redirect(url_for('admin_akun'))
 
-    return render_template('add_user.html')
 
-
-@app.route('/admin/addakun', methods=['GET', 'POST'])
+@app.route('/admin/addakun', methods=['POST'])
 def admin_addakun():
     if request.method == 'POST':
         nik = request.form['nik']
@@ -552,11 +559,9 @@ def admin_addakun():
         akun_karyawan = Users(nik=nik, email=email, password=hashed_password, hak_akses=hak_akses)
         db.session.add(akun_karyawan)
         db.session.commit()
-        return redirect(url_for('loginadmin'))
-    else:
-        return render_template('add_akun_karyawan.html')
+        return redirect(url_for('admin_akun'))
 
-    return render_template('add_akun_karyawan.html')
+    return redirect(url_for('admin_akun'))
     
 
 @app.route('/tambah_review', methods=['POST'])
