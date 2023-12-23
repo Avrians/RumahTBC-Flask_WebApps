@@ -211,11 +211,6 @@ def chat():
     print(f"Generated response: {response}")  # Tambahkan baris ini
     return jsonify({'response': response})
 
-# Fungsi route untuk halaman pendaftaran user
-@app.route('/register')
-def register():
-    return render_template('register.html')
-
 # Fungsi route untuk halaman login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -232,7 +227,8 @@ def login():
         print(f"User ditemukan: {user}")
         
         if user and check_password_hash(user.password, password):
-            session['email'] = email  # Set the email in the session
+            session['id'] = user.id  
+            session['email'] = email  
             session['hak_akses'] = user.hak_akses 
             print(f"Login berhasil untuk email: {email}")
             flash('Login berhasil!', 'success')
@@ -272,6 +268,11 @@ def logout():
     session.pop('email', None)
     return redirect(url_for('login'))
 
+# Fungsi route untuk halaman pendaftaran user
+@app.route('/register')
+def register():
+    return render_template('register.html')
+
 # fungsi untuk register akun pengguna
 @app.route('/registerakun', methods=['POST'])
 def registerakun():
@@ -286,6 +287,12 @@ def registerakun():
         akun_karyawan = Users(nik=nik, email=email, password=hashed_password, hak_akses=hak_akses)
         db.session.add(akun_karyawan)
         db.session.commit()
+        
+        # Tambahkan data pasien secara otomatis ke tabel DataPasien
+        data_pasien = DataPasien(nik=nik, email=email)
+        db.session.add(data_pasien)
+        db.session.commit()
+        
         flash('Pendaftaran akun anda berhasil, silahkan login untuk masuk ke akun anda', 'success')  # Tambahkan flash message
         return redirect(url_for('login'))
 
