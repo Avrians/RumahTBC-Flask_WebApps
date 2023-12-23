@@ -3,3 +3,4 @@ words.pkl
 data.json
 classes.pkl
 modelTBC.h5
+*.h5
