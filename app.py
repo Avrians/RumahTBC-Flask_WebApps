@@ -104,6 +104,30 @@ class InputReview(db.Model):
         self.nama = nama
         self.email = email
         self.review = review
+
+# Model untuk Data Pasien/Pengguna
+class DataPasien(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nik = db.Column(db.String(20), unique=True, nullable=False)
+    nama_lengkap = db.Column(db.String(100), nullable=True)
+    email = db.Column(db.String(120), unique=True, nullable=True)
+    no_hp = db.Column(db.String(15), nullable=True)
+    jenis_kelamin = db.Column(db.String(10), nullable=True)
+    tanggal_lahir = db.Column(db.Date, nullable=True)
+    alamat = db.Column(db.Text, nullable=True)
+    gambar = db.Column(db.String(255), nullable=True)
+
+    def __init__(self, nik, nama_lengkap=None, email=None, no_hp=None,
+                 jenis_kelamin=None, tanggal_lahir=None, alamat=None, gambar=None):
+        self.nik = nik
+        self.nama_lengkap = nama_lengkap
+        self.email = email
+        self.no_hp = no_hp
+        self.jenis_kelamin = jenis_kelamin
+        self.tanggal_lahir = tanggal_lahir
+        self.alamat = alamat
+        self.gambar = gambar
+
         
 # Untuk membuat tabel di database
 with app.app_context():
