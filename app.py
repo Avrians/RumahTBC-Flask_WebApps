@@ -16,6 +16,7 @@ import nltk
 from nltk.stem import WordNetLemmatizer
 import random
 from keras.models import load_model
+from werkzeug.utils import secure_filename
 import pickle
 import json
 
@@ -192,6 +193,20 @@ def get_response(ints, intents_json):
             result = random.choice(i['responses'])
             break
     return result
+
+# Fungsi untuk mengelola upload foto
+def upload_photo(file):
+    if file:
+        # Pastikan folder untuk menyimpan foto sudah ada
+        if not os.path.exists('static/assets/gambar/profile'):
+            os.makedirs('static/assets/gambar/profile')
+
+        # Menggunakan secure_filename untuk menghindari masalah dengan nama file yang tidak aman
+        filename = secure_filename(file.filename)
+        file_path = os.path.join('static/assets/gambar/profile', filename)
+        file.save(file_path)
+        return filename
+    return None
 
 
 # Fungsi route untuk halaman index
@@ -395,6 +410,43 @@ def profiluser():
 
     # Jika nik tidak ada, data pengguna tidak ditemukan, atau data profil tidak ditemukan, bisa ditangani di sini
     return redirect(url_for('login')) 
+
+@app.route('/update_profileuser', methods=['GET', 'POST'])
+def update_profileuser():
+    active = 'profil'
+    nik = session.get('nik')
+
+    if nik:
+        user = Users.query.filter_by(nik=nik).first()
+        user_profile = DataPasien.query.filter_by(nik=nik).first()
+
+        if request.method == 'POST':
+            # Ambil data dari form
+            user.nama_lengkap = request.form.get('nama_lengkap')
+            user.email = request.form.get('email')
+
+            if user_profile:
+                user_profile.nama_lengkap = request.form.get('nama_lengkap')
+                user_profile.email = request.form.get('email')
+                user_profile.no_hp = request.form.get('no_hp')
+                user_profile.jenis_kelamin = request.form.get('jenis_kelamin')
+                user_profile.tanggal_lahir = request.form.get('tanggal_lahir')
+                user_profile.alamat = request.form.get('alamat')
+
+                # Upload foto jika ada
+                if 'gambar' in request.files:
+                    photo = request.files['gambar']
+                    if photo.filename != '':
+                        user_profile.gambar = upload_photo(photo)
+
+            db.session.commit()
+
+            flash('Profile berhasil diperbarui', 'success')
+            return redirect(url_for('profiluser'))
+
+        return render_template('profile.html', aktif=active, user=user, user_profile=user_profile)
+
+    return redirect(url_for('login'))
 
 # Fungsi route untuk halaman riwayat user
 @app.route('/riwayatuser')
