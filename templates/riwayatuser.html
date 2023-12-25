@@ -15,6 +15,7 @@
                       No HP: {{ user_profile.no_hp }}</p>
                     <br>
                     <h4><b>Riwayat Pemeriksaan</b></h4>
+                    {% if riwayat_pemeriksaan %}
                     <div class="table-responsive">
                     <table class="table">
                       <thead>
@@ -51,6 +52,9 @@
                       </tbody>
                     </table>
                     </div>
+                    {% else %}
+                    <p>Maaf, Anda belum melakukan pemeriksaan.</p>
+                    {% endif %}
                   </div>
                 </div>
               </div>

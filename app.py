@@ -520,8 +520,10 @@ def riwayatuser():
 
             if riwayat_pemeriksaan:
                 return render_template('riwayatuser.html', aktif=active,user_profile=user_profile, riwayat_pemeriksaan=riwayat_pemeriksaan)
+            else:
+                return render_template('riwayatuser.html', aktif=active,user_profile=user_profile, riwayat_pemeriksaan=riwayat_pemeriksaan)
     
-    return render_template('riwayatuser2.html')
+    return redirect(url_for('login'))
 
 # Fungsi route untuk halaman artikel kesehatan user
 @app.route('/artikel')
