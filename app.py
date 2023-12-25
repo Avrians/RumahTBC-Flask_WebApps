@@ -510,7 +510,18 @@ def update_profileuser():
 @app.route('/riwayatuser')
 def riwayatuser():
     active = 'riwayat'
-    return render_template('riwayatuser.html', aktif=active)
+    nik = session.get('nik')
+
+    if nik:
+        user_profile = DataPasien.query.filter_by(nik=nik).first()
+
+        if user_profile:
+            riwayat_pemeriksaan = Pemeriksaan.query.filter_by(nik=nik).all()
+
+            if riwayat_pemeriksaan:
+                return render_template('riwayatuser.html', aktif=active,user_profile=user_profile, riwayat_pemeriksaan=riwayat_pemeriksaan)
+    
+    return render_template('riwayatuser2.html')
 
 # Fungsi route untuk halaman artikel kesehatan user
 @app.route('/artikel')

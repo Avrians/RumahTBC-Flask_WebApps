@@ -4,23 +4,18 @@
       <div class="row">
           <div class="col-12">
               <div class="section-title">
-               <h2>Riwayat Pemeriksaan</h2>
+                <h2>Riwayat Pemeriksaan</h2>
               </div>
               <div class="container mt-4">
                 <div class="row">
                   <div class="col">
-                    <h4><b>Data Pasien</b></h4>
-                    <p>No Pasien: PSNTB00{{ user_profile.id }}<br>
-                      Nama: {{ user_profile.nama_lengkap }} <br>
-                      No HP: {{ user_profile.no_hp }}</p>
-                    <br>
-                    <h4><b>Riwayat Pemeriksaan</b></h4>
+                    <h4>Data Pemeriksaan Terbaru</h4>
                     <div class="table-responsive">
                     <table class="table">
                       <thead>
                       <tr>
-                          <th scope="col">No</th>
-                          <th scope="col">Nomor Pemeriksaan</th>
+                          <th scope="col">#</th>
+                          <th scope="col">Nomor</th>
                           <th scope="col" width="200px">Detail Pemeriksaan</th>
                           <th scope="col">Status</th>
                           <th scope="col" width="100px">Gambar Rontgen</th>
@@ -28,13 +23,14 @@
                       </tr>
                       </thead>
                       <tbody>
-                      {% for pemeriksaan in riwayat_pemeriksaan %}
+                      <!-- Data riwayat skrining akan ditampilkan di sini -->
                       <tr>
-                          <td scope="row">{{ loop.index }}</td>
+                          <th scope="row">1</th>
                           <td>SKR001</td>
-                          <td>Tanggal Pemeriksaan : {{ pemeriksaan.tanggal_pemeriksaan }}<br>
-                          Rumah Sakit : {{ pemeriksaan.nama_rumah_sakit }}<br>
-                        Diperiksa Oleh {{ pemeriksaan.id_dokter }}</td>                          
+                          <td>Nama : Joko Susanto <br>
+                            Tanggal Pemeriksaan : 2023-11-14 <br>
+                          Rumah Sakit : Rumah Sakit XYZ<br>
+                        Diperiksa Oleh Dr. John Doe</td>                          
                           <td><button class="btn btn-danger">Positive</button></td>
                           <td ><img src="{{ url_for('static', filename='xray/file.png') }}" alt="Gambar Rontgen" style="max-width: 200px;">
 											    <a href="URL_GAMBAR" download>Download X-Ray</a>
@@ -47,7 +43,8 @@
                             Pasien direkomendasikan untuk segera memulai pengobatan Tuberkulosis di bawah pengawasan dokter spesialis paru. Pengobatan yang tepat dan konsisten sangat penting untuk mengatasi infeksi dan mencegah penyebaran lebih lanjut.
                             Kami menyarankan agar pasien segera menjadwalkan konsultasi lebih lanjut dengan dokter spesialis paru untuk perencanaan pengobatan yang lebih rinci dan pemantauan kondisi kesehatan secara berkala.</td>
                       </tr>
-                      {% endfor %}
+                      <!-- Tambahkan baris ini untuk setiap data riwayat skrining yang ada -->
+              
                       </tbody>
                     </table>
                     </div>
