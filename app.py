@@ -373,17 +373,36 @@ def admin_pasiendaftar():
     active = 'pasien'
     return render_template('admin_pasiendaftar.html', aktif=active)
 
-# fungsi route untuk halaman daftar biki akun dokter/ admin
+# fungsi route untuk halaman daftar akun dokter/ admin
 @app.route('/admin/akun')
 def admin_akun():
     active = 'akun'
     users = Users.query.all()
     return render_template('admin_akun.html', aktif=active, users=users)
 
+# Route untuk halaman bikin akun
 @app.route('/admin/akun/form')
 def admin_akun_form():
     active = 'akun'
     return render_template('admin_akunform.html', aktif=active)
+
+# route untuk halaman data pemeriksaan
+@app.route('/admin/pemeriksaan')
+def admin_pemeriksaan():
+    active = 'pemeriksaan'
+    return render_template('admin_pemeriksaan.html', aktif=active)
+
+# route untuk halaman data dokter
+@app.route('/admin/dokter')
+def admin_dokter():
+    active = 'dokter'
+    return render_template('admin_dokter.html', aktif=active)
+
+# route untuk halaman data ulasan pengguna
+@app.route('/admin/review')
+def admin_review():
+    active = 'review'
+    return render_template('admin_review.html', aktif=active)
 
 # Fungsi route untuk halaman tentang user
 @app.route('/tentang')
