@@ -36,17 +36,19 @@
                           <td>Tanggal Pemeriksaan : {{ pemeriksaan.tanggal_pemeriksaan }}<br>
                           Rumah Sakit : {{ pemeriksaan.nama_rumah_sakit }}<br>
                         Diperiksa Oleh {{ pemeriksaan.id_dokter }}</td>                          
-                          <td><button class="btn btn-danger">Positive</button></td>
+                          <td>
+                          {% if pemeriksaan.status == 'Positive' %}
+                              <button class="btn btn-danger">Positive</button>
+                          {% elif pemeriksaan.status == 'Negative' %}
+                              <button class="btn btn-success">Negative</button>
+                          {% elif pemeriksaan.status == 'Menunggu' %}
+                              <button class="btn btn-secondary">Menunggu</button>
+                          {% endif %}
+                        </td>
                           <td ><img src="{{ url_for('static', filename='xray/file.png') }}" alt="Gambar Rontgen" style="max-width: 200px;">
 											    <a href="URL_GAMBAR" download>Download X-Ray</a>
                           </td>
-                          <td>Setelah melakukan pemeriksaan dan analisis, pasien ditemukan memiliki indikasi Tuberkulosis (TBC). Beberapa temuan klinis yang mendukung diagnosa ini termasuk:
-                            Gambar rontgen menunjukkan adanya infiltrasi, kavitasi, atau opasitas yang konsisten dengan infeksi tuberkulosis.
-                            Pasien mengalami gejala seperti batuk yang berkepanjangan, berat badan menurun, demam, dan kelelahan.
-                            Hasil tes laboratorium menunjukkan adanya Mycobacterium tuberculosis. <br>
-                            <strong>Rekomendasi:</strong>
-                            Pasien direkomendasikan untuk segera memulai pengobatan Tuberkulosis di bawah pengawasan dokter spesialis paru. Pengobatan yang tepat dan konsisten sangat penting untuk mengatasi infeksi dan mencegah penyebaran lebih lanjut.
-                            Kami menyarankan agar pasien segera menjadwalkan konsultasi lebih lanjut dengan dokter spesialis paru untuk perencanaan pengobatan yang lebih rinci dan pemantauan kondisi kesehatan secara berkala.</td>
+                          <td>{{ pemeriksaan.hasil_analisa }}</td>
                       </tr>
                       {% endfor %}
                       </tbody>

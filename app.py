@@ -28,6 +28,12 @@ APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 1
 size=224
 
+
+UPLOAD_FOLDER_PROFILE = 'static/assets/gambar/profile'
+UPLOAD_FOLDER_RONTGEN = 'static/assets/gambar/rontgen'
+ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png'}
+
+
 app.secret_key = "Secrect Key"
 
 # Untuk menghubungkan ke database
@@ -211,6 +217,10 @@ def upload_photo(file):
         file.save(file_path)
         return filename
     return None
+
+# fungsi untuk mevalidasi ekstensi file
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 # Fungsi route untuk halaman index
@@ -414,12 +424,27 @@ def admin_pemeriksaan_tambah():
         nama = request.form['nama']
         nama_rumah_sakit = request.form['nama_rs']
 
+        # Upload foto rontgen
+        if 'foto_rontgen' in request.files:
+            foto_rontgen = request.files['foto_rontgen']
+            if foto_rontgen and allowed_file(foto_rontgen.filename):
+                filename = secure_filename(f"{nik}_{foto_rontgen.filename}")
+                filepath = os.path.join(UPLOAD_FOLDER_RONTGEN, filename)
+                foto_rontgen.save(filepath)
+            else:
+                flash('File foto rontgen tidak valid', 'danger')
+                return redirect(url_for('admin_pemeriksaan_tambah'))
+        else:
+            flash('File foto rontgen tidak ditemukan', 'danger')
+            return redirect(url_for('admin_pemeriksaan_tambah'))
+
         # Buat objek Pemeriksaan
         pemeriksaan = Pemeriksaan(
             tanggal_pemeriksaan=datetime.strptime(tanggal_pemeriksaan, '%Y-%m-%d'),
             nik=nik,
             nama=nama,
             nama_rumah_sakit=nama_rumah_sakit,
+            gambar_rontgen=filename  # Simpan nama file foto rontgen ke dalam database
         )
 
         # Simpan objek ke dalam database
@@ -430,6 +455,7 @@ def admin_pemeriksaan_tambah():
         return redirect(url_for('admin_pemeriksaan'))
 
     return render_template('admin_pemeriksaanform.html')
+
 # route untuk halaman data dokter
 @app.route('/admin/dokter')
 def admin_dokter():
@@ -495,7 +521,10 @@ def update_profileuser():
                 if 'gambar' in request.files:
                     photo = request.files['gambar']
                     if photo.filename != '':
-                        user_profile.gambar = upload_photo(photo)
+                        filename = secure_filename(f"{nik}_{photo.filename}")
+                        filepath = os.path.join(UPLOAD_FOLDER_PROFILE, filename)
+                        photo.save(filepath)
+                        user_profile.gambar = filename
 
             db.session.commit()
 
