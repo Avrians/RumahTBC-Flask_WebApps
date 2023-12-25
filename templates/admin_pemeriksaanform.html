@@ -2,7 +2,7 @@
 <div class="content">
   <div class="page-inner">
     <div class="page-header">
-      <h4 class="page-title">Akun</h4>
+      <h4 class="page-title">Pemeriksaan</h4>
       <ul class="breadcrumbs">
         <li class="nav-home">
           <a href="/home">
@@ -13,13 +13,13 @@
           <i class="flaticon-right-arrow"></i>
         </li>
         <li class="nav-item">
-          <a href="/admin/akun">Daftar Akun</a>
+          <a href="/admin/pemeriksaan">Daftar Pemeriksaan</a>
         </li>
         <li class="separator">
           <i class="flaticon-right-arrow"></i>
         </li>
         <li class="nav-item">
-          <a href="#">Buat Akun</a>
+          <a href="#">Tambah Data</a>
         </li>
       </ul>
     </div>
@@ -27,10 +27,21 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-header">
-            <div class="card-title">Form Daftar Akun</div>
+            <div class="card-title">Form Tambah Data Pemeriksaan</div>
           </div>
-          <form method="POST" action="{{ url_for('admin_addakun') }}">
+          <form method="POST" action="">
             <div class="card-body">
+              <!-- Tanggal Pemeriksaan -->
+              <div class="form-group">
+                <label for="tanggal_pemeriksaan">Tanggal Pemeriksaan</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="tanggal_pemeriksaan"
+                  name="tanggal_pemeriksaan"
+                  required
+                />
+              </div>
               <!-- NIK Akun -->
               <div class="form-group">
                 <label for="nik">NIK</label>
@@ -43,48 +54,36 @@
                 />
               </div>
 
-              <!-- Email -->
+              <!-- Nama -->
               <div class="form-group">
-                <label for="email">Email</label>
+                <label for="nama">Nama</label>
                 <input
-                  type="email"
+                  type="text"
                   class="form-control"
-                  id="email"
-                  name="email"
+                  id="nama"
+                  name="nama"
                   required
                 />
               </div>
               <div class="form-group">
-                <label for="hak_akses">Hak Akses</label>
+                <label for="nama_rs">Rumah Sakit</label>
                 <select
                   class="form-control"
-                  id="hak_akses"
-                  name="hak_akses"
+                  id="nama_rs"
+                  name="nama_rs"
                   required
                 >
-                  <option value="-">Pilih Salah Satu</option>
-                  <option value="dokter">Dokter</option>
-                  <option value="admin">Admin</option>
-                  <option value="pengguna">Pengguna</option>
+                  <option value="0">Pilih Salah Satu</option>
+                  <option value="1">RS. Dokter Susilo</option>
+                  <option value="2">RSUD Brebes</option>
+                  <option value="3">RSUD Ir. Soekarno</option>
                 </select>
-              </div>
-
-              <!-- Password -->
-              <div class="form-group">
-                <label for="password">Password</label>
-                <input
-                  type="password"
-                  class="form-control"
-                  id="password"
-                  name="password"
-                  required
-                />
               </div>
             </div>
             <!-- Tombol Submit -->
             <div class="card-action">
               <button type="submit" class="btn btn-success">Submit</button>
-              <a href="/admin/akun" class="btn btn-danger">Kembali</a>
+              <a href="/admin/pemeriksaan" class="btn btn-danger">Kembali</a>
             </div>
           </form>
         </div>

@@ -77,14 +77,14 @@
                 >
                   <thead>
                     <tr>
-                      <th>No</th>
+                      <th width="1%">No</th>
                       <th>NIK</th>
-                      <th>Name</th>
+                      <th>Nama Lengkap</th>
                       <th>Email</th>
-                      <th>Phone Number</th>
-                      <th>Gender</th>
-                      <th>Birthdate</th>
-                      <th>Address</th>
+                      <th>No HP</th>
+                      <th>Jenis Kelamin</th>
+                      <th>Tanggal Lahir</th>
+                      <th>Alamat</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -95,10 +95,17 @@
                       <td>{{ patient.nama_lengkap }}</td>
                       <td>{{ patient.email }}</td>
                       <td>{{ patient.no_hp }}</td>
-                      <td>{{ patient.jenis_kelamin }}</td>
+                      <td>
+                        {% if patient.jenis_kelamin == 'lakilaki' %} Laki-laki
+                        {% elif patient.jenis_kelamin == 'perempuan' %}
+                        Perempuan {% else %} {{ patient.jenis_kelamin }}
+                        <!-- Show the value if not 'lakilaki' or 'perempuan' -->
+                        {% endif %}
+                      </td>
                       <td>{{ patient.tanggal_lahir }}</td>
                       <td>{{ patient.alamat }}</td>
-                    {% endfor %}
+                      {% endfor %}
+                    </tr>
                   </tbody>
                 </table>
               </div>

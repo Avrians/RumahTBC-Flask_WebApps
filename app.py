@@ -73,26 +73,6 @@ class Users(db.Model):
         self.email = email
         self.password = password
         self.hak_akses = hak_akses
-
-# Model untuk tabel pemeriksaan
-class Pemeriksaan(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    nik_pasien = db.Column(db.String(20), nullable=False)
-    tanggal_pemeriksaan = db.Column(db.Date, nullable=False)
-    id_dokter = db.Column(db.Integer, nullable=False)
-    status = db.Column(db.String(20), nullable=False)
-    persentase = db.Column(db.Float, nullable=True)
-    gambar_rontgen = db.Column(db.String(255), nullable=True)
-    hasil_analisa = db.Column(db.Text, nullable=True)
-
-    def __init__(self, nik_pasien, tanggal_pemeriksaan, id_dokter, status, persentase=None, gambar_rontgen=None, hasil_analisa=None):
-        self.nik_pasien = nik_pasien
-        self.tanggal_pemeriksaan = tanggal_pemeriksaan
-        self.id_dokter = id_dokter
-        self.status = status
-        self.persentase = persentase
-        self.gambar_rontgen = gambar_rontgen
-        self.hasil_analisa = hasil_analisa
         
 # untuk tabel input review
 class InputReview(db.Model):
@@ -129,6 +109,30 @@ class DataPasien(db.Model):
         self.alamat = alamat
         self.gambar = gambar
 
+# route untuk menambahkan data pemeriksaan
+class Pemeriksaan(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    tanggal_pemeriksaan = db.Column(db.Date, nullable=False)
+    nik = db.Column(db.String(20), nullable=False)
+    nama = db.Column(db.String(100), nullable=False)
+    nama_rumah_sakit = db.Column(db.String(255), nullable=False)
+    id_dokter = db.Column(db.Integer, nullable=True)
+    status = db.Column(db.String(20), nullable=False, default='menunggu')
+    persentase = db.Column(db.Float, nullable=True)
+    gambar_rontgen = db.Column(db.String(255), nullable=True)
+    hasil_analisa = db.Column(db.Text, nullable=True)
+
+    def __init__(self, tanggal_pemeriksaan, nik, nama, nama_rumah_sakit, id_dokter, status='menunggu',
+                 persentase=None, gambar_rontgen=None, hasil_analisa=None):
+        self.tanggal_pemeriksaan = tanggal_pemeriksaan
+        self.nik = nik
+        self.nama = nama
+        self.nama_rumah_sakit = nama_rumah_sakit
+        self.id_dokter = id_dokter
+        self.status = status
+        self.persentase = persentase
+        self.gambar_rontgen = gambar_rontgen
+        self.hasil_analisa = hasil_analisa
         
 # Untuk membuat tabel di database
 with app.app_context():
@@ -391,7 +395,14 @@ def admin_akun_form():
 @app.route('/admin/pemeriksaan')
 def admin_pemeriksaan():
     active = 'pemeriksaan'
-    return render_template('admin_pemeriksaan.html', aktif=active)
+    pemeriksaan = Pemeriksaan.query.all()
+    return render_template('admin_pemeriksaan.html', aktif=active, pemeriksaan=pemeriksaan)
+
+# Route untuk halaman tambah data pemeriksaan
+@app.route('/admin/pemeriksaan/form')
+def admin_pemeriksaan_form():
+    active = 'pemeriksaan'
+    return render_template('admin_pemeriksaanform.html', aktif=active)
 
 # route untuk halaman data dokter
 @app.route('/admin/dokter')
@@ -403,7 +414,8 @@ def admin_dokter():
 @app.route('/admin/review')
 def admin_review():
     active = 'review'
-    return render_template('admin_review.html', aktif=active)
+    reviews = InputReview.query.all()
+    return render_template('admin_review.html', reviews=reviews, aktif=active)
 
 # Fungsi route untuk halaman tentang user
 @app.route('/tentang')

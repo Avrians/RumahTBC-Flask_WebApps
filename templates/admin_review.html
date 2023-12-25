@@ -21,7 +21,10 @@
       <div class="card-header">
         <div class="d-flex align-items-center">
           <h4 class="card-title">Daftar Review</h4>
-          <a class="btn btn-primary btn-round ml-auto" href="/admin/review/sentimen">
+          <a
+            class="btn btn-primary btn-round ml-auto"
+            href="/admin/review/sentimen"
+          >
             <i class="fa fa-plus"></i>
             Sentimen Analisis
           </a>
@@ -73,108 +76,22 @@
                   aria-describedby="add-row_info"
                 >
                   <thead>
-                    <tr role="row">
-                      <th
-                        class="sorting_asc"
-                        tabindex="0"
-                        aria-controls="add-row"
-                        rowspan="1"
-                        colspan="1"
-                        aria-sort="ascending"
-                        aria-label="Name: activate to sort column descending"
-                        style="width: 35px"
-                      >
-                        No
-                      </th>
-                      <th
-                        class="sorting_asc"
-                        tabindex="0"
-                        aria-controls="add-row"
-                        rowspan="1"
-                        colspan="1"
-                        aria-sort="ascending"
-                        aria-label="Name: activate to sort column descending"
-                        style="width: 359.125px"
-                      >
-                        NIK
-                      </th>
-                      <th
-                        class="sorting"
-                        tabindex="0"
-                        aria-controls="add-row"
-                        rowspan="1"
-                        colspan="1"
-                        aria-label="Position: activate to sort column ascending"
-                        style="width: 523.891px"
-                      >
-                        Nama Lengkap
-                      </th>
-                      <th
-                        class="sorting"
-                        tabindex="0"
-                        aria-controls="add-row"
-                        rowspan="1"
-                        colspan="1"
-                        aria-label="Office: activate to sort column ascending"
-                        style="width: 305.641px"
-                      >
-                        Email
-                      </th>
-                      <th
-                        class="sorting"
-                        tabindex="0"
-                        aria-controls="add-row"
-                        rowspan="1"
-                        colspan="1"
-                        aria-label="Office: activate to sort column ascending"
-                        style="width: 305.641px"
-                      >
-                        Password
-                      </th>
-                      <th
-                        style="width: 122.344px"
-                        class="sorting"
-                        tabindex="0"
-                        aria-controls="add-row"
-                        rowspan="1"
-                        colspan="1"
-                        aria-label="Action: activate to sort column ascending"
-                      >
-                        Action
-                      </th>
+                    <tr>
+                      <th width="1%">No</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Review</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr role="row" class="odd">
-                      <td class="sorting_1">1. </td>
-                      <td>3329878787987</td>
-                      <td>Akhad Jaluli</td>
-                      <td>jajuli@gmail.com</td>
-                      <td>**********</td>
-                      <td>
-                        <div class="form-button-action">
-                          <button
-                            type="button"
-                            data-toggle="tooltip"
-                            title=""
-                            class="btn btn-link btn-primary btn-lg"
-                            data-original-title="Edit Task"
-                          >
-                            <i class="fa fa-edit"></i>
-                          </button>
-                          <button
-                            type="button"
-                            data-toggle="tooltip"
-                            title=""
-                            class="btn btn-link btn-danger"
-                            data-original-title="Remove"
-                          >
-                            <i class="fa fa-times"></i>
-                          </button>
-                        </div>
-                      </td>
+                    {% for review in reviews %}
+                    <tr>
+                      <td>{{ loop.index }}</td>
+                      <td>{{ review.nama }}</td>
+                      <td>{{ review.email }}</td>
+                      <td>{{ review.review }}</td>
                     </tr>
-
+                    {% endfor %}
                   </tbody>
                 </table>
               </div>
