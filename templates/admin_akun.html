@@ -136,7 +136,7 @@
                   <tbody>
                     {% for user in users %}
                     <tr role="row" class="odd">
-                      <td>{{ user.id }}</td>
+                      <td>{{ loop.index }}</td>
                       <td>{{ user.nik }}</td>
                       <td>{{ user.email }}</td>
                       <td>{{ user.hak_akses }}</td>

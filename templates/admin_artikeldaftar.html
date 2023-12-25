@@ -147,7 +147,7 @@
                   <tbody>
                     {% for article in artikel %}
                     <tr role="row" class="odd">
-                      <td class="sorting_1">{{ article.id }}</td>
+                      <td>{{ loop.index }}</td>
                       <td>{{ article.judul }}</td>
                       <td>{{ article.penulis }}</td>
                       <td>{{ article.kategori }}</td>

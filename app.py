@@ -371,7 +371,8 @@ def admin_artikel_form():
 @app.route('/admin/pasien')
 def admin_pasiendaftar():
     active = 'pasien'
-    return render_template('admin_pasiendaftar.html', aktif=active)
+    patients = DataPasien.query.all()
+    return render_template('admin_pasiendaftar.html', patients=patients,aktif=active)
 
 # fungsi route untuk halaman daftar akun dokter/ admin
 @app.route('/admin/akun')
