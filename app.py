@@ -117,12 +117,12 @@ class Pemeriksaan(db.Model):
     nama = db.Column(db.String(100), nullable=False)
     nama_rumah_sakit = db.Column(db.String(255), nullable=False)
     id_dokter = db.Column(db.Integer, nullable=True)
-    status = db.Column(db.String(20), nullable=False, default='menunggu')
+    status = db.Column(db.String(20), nullable=False, default='Menunggu')
     persentase = db.Column(db.Float, nullable=True)
     gambar_rontgen = db.Column(db.String(255), nullable=True)
     hasil_analisa = db.Column(db.Text, nullable=True)
 
-    def __init__(self, tanggal_pemeriksaan, nik, nama, nama_rumah_sakit, id_dokter, status='menunggu',
+    def __init__(self, tanggal_pemeriksaan, nik, nama, nama_rumah_sakit, id_dokter=None, status='Menunggu',
                  persentase=None, gambar_rontgen=None, hasil_analisa=None):
         self.tanggal_pemeriksaan = tanggal_pemeriksaan
         self.nik = nik
@@ -404,6 +404,32 @@ def admin_pemeriksaan_form():
     active = 'pemeriksaan'
     return render_template('admin_pemeriksaanform.html', aktif=active)
 
+# route untuk menyimpan data pemeriksaan
+@app.route('/admin/pemeriksaan/tambah', methods=['GET', 'POST'])
+def admin_pemeriksaan_tambah():
+    if request.method == 'POST':
+        # Ambil data dari formulir
+        tanggal_pemeriksaan = request.form['tanggal_pemeriksaan']
+        nik = request.form['nik']
+        nama = request.form['nama']
+        nama_rumah_sakit = request.form['nama_rs']
+
+        # Buat objek Pemeriksaan
+        pemeriksaan = Pemeriksaan(
+            tanggal_pemeriksaan=datetime.strptime(tanggal_pemeriksaan, '%Y-%m-%d'),
+            nik=nik,
+            nama=nama,
+            nama_rumah_sakit=nama_rumah_sakit,
+        )
+
+        # Simpan objek ke dalam database
+        db.session.add(pemeriksaan)
+        db.session.commit()
+
+        flash('Data berhasil disimpan', 'success')
+        return redirect(url_for('admin_pemeriksaan'))
+
+    return render_template('admin_pemeriksaanform.html')
 # route untuk halaman data dokter
 @app.route('/admin/dokter')
 def admin_dokter():
