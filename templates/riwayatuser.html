@@ -2,7 +2,7 @@
 <main id="main">
   <section>
       <div class="row">
-          <div class="col-8 offset-2">
+          <div class="col-12">
               <div class="section-title">
                 <h2>Riwayat Pemeriksaan</h2>
               </div>
@@ -10,14 +10,13 @@
                 <div class="row">
                   <div class="col">
                     <h4>Data Pemeriksaan Terbaru</h4>
+                    <div class="table-responsive">
                     <table class="table">
                       <thead>
                       <tr>
                           <th scope="col">#</th>
                           <th scope="col">Nomor</th>
-                          <th scope="col">NIK Pasien</th>
-                          <th scope="col">Tanggal Pemeriksaan</th>
-                          <th scope="col" width="150px">Tenaga Medis</th>
+                          <th scope="col" width="200px">Detail Pemeriksaan</th>
                           <th scope="col">Status</th>
                           <th scope="col" width="100px">Gambar Rontgen</th>
                           <th scope="col">Hasil Analisa</th>
@@ -28,11 +27,10 @@
                       <tr>
                           <th scope="row">1</th>
                           <td>SKR001</td>
-                          <td>1234567890</td>
-                          <td>2023-11-14</td>
-                          <td>Rumah Sakit XYZ<br>
-                            Oleh Dr. John Doe</td>
-                          
+                          <td>Nama : Joko Susanto <br>
+                            Tanggal Pemeriksaan : 2023-11-14 <br>
+                          Rumah Sakit : Rumah Sakit XYZ<br>
+                        Diperiksa Oleh Dr. John Doe</td>                          
                           <td><button class="btn btn-danger">Positive</button></td>
                           <td ><img src="{{ url_for('static', filename='xray/file.png') }}" alt="Gambar Rontgen" style="max-width: 200px;">
 											    <a href="URL_GAMBAR" download>Download X-Ray</a>
@@ -49,6 +47,7 @@
               
                       </tbody>
                     </table>
+                    </div>
                   </div>
                 </div>
               </div>
