@@ -78,6 +78,10 @@
                   required
                 />
               </div>
+              <div class="form-group">
+                <label for="gambar">Gambar Banner</label>
+                <input type="file" class="form-control-file" id="gambar" name="gambar">
+              </div>
 
             </div>
             <!-- Tombol Submit -->
@@ -91,4 +95,8 @@
     </div>
   </div>
 </div>
+
+<script>
+  CKEDITOR.replace('isi');
+</script>
 {%endblock%}
