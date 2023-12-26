@@ -404,6 +404,41 @@ def admin_artikel_form():
     active = 'artikel'
     return render_template('admin_artikelform.html', aktif=active)
 
+# Fungsi route untuk halaman update artikel admin
+@app.route('/admin/artikel/update/<int:artikel_id>', methods=['GET', 'POST'])
+def admin_artikel_update(artikel_id):
+    artikel = ArtikelKesehatan.query.get(artikel_id)
+
+    if artikel:
+        if request.method == 'POST':
+            # Ambil data dari formulir update
+            artikel.judul = request.form['judul']
+            artikel.penulis = request.form['penulis']
+            artikel.isi = request.form['isi']
+            artikel.kategori = request.form['kategori']
+            artikel.tanggal_publikasi = request.form['tanggal_publikasi']
+
+            # Proses gambar
+            gambar = request.files['gambar']
+            if gambar and allowed_file(gambar.filename):
+                filename = secure_filename(gambar.filename)
+                gambar.save(os.path.join(UPLOAD_FOLDER_ARTIKEL, filename))
+                artikel.gambar = filename
+            elif 'hapus_gambar' in request.form:
+                artikel.gambar = None
+
+            # Lakukan commit ke database
+            db.session.commit()
+
+            flash('Artikel berhasil diupdate', 'success')
+            return redirect(url_for('admin_artikel'))
+
+        return render_template('admin_artikelformupdate.html', artikel=artikel)
+
+    else:
+        flash('Artikel tidak ditemukan', 'danger')
+        return redirect(url_for('admin_artikel'))
+
 # Fungsi route untuk halaman daftar pasien admin
 @app.route('/admin/pasien')
 def admin_pasiendaftar():

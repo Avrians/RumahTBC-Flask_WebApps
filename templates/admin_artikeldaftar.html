@@ -21,7 +21,10 @@
       <div class="card-header">
         <div class="d-flex align-items-center">
           <h4 class="card-title">Daftar Artikel</h4>
-          <a class="btn btn-primary btn-round ml-auto" href="/admin/artikel/form">
+          <a
+            class="btn btn-primary btn-round ml-auto"
+            href="/admin/artikel/form"
+          >
             <i class="fa fa-plus"></i>
             Tambah Data Baru
           </a>
@@ -154,15 +157,14 @@
                       <td>{{ article.tanggal_publikasi }}</td>
                       <td>
                         <div class="form-button-action">
-                          <button
-                            type="button"
-                            data-toggle="tooltip"
-                            title=""
+                          <a
+                            href="/admin/artikel/update/{{ article.id }}"
                             class="btn btn-link btn-primary btn-lg"
-                            data-original-title="Edit Task"
+                            data-toggle="tooltip"
+                            title="Edit Task"
                           >
                             <i class="fa fa-edit"></i>
-                          </button>
+                          </a>
                           <button
                             type="button"
                             data-toggle="tooltip"
@@ -175,8 +177,7 @@
                         </div>
                       </td>
                     </tr>
-                  {% endfor %}
-
+                    {% endfor %}
                   </tbody>
                 </table>
               </div>

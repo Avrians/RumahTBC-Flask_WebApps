@@ -29,7 +29,7 @@
           <div class="card-header">
             <div class="card-title">Form Elements</div>
           </div>
-          <form method="POST" action="/admin/artikel/form" enctype="multipart/form-data">
+          <form method="POST" action="/admin/artikel/update/{{ artikel.id }}" enctype="multipart/form-data">
           <div class="card-body">
               <!-- Judul Artikel -->
               <div class="form-group">
@@ -39,6 +39,7 @@
                   class="form-control"
                   id="judul"
                   name="judul"
+                  value="{{ artikel.judul }}"
                   required
                 />
               </div>
@@ -51,6 +52,7 @@
                   class="form-control"
                   id="penulis"
                   name="penulis"
+                  value="{{ artikel.penulis }}"
                   required
                 />
               </div>
@@ -64,7 +66,9 @@
                   name="isi"
                   rows="6"
                   required
-                ></textarea>
+                >
+                  {{ artikel.isi }}
+              </textarea>
               </div>
               <script>
                 CKEDITOR.replace('isi');
@@ -78,6 +82,7 @@
                   class="form-control"
                   id="kategori"
                   name="kategori"
+                  value="{{ artikel.kategori }}"
                   required
                 />
               </div>
@@ -93,6 +98,7 @@
                   class="form-control"
                   id="tanggal_publikasi"
                   name="tanggal_publikasi"
+                  value="{{ artikel.tanggal_publikasi }}"
                   required
                 />
 
