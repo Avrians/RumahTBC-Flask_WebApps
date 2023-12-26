@@ -204,19 +204,14 @@ def get_response(ints, intents_json):
             break
     return result
 
-# Fungsi untuk mengelola upload foto
-def upload_photo(file):
-    if file:
-        # Pastikan folder untuk menyimpan foto sudah ada
-        if not os.path.exists('static/assets/gambar/profile'):
-            os.makedirs('static/assets/gambar/profile')
+# fungsi untuk mengambil kata pertama
+def ambil_kata_pertama(teks):
+    # Memisahkan kata-kata dari teks
+    kata_kata = teks.split()
+    # Mengambil kata pertama
+    kata_pertama = ' '.join(kata_kata[:40])
 
-        # Menggunakan secure_filename untuk menghindari masalah dengan nama file yang tidak aman
-        filename = secure_filename(file.filename)
-        file_path = os.path.join('static/assets/gambar/profile', filename)
-        file.save(file_path)
-        return filename
-    return None
+    return kata_pertama
 
 # fungsi untuk mevalidasi ekstensi file
 def allowed_file(filename):
@@ -228,6 +223,8 @@ def allowed_file(filename):
 def index():
     # Ambil 4 data terbaru dari tabel Artikel
     latest_articles = ArtikelKesehatan.query.order_by(ArtikelKesehatan.tanggal_publikasi.desc()).limit(4).all()
+    for artikel in latest_articles:
+        artikel.isi = ambil_kata_pertama(artikel.isi)
     active = 'home'
     return render_template('index.html', latest_articles=latest_articles, aktif=active)
 
@@ -559,6 +556,8 @@ def riwayatuser():
 def artikel():
     latest_articles = ArtikelKesehatan.query.order_by(ArtikelKesehatan.tanggal_publikasi.desc()).limit(10).all()
     active = 'artikel'
+    for artikel in latest_articles:
+        artikel.isi = ambil_kata_pertama(artikel.isi)
     return render_template('artikel.html', latest_articles=latest_articles, aktif=active)
 
 # Fungsi route untuk halaman  detail artikel
