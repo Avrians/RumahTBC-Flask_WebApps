@@ -380,7 +380,7 @@
                     </div>
                   </div>
 
-                  <p class="card-text">{{ article.isi }}</p>
+                  <p class="card-text">{{ article.isi | safe  }}</p>
                   <a
                     href="/detailartikel/{{ article.id }}"
                     class="btn btn-success"

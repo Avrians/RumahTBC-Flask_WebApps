@@ -29,7 +29,7 @@
           <div class="card-header">
             <div class="card-title">Form Elements</div>
           </div>
-          <form method="POST" action="/artikeldoktersubmit" enctype="multipart/form-data">
+          <form method="POST" action="/admin/artikel/form" enctype="multipart/form-data">
           <div class="card-body">
               <!-- Judul Artikel -->
               <div class="form-group">
@@ -82,6 +82,16 @@
                 <label for="gambar">Gambar Banner</label>
                 <input type="file" class="form-control-file" id="gambar" name="gambar">
               </div>
+              <!-- Tanggal Publikasi -->
+              <div class="form-group">
+                <label for="tanggal_publikasi">Tanggal Publikasi</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="tanggal_publikasi"
+                  name="tanggal_publikasi"
+                  required
+                />
 
             </div>
             <!-- Tombol Submit -->

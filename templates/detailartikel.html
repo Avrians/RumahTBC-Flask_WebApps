@@ -12,7 +12,7 @@
                           <h6 class="card-subtitle mb-2 text-muted text-center">Penulis: {{ article.penulis }}</h6>
                         </div>
                           <p class="card-text">
-                            {{ article.isi }}
+                            {{ article.isi | safe  }}
                           </p>
                           <p class="card-text"><small class="text-muted">Tanggal Publikasi: {{ article.tanggal_publikasi }}</small> <br>
                             <small class="text-muted">Kategori: {{ article.kategori }}</small></p>

@@ -29,6 +29,7 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 1
 size=224
 
 
+UPLOAD_FOLDER_ARTIKEL = 'static/assets/gambar/artikel'
 UPLOAD_FOLDER_PROFILE = 'static/assets/gambar/profile'
 UPLOAD_FOLDER_RONTGEN = 'static/assets/gambar/rontgen'
 ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png'}
@@ -372,9 +373,34 @@ def admin_artikel():
     active = 'artikel'
     return render_template('admin_artikeldaftar.html', artikel=articles, aktif=active)
 
+
 # Fungsi route untuk halaman buat artikel admin
-@app.route('/admin/artikel/form')
+@app.route('/admin/artikel/form', methods=['GET', 'POST'])
 def admin_artikel_form():
+    if request.method == 'POST':
+        # Ambil data dari formulir
+        judul = request.form['judul']
+        penulis = request.form['penulis']
+        isi = request.form['isi']
+        kategori = request.form['kategori']
+        tanggal_publikasi = request.form['tanggal_publikasi']
+
+        # Proses gambar
+        gambar = request.files['gambar']
+        if gambar and allowed_file(gambar.filename):
+            filename = secure_filename(gambar.filename)
+            gambar.save(os.path.join(UPLOAD_FOLDER_ARTIKEL, filename))
+        else:
+            filename = None
+
+        # Simpan data ke dalam database atau sistem penyimpanan
+        artikel_baru = ArtikelKesehatan(judul=judul, tanggal_publikasi=tanggal_publikasi,penulis=penulis, isi=isi, kategori=kategori, gambar=filename)
+        db.session.add(artikel_baru)
+        db.session.commit()
+
+        flash('Artikel berhasil disimpan', 'success')
+        return redirect(url_for('admin_artikel'))
+
     active = 'artikel'
     return render_template('admin_artikelform.html', aktif=active)
 
