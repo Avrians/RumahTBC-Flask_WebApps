@@ -723,6 +723,14 @@ def dokter_deteksi():
     active = 'deteksi'
     return render_template('dokter_deteksi.html', aktif=active)
 
+# Fungsi route untuk halaman deteksi dokter bagian pemilihan
+@app.route('/dokter/datadeteksi')
+def dokter_datadeteksi():
+    active = 'deteksi'
+    daftar_tunggu = Pemeriksaan.query.filter_by(status='Menunggu').all()
+    return render_template('dokter_datadeteksi.html', aktif=active, daftar_tunggu=daftar_tunggu)
+
+
 # Fungsi route untuk memproses deteksi TBC dokter
 @app.route("/dokter/deteksi/upload", methods=['POST'])
 def upload_tbc():
