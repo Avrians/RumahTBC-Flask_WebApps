@@ -256,7 +256,6 @@
 </div>
 
 <script>
-  // Fungsi untuk menentukan URL yang akan diakses saat tombol Hapus diklik
   function confirmDelete(userId) {
     // Sesuaikan URL dengan rute Flask yang benar
     var deleteUrl = '/admin/deleteakun/' + userId;
@@ -278,10 +277,8 @@
         },
         error: function (error) {
           console.error('Error deleting account:', error);
-          // Menutup modal konfirmasi setelah error (opsional)
           $('#confirmDeleteModal').modal('hide');
-          // Menampilkan pesan error (opsional)
-          alert('Terjadi kesalahan saat menghapus akun karyawan.');
+          alert('Terjadi kesalahan saat menghapus akun.');
         }
       });
     });

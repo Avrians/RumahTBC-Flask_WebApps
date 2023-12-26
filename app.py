@@ -439,6 +439,28 @@ def admin_artikel_update(artikel_id):
         flash('Artikel tidak ditemukan', 'danger')
         return redirect(url_for('admin_artikel'))
 
+# Fungsi route untuk menghapus artikel
+@app.route('/admin/artikel/hapus/<int:artikel_id>', methods=['POST'])
+def admin_artikel_hapus(artikel_id):
+    artikel = ArtikelKesehatan.query.get(artikel_id)
+
+    if artikel:
+        # Hapus gambar terkait artikel
+        if artikel.gambar:
+            gambar_path = os.path.join(UPLOAD_FOLDER_ARTIKEL, artikel.gambar)
+            if os.path.exists(gambar_path):
+                os.remove(gambar_path)
+
+        # Hapus artikel dari database
+        db.session.delete(artikel)
+        db.session.commit()
+
+        flash('Artikel berhasil dihapus', 'success')
+    else:
+        flash('Artikel tidak ditemukan', 'danger')
+
+    return redirect(url_for('admin_artikel'))
+
 # Fungsi route untuk halaman daftar pasien admin
 @app.route('/admin/pasien')
 def admin_pasiendaftar():
