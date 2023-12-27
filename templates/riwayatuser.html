@@ -32,7 +32,7 @@
                       {% for pemeriksaan in riwayat_pemeriksaan %}
                       <tr>
                           <td scope="row">{{ loop.index }}</td>
-                          <td>SKR001</td>
+                          <td>SKR00{{ pemeriksaan.id }}</td>
                           <td>Tanggal Pemeriksaan : {{ pemeriksaan.tanggal_pemeriksaan }}<br>
                           Rumah Sakit : {{ pemeriksaan.nama_rumah_sakit }}<br>
                         Diperiksa Oleh {{ pemeriksaan.id_dokter }}</td>                          

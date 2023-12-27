@@ -732,7 +732,7 @@ def dokter_deteksi():
 def dokter_datadeteksi():
     active = 'deteksi'
     daftar_tunggu = Pemeriksaan.query.filter_by(status='Menunggu').all()
-    riwayat = Pemeriksaan.query.filter_by(id_dokter='4').all()
+    riwayat = Pemeriksaan.query.filter_by(id_dokter='1').all()
     
 
     if request.method == 'POST':
