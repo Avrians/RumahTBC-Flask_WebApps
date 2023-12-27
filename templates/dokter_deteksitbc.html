@@ -1,0 +1,72 @@
+{%extends "dokter_dashboard.html"%} {%block content%}
+<div class="content">
+  <div class="page-inner">
+    <div class="page-header">
+      <h4 class="page-title">Deteksi</h4>
+      <ul class="breadcrumbs">
+        <li class="nav-home">
+          <a href="/home">
+            <i class="flaticon-home"></i>
+          </a>
+        </li>
+        <li class="separator">
+          <i class="flaticon-right-arrow"></i>
+        </li>
+        <li class="nav-item">
+          <a href="/dokter/deteksi">Deteksi</a>
+        </li>
+      </ul>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title mb-3" style="text-align: center">
+              Detail Pemeriksaan Pasien
+            </h5>
+            <section class="section-dark">
+              {% if data_pemeriksaan %}
+              <div class="row">
+                <div class="col-6">
+                  <section class="section-dark">
+                    <label for="judul">Tanggal Pemeriksaan :</label>
+                    <p>{{ data_pemeriksaan.tanggal_pemeriksaan }}</p>
+                    <label for="judul">Nomor Pasien :</label>
+                    <p>PSNTB0{{ data_pemeriksaan.id }}</p>
+                    <label for="judul">Nama Pasien :</label>
+                    <p>{{ data_pemeriksaan.nama }}</p>
+                    <label for="judul">RS Pemeriksaan :</label>
+                    <p>{{ data_pemeriksaan.nama_rumah_sakit }}</p>
+                  </section>
+                </div>
+                <div class="col-6">
+                  <center>
+                    <p>Foto Rontgen</p>
+                    <img
+                      src="{{ url_for('static', filename='xray/file.png') }}"
+                      alt="Gambar Rontgen"
+                      style="max-width: 200px"
+                    />
+                  </center>
+                </div>
+              </div>
+              {% else %}
+              <h6 class="p-5" style="text-align: center">
+                Maaf anda belum memilih data pasien
+              </h6>
+              {% endif %}
+            </section>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title"  style="text-align: center;">Hasil Deteksi</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{%endblock%}
