@@ -135,6 +135,7 @@
             </div>
           </div>
           <div class="card-body">
+            {% if riwayat %}
             <table class="table">
               <thead>
                 <tr>
@@ -192,6 +193,11 @@
                 <!-- Tambahkan baris ini untuk setiap data riwayat skrining yang ada -->
               </tbody>
             </table>
+            {% else %}
+            <center>
+            <h3>Maaf, Anda belum melakukan pemeriksaan.</h3>
+            </center>
+            {% endif %}
           </div>
         </div>
       </div>

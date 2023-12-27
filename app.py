@@ -731,6 +731,9 @@ def dokter_deteksi():
 @app.route('/dokter/datadeteksi', methods=['GET', 'POST'])
 def dokter_datadeteksi():
     active = 'deteksi'
+    daftar_tunggu = Pemeriksaan.query.filter_by(status='Menunggu').all()
+    riwayat = Pemeriksaan.query.filter_by(id_dokter='4').all()
+    
 
     if request.method == 'POST':
         data_pasien_id = request.form.get('data_pasien')
@@ -739,13 +742,12 @@ def dokter_datadeteksi():
         
         
         if data_pemeriksaan:
-            return render_template('dokter_datadeteksi.html', aktif=active, data_pemeriksaan=data_pemeriksaan, daftar_tunggu=daftar_tunggu)
+            return render_template('dokter_datadeteksi.html', aktif=active, data_pemeriksaan=data_pemeriksaan, daftar_tunggu=daftar_tunggu, riwayat=riwayat)
         else:
             flash('Data pasien tidak ditemukan', 'danger')
             return redirect(url_for('dokter_datadeteksi'))
         
-    daftar_tunggu = Pemeriksaan.query.filter_by(status='Menunggu').all()
-    return render_template('dokter_datadeteksi.html', aktif=active, daftar_tunggu=daftar_tunggu)
+    return render_template('dokter_datadeteksi.html', aktif=active, daftar_tunggu=daftar_tunggu, riwayat=riwayat)
 
 # Fungsi route untuk halaman deteksi dokter
 @app.route('/dokter/datadeteksi/deteksi')
