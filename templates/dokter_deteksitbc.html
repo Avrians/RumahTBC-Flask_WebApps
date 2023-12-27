@@ -63,21 +63,25 @@
                   Kemungkinan positif TBC adalah : <strong> {{pos}} </strong><br>
                   Xray yang Anda unggah</h4></label>
                   <figure><img src="{{ url_for('static', filename='/xray/file.png') }}" style="width: 360px; height: 360px"></figure><br>
-                  <!-- <p><h3>The metrics of the model</h3></p>
-                  <img src="../static/img/metrics.png" style="width: 450px; height: 300px;"> </b>
-                  <img src="../static/img/accuracy.png" style="width: 450px; height: 300px;"> -->
                 </div>
                 <div class="col-6">
                   <br>
                   <div class="form-group">
-                    <label for="analisa"><h4>Hasil Analisa</h4></label>
-                    <textarea class="form-control" id="comment" rows="12">
-                    </textarea>
-                    <input
-                    type="submit"
-                    class="btn btn-outline-light rounded mt-3"
-                    value="Kirim Diagnosa"
-                    />
+                    <form action="{{url_for('dokter_datadeteksi_update')}}" method="post">
+                      {% if data_pemeriksaan %}
+                      <input type="hidden" name="id_pemeriksaan" value="{{ data_pemeriksaan.id }}" required>
+                      {% endif %}
+                      <input type="hidden" name="id_dokter" value="1" required>
+                      <input type="hidden" name="status" value="{{ pred }}" required>
+                      <input type="hidden" name="persentase" value="{{ pos }}">
+                      <textarea class="form-control" name="hasil_analisa" analisa="hasil_analisa" rows="12" autofocus>
+                      </textarea>
+                      <input
+                      type="submit"
+                      class="btn btn-outline-light rounded mt-3"
+                      value="Kirim Diagnosa"
+                      />
+                    </form>
                   </div>
 
                 </div>

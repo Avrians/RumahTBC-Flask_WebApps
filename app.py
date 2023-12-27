@@ -814,7 +814,7 @@ def dokter_upload_tbc():
 def dokter_datadeteksi_update():
     active = 'deteksi'
     id_pemeriksaan = request.form.get('id_pemeriksaan')
-    id_dokter = "1"
+    id_dokter = request.form.get('id_dokter')
     status = request.form.get('status')
     persentase = request.form.get('persentase')
     hasil_analisa = request.form.get('hasil_analisa')
@@ -829,11 +829,11 @@ def dokter_datadeteksi_update():
 
         db.session.commit()
         flash('Data diagnosa berhasil ditambahkan', 'success')
-        return redirect(url_for('dokter_datadeteksi'), aktif=active)
+        return render_template("dokter_datadeteksi.html", aktif=active)
     else:
         flash('Data pemeriksaan tidak ditemukan', 'danger')
     
-    return redirect(url_for('dokter_datadeteksi'), aktif=active)
+    return render_template("dokter_datadeteksi.html", aktif=active)
     
 
 # Fungsi route untuk memproses deteksi TBC dokter

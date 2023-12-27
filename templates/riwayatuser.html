@@ -37,9 +37,9 @@
                           Rumah Sakit : {{ pemeriksaan.nama_rumah_sakit }}<br>
                         Diperiksa Oleh {{ pemeriksaan.id_dokter }}</td>                          
                           <td>
-                          {% if pemeriksaan.status == 'Positive' %}
+                          {% if pemeriksaan.status == 'Positif' %}
                               <button class="btn btn-danger">Positive</button>
-                          {% elif pemeriksaan.status == 'Negative' %}
+                          {% elif pemeriksaan.status == 'Negatif' %}
                               <button class="btn btn-success">Negative</button>
                           {% elif pemeriksaan.status == 'Menunggu' %}
                               <button class="btn btn-secondary">Menunggu</button>
