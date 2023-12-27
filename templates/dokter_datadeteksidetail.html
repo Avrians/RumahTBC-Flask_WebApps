@@ -22,11 +22,7 @@
         <div class="card">
           <div class="card-body">
             <h5 class="card-title mb-3">Daftar Pemeriksaan Pasien</h5>
-            <form
-              id="upload-form"
-              action="{{url_for('dokter_datadeteksi')}}"
-              method="POST"
-            >
+            <form id="upload-form" action="" method="POST">
               <div class="form-group p-0">
                 <label for="data_pasien">Data Pasien</label>
                 <select
@@ -35,71 +31,54 @@
                   name="data_pasien"
                   required
                 >
-                  
-                  {% if data_pemeriksaan %}
-                  <option value="{{ data_pemeriksaan.id }}" selected>
-                    PSNTB0{{ data_pemeriksaan.id }}- {{data_pemeriksaan.nama}}
-                  </option>
-                  {% else %}
-                  <option value="" disabled selected>Pilih Data Pasien</option>
-                  {% endif %} 
-                  {% for pemeriksaan in
-                    daftar_tunggu %}
-                  </option>
-
+                  <option value="-">Pilih Salah Satu</option>
+                  {% for pemeriksaan in daftar_tunggu %}
                   <option value="{{ pemeriksaan.id }}">
-                    PSNTB0{{ pemeriksaan.id }} - {{ pemeriksaan.nama }}
+                    {{ pemeriksaan.nik }} - {{ pemeriksaan.nama }}
                   </option>
                   {% endfor %}
                 </select>
               </div>
               <input
-                type="submit"
+                type="button"
                 class="btn btn-outline-light rounded mt-3"
                 value="Pilih Data"
+                onclick="pilihDataPasien()"
               />
             </form>
           </div>
         </div>
       </div>
       <div class="col-md-8">
-        <div class="card">
+        <div class="card" id="detail-pemeriksaan">
           <div class="card-body">
             <h5 class="card-title" style="text-align: center">
               Detail Pemeriksaan Pasien
             </h5>
-            <section class="section-dark">
-              {% if data_pemeriksaan %}
-              <div class="row">
-                <div class="col-6">
-                  <section class="section-dark">
-                    <label for="judul">Tanggal Pemeriksaan :</label>
-                    <p>{{ data_pemeriksaan.tanggal_pemeriksaan }}</p>
-                    <label for="judul">Nomor Pasien :</label>
-                    <p>PSNTB0{{ data_pemeriksaan.id }}</p>
-                    <label for="judul">Nama Pasien :</label>
-                    <p>{{ data_pemeriksaan.nama }}</p>
-                    <label for="judul">RS Pemeriksaan :</label>
-                    <p>{{ data_pemeriksaan.nama_rumah_sakit }}</p>
-                  </section>
-                </div>
-                <div class="col-6">
-                  <center>
-                    <p>Foto Rontgen</p>
-                    <img
-                      src="{{ url_for('static', filename='xray/file.png') }}"
-                      alt="Gambar Rontgen"
-                      style="max-width: 200px"
-                    />
-                  </center>
-                </div>
+            <div class="row">
+              <div class="col-6">
+                <section class="section-dark">
+                  <label for="judul">Tanggal Pemeriksaan :</label>
+                  <p>{{ data_pemeriksaan.tanggal_pemeriksaan }}</p>
+                  <label for="judul">Nomor Pasien :</label>
+                  <p>PSNTB0{{ data_pemeriksaan.id }}</p>
+                  <label for="judul">Nama Pasien :</label>
+                  <p>{{ data_pemeriksaan.nama }}</p>
+                  <label for="judul">RS Pemeriksaan :</label>
+                  <p>{{ data_pemeriksaan.nama_rumah_sakit }}</p>
+                </section>
               </div>
-              {% else %}
-              <h6 class="p-5" style="text-align: center">
-                Maaf anda belum memilih data pasien
-              </h6>
-              {% endif %}
-            </section>
+              <div class="col-6">
+                <center>
+                <p> Foto Rontgen</p>
+                <img
+                  src="{{ url_for('static', filename='xray/file.png') }}"
+                  alt="Gambar Rontgen"
+                  style="max-width: 200px"
+                />
+                </center>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -177,4 +156,59 @@
     </div>
   </div>
 </div>
+
+<script>
+  function pilihDataPasien() {
+    var selectElement = document.getElementById("data_pasien");
+    var selectedId = selectElement.value;
+
+    // Menggunakan Fetch API untuk mengirimkan permintaan asinkron
+    fetch("/admin/pemeriksaan/" + selectedId)
+      .then(response => response.json())
+      .then(data => {
+        // Memperbarui elemen detail-pemeriksaan dengan respons dari server
+        var detailPemeriksaanElement = document.getElementById("detail-pemeriksaan");
+        var detailPesanElement = document.getElementById("detail-pesan");
+        var detailPemeriksaanInfoElement = document.getElementById("detail-pemeriksaan-info");
+
+        if (data.error) {
+          detailPemeriksaanElement.innerHTML = "";
+          detailPesanElement.innerHTML = "Error: " + data.error;
+          detailPemeriksaanInfoElement.style.display = "none";
+        } else {
+          // Menyusun HTML untuk menampilkan detail pemeriksaan
+          var html = "<h6 class='p-5'>" + data.detail + "</h6>";
+          detailPemeriksaanElement.innerHTML = html;
+          detailPesanElement.innerHTML = "";
+          
+          // Menampilkan atau menyembunyikan elemen detail-pemeriksaan-info berdasarkan keadaan
+          if (data.detailPemeriksaan) {
+            detailPemeriksaanInfoElement.innerHTML = `
+              <dt class="col-sm-3">ID</dt>
+              <dd class="col-sm-9">${data.detailPemeriksaan.id}</dd>
+
+              <dt class="col-sm-3">Tanggal Pemeriksaan</dt>
+              <dd class="col-sm-9">${data.detailPemeriksaan.tanggal_pemeriksaan}</dd>
+
+              <dt class="col-sm-3">NIK</dt>
+              <dd class="col-sm-9">${data.detailPemeriksaan.nik}</dd>
+
+              <dt class="col-sm-3">Nama</dt>
+              <dd class="col-sm-9">${data.detailPemeriksaan.nama}</dd>
+
+              <dt class="col-sm-3">Rumah Sakit</dt>
+              <!-- Tambahkan bagian ini untuk menampilkan informasi rumah sakit -->
+            `;
+            detailPemeriksaanInfoElement.style.display = "block";
+          } else {
+            detailPemeriksaanInfoElement.innerHTML = "";
+            detailPemeriksaanInfoElement.style.display = "none";
+          }
+        }
+      })
+      .catch(error => {
+        console.error("Error:", error);
+      });
+  }
+</script>
 {%endblock%}
