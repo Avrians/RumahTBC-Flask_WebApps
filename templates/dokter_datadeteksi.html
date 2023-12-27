@@ -87,24 +87,40 @@
                   <center>
                     <p>Foto Rontgen</p>
                     <img
-                      src="{{ url_for('static', filename='xray/file.png') }}"
+                      src="{{ url_for('static', filename='/assets/gambar/rontgen/' + data_pemeriksaan.gambar_rontgen) }}"
                       alt="Gambar Rontgen"
                       style="max-width: 200px"
                     />
                   </center>
                 </div>
               </div>
+              <form
+              id="upload-form"
+              action="{{url_for('dokter_upload_tbc')}}"
+              method="POST"
+            >
+            <div class="form-group">
+              <input
+                type="hidden"
+                class="form-control"
+                id="id_deteksi"
+                name="id_deteksi"
+                value="{{ data_pemeriksaan.id }}"
+                required
+              />
+            </div>
+              <input
+              type="submit"
+              class="btn btn-outline-light rounded mt-3"
+              value="Deteksi TBC"
+            />
+            </form>
               {% else %}
               <h6 class="p-5" style="text-align: center">
                 Maaf anda belum memilih data pasien
               </h6>
               {% endif %}
             </section>
-            <input
-            type="submit"
-            class="btn btn-outline-light rounded mt-3"
-            value="Deteksi TBC"
-          />
           </div>
         </div>
       </div>

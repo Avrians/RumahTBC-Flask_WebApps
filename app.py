@@ -19,6 +19,10 @@ from keras.models import load_model
 from werkzeug.utils import secure_filename
 import pickle
 import json
+import base64
+from io import BytesIO
+import binascii 
+from werkzeug.exceptions import BadRequest
 
 
 
@@ -748,6 +752,89 @@ def dokter_datadeteksi():
 def dokter_datadeteksi_deteksi():
     active = 'deteksi'
     return render_template('dokter_deteksitbc.html', aktif=active)
+
+# Fungsi route untuk memproses deteksi TBC dokter
+@app.route("/dokter/datadeteksi/upload", methods=['POST'])
+def dokter_upload_tbc():
+    active = 'deteksi'
+    # Memuat Model Deep Learning
+    model = load_model('modelTBC.h5')
+
+    # Ambil ID Pemeriksaan dari formulir
+    data_pasien_id = request.form.get('id_deteksi')
+    print(f"ID Pemeriksaan: {data_pasien_id}")
+
+    # Ambil data gambar dari database berdasarkan ID Pemeriksaan
+    pemeriksaan = Pemeriksaan.query.filter_by(id=data_pasien_id).first()
+    print(f"Data Pemeriksaan: {pemeriksaan.gambar_rontgen}")
+
+    if pemeriksaan is None or pemeriksaan.gambar_rontgen is None:
+        # Tangani kasus ketika gambar tidak ditemukan
+        flash('Data gambar tidak ditemukan', 'error')
+        return redirect(url_for('dokter_datadeteksi'))
+    
+    # Mengatur Direktori Target untuk Berkas yang Diunggah
+    target = os.path.join(APP_ROOT, 'static/assets/gambar/rontgen/')
+    # Menggunakan nama file dari database
+    filename = pemeriksaan.gambar_rontgen
+    destination = os.path.join(target, filename)
+
+    # Menyiapkan Gambar untuk Prediksi Model
+    img = cv2.imread(destination)
+    cv2.imwrite('static/xray/file.png', img)
+
+    # Pemrosesan Gambar
+    img = processimg(img)
+    cv2.imwrite('static/xray/processedfile.png', img)
+
+
+    img = img.astype('uint8')
+    img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+    img = img_to_array(img)
+    img = cv2.resize(img, (size, size))
+    img = img.reshape(1, size, size, 3)
+    img = img.astype('float32')
+    img = img / 255.0
+
+    # Prediksi Model
+    result = np.argmax(model.predict(img), axis=-1)
+    pred = model.predict(img)
+    neg = pred[0][0]
+    pos = pred[0][1]
+
+    # Merender Template Hasil Deteksi
+    classes = ['Negatif', 'Positif']
+    predicted = classes[result[0]]
+
+    return render_template("dokter_deteksitbc.html", pred=predicted, pos=pos, neg=neg, aktif=active, data_pemeriksaan=pemeriksaan)
+
+
+# Fungsi route untuk update data pemeriksaan
+@app.route("/dokter/datadeteksi/update", methods=['POST'])
+def dokter_datadeteksi_update():
+    active = 'deteksi'
+    id_pemeriksaan = request.form.get('id_pemeriksaan')
+    id_dokter = "1"
+    status = request.form.get('status')
+    persentase = request.form.get('persentase')
+    hasil_analisa = request.form.get('hasil_analisa')
+
+    pemeriksaan = Pemeriksaan.query.filter_by(id=id_pemeriksaan).first()
+
+    if pemeriksaan:
+        pemeriksaan.id_dokter = id_dokter
+        pemeriksaan.status = status
+        pemeriksaan.persentase = persentase
+        pemeriksaan.hasil_analisa = hasil_analisa
+
+        db.session.commit()
+        flash('Data diagnosa berhasil ditambahkan', 'success')
+        return redirect(url_for('dokter_datadeteksi'), aktif=active)
+    else:
+        flash('Data pemeriksaan tidak ditemukan', 'danger')
+    
+    return redirect(url_for('dokter_datadeteksi'), aktif=active)
+    
 
 # Fungsi route untuk memproses deteksi TBC dokter
 @app.route("/dokter/deteksi/upload", methods=['POST'])

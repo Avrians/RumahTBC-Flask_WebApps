@@ -37,17 +37,8 @@
                     <p>{{ data_pemeriksaan.nama }}</p>
                     <label for="judul">RS Pemeriksaan :</label>
                     <p>{{ data_pemeriksaan.nama_rumah_sakit }}</p>
+
                   </section>
-                </div>
-                <div class="col-6">
-                  <center>
-                    <p>Foto Rontgen</p>
-                    <img
-                      src="{{ url_for('static', filename='xray/file.png') }}"
-                      alt="Gambar Rontgen"
-                      style="max-width: 200px"
-                    />
-                  </center>
                 </div>
               </div>
               {% else %}
@@ -62,11 +53,41 @@
       <div class="col-md-8">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title"  style="text-align: center;">Hasil Deteksi</h5>
+            <h5 class="card-title" style="text-align: center;">Hasil Deteksi</h5>
+            <section class="section-dark" >
+              <div class="row">
+                <div class="col-6" style="text-align: center;">
+                  <br><br> <label>
+                  <h4>
+                  Ini adalah kasus <strong> {{pred}} </strong> dari Tuberkulosis Paru<br>
+                  Kemungkinan positif TBC adalah : <strong> {{pos}} </strong><br>
+                  Xray yang Anda unggah</h4></label>
+                  <figure><img src="{{ url_for('static', filename='/xray/file.png') }}" style="width: 360px; height: 360px"></figure><br>
+                  <!-- <p><h3>The metrics of the model</h3></p>
+                  <img src="../static/img/metrics.png" style="width: 450px; height: 300px;"> </b>
+                  <img src="../static/img/accuracy.png" style="width: 450px; height: 300px;"> -->
+                </div>
+                <div class="col-6">
+                  <br>
+                  <div class="form-group">
+                    <label for="analisa"><h4>Hasil Analisa</h4></label>
+                    <textarea class="form-control" id="comment" rows="12">
+                    </textarea>
+                    <input
+                    type="submit"
+                    class="btn btn-outline-light rounded mt-3"
+                    value="Kirim Diagnosa"
+                    />
+                  </div>
+
+                </div>
+              </div>
+            </section>
           </div>
         </div>
       </div>
     </div>
+
   </div>
 </div>
 {%endblock%}
