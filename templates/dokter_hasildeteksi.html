@@ -30,7 +30,7 @@
 							<h5 class="card-title mb-3">Upload File Rontgen</h5>
 							<form
 								id="upload-form"
-								action="{{url_for('upload')}}"
+								action="{{url_for('upload_tbc')}}"
 								method="POST"
 								enctype="multipart/form-data"
 							>
@@ -61,7 +61,7 @@
 										Ini adalah kasus <strong> {{pred}} </strong> dari Tuberkulosis Paru<br>
 										Kemungkinan positif TBC adalah : <strong> {{pos}} </strong><br>
 										Xray yang Anda unggah</h4></label>
-										<figure><img src="../static/xray/file.png" style="width: 360px; height: 360px"></figure><br>
+										<figure><img src="{{ url_for('static', filename='/xray/file.png') }}" style="width: 360px; height: 360px"></figure><br>
 										<!-- <p><h3>The metrics of the model</h3></p>
 										<img src="../static/img/metrics.png" style="width: 450px; height: 300px;"> </b>
 										<img src="../static/img/accuracy.png" style="width: 450px; height: 300px;"> -->
