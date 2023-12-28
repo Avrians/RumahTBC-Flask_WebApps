@@ -140,8 +140,33 @@ class DataPasien(db.Model):
         self.tanggal_lahir = tanggal_lahir
         self.alamat = alamat
         self.gambar = gambar
+        
+# Model data karyawan
+class DataKaryawan(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nik = db.Column(db.String(20), nullable=False, unique=True)
+    nama = db.Column(db.String(255), nullable=True)
+    no_hp = db.Column(db.String(15), nullable=True) 
+    email = db.Column(db.String(255), nullable=False, unique=True) 
+    jenis_kelamin = db.Column(db.String(10), nullable=True)  
+    tanggal_lahir = db.Column(db.Date, nullable=True) 
+    alamat = db.Column(db.Text, nullable=True) 
+    gambar = db.Column(db.String(255), nullable=True) 
+    jabatan = db.Column(db.String(50), nullable=True) 
 
-# route untuk menambahkan data pemeriksaan
+    def __init__(self, nik, nama=None, no_hp=None, email=None, jenis_kelamin=None,
+                 tanggal_lahir=None, alamat=None, gambar=None, jabatan=None):
+        self.nik = nik
+        self.nama = nama
+        self.no_hp = no_hp
+        self.email = email
+        self.jenis_kelamin = jenis_kelamin
+        self.tanggal_lahir = tanggal_lahir
+        self.alamat = alamat
+        self.gambar = gambar
+        self.jabatan = jabatan
+
+# Model pemeriksaan
 class Pemeriksaan(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     tanggal_pemeriksaan = db.Column(db.Date, nullable=False)
@@ -180,12 +205,12 @@ def processimg(img):
     return crop
 
 # Load intents and other required files
-intents_file = open('data.json',)
+intents_file = open('data/chatbot/data.json',)
 intents = json.load(intents_file)
 
-model = load_model('chatbot_model.h5')
-words = pickle.load(open('words.pkl', 'rb'))
-classes = pickle.load(open('classes.pkl', 'rb'))
+model = load_model('data/chatbot/chatbot_model.h5')
+words = pickle.load(open('data/chatbot/words.pkl', 'rb'))
+classes = pickle.load(open('data/chatbot/classes.pkl', 'rb'))
 
 lemmatizer = WordNetLemmatizer()
 nltk.download('punkt')

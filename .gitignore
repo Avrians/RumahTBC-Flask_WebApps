@@ -1,6 +1,2 @@
-chatbot_model.h5
-words.pkl
-data.json
-classes.pkl
-modelTBC.h5
 *.h5
+data/*
