@@ -91,13 +91,32 @@ class Users(db.Model):
 class InputReview(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nama = db.Column(db.String(255), nullable=False)
-    email = db.Column(db.String(255), unique=True, nullable=False)
+    email = db.Column(db.String(255), nullable=False)
+    tanggal = db.Column(db.Date, nullable=True)
     review = db.Column(db.Text, nullable=False)
 
-    def __init__(self, nama, email, review):
+    def __init__(self, nama, email, tanggal,review):
         self.nama = nama
         self.email = email
+        self.tanggal = tanggal
         self.review = review
+        
+# Model untul hasil sentimen analisis
+
+class HasilSentimen(db.Model):
+    id_hasil_sentimen = db.Column(db.Integer, primary_key=True)
+    id_review = db.Column(db.Integer, nullable=False)
+    nama = db.Column(db.String(255), nullable=False)
+    tanggal = db.Column(db.Date, nullable=False)
+    review = db.Column(db.String(1000), nullable=False)
+    label = db.Column(db.String(10), nullable=False)
+
+    def __init__(self, id_review, nama, tanggal, review, label):
+        self.id_review = id_review
+        self.nama = nama
+        self.tanggal = tanggal
+        self.review = review
+        self.label = label
 
 # Model untuk Data Pasien/Pengguna
 class DataPasien(db.Model):
@@ -1010,11 +1029,12 @@ def tambah_review():
         nama = request.form['name']
         email = request.form['email']
         review_text = request.form['message']
+        tanggal = datetime.now()
 
         # Memastikan semua data yang diperlukan telah diberikan
         if nama and email and review_text:
             try:
-                new_review = InputReview(nama=nama, email=email, review=review_text)
+                new_review = InputReview(nama=nama, email=email, tanggal=tanggal, review=review_text)
                 db.session.add(new_review)
                 db.session.commit()
                 flash('Ulasan dari kamu sudah terkirim. Terima kasih!', 'success')
