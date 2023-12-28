@@ -19,10 +19,7 @@ from keras.models import load_model
 from werkzeug.utils import secure_filename
 import pickle
 import json
-import base64
-from io import BytesIO
-import binascii 
-from werkzeug.exceptions import BadRequest
+from flask_socketio import SocketIO, emit
 
 
 
@@ -32,6 +29,11 @@ APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 1
 size=224
 
+# Untuk Chatroom
+app.config['SECRET_KEY'] = 'secret!'
+socketio = SocketIO(app)
+
+connected_users = {}
 
 UPLOAD_FOLDER_ARTIKEL = 'static/assets/gambar/artikel'
 UPLOAD_FOLDER_PROFILE = 'static/assets/gambar/profile'
@@ -233,6 +235,32 @@ def index():
     active = 'home'
     return render_template('index.html', latest_articles=latest_articles, aktif=active)
 
+# fungsi route untuk tanya dokter
+@app.route('/chat/dokter')
+def chat_dokter():
+    return render_template('chat.html', user='Fadillah')
+@app.route('/chat/pasien')
+def chat_pasien():
+    return render_template('chat.html', user='Amar')
+@socketio.on('connect')
+def handle_connect():
+    user_id = request.sid
+    connected_users[user_id] = request.sid
+    print(f"User {user_id} connected")
+@socketio.on('disconnect')
+def handle_disconnect():
+    user_id = request.sid
+    del connected_users[user_id]
+    print(f"User {user_id} disconnected")
+@socketio.on('message')
+def handle_message(data):
+    sender_id = request.sid
+    message = data['message']
+    sender_name = data['sender_name']
+    emit('message', {'sender': sender_name, 'message': message}, broadcast=True)
+
+
+# fungsi route untuk chatbot
 @app.route('/chat', methods=['POST'])
 def chat():
     user_message = request.form['user_message']
@@ -330,6 +358,11 @@ def registerakun():
 
     flash('Maaf pendaftaran akun anda gagal', 'danger')  # Tambahkan flash message
     return redirect(url_for('register'))
+
+# Fungsi route untuk halaman tanya dokter
+@app.route('/tanyadokter')
+def tanyadokter():
+    return render_template('chat.html')
 
 # Fungsi route untuk halaman buat artikel dokter
 @app.route('/dokter/artikel/form')
@@ -972,4 +1005,5 @@ def tambah_review():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # app.run(debug=True)
+    socketio.run(app, debug=True)
