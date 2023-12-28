@@ -101,10 +101,9 @@
                       </td>
                       <td>
                         <img
-                          src=""
-                          alt="Gambar Rontgen"
-                          style="max-width: 100px"
-                        />
+                          src="{{ url_for('static', filename='assets/gambar/rontgen/' + record.gambar_rontgen) }}"
+                          alt="Gambar Rontgen" width="100px"
+                        /> {{ record.gambar_rontgen }}
                       </td>
                       <td>
                         {{ record.hasil_analisa}}

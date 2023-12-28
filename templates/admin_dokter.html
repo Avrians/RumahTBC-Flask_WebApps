@@ -67,116 +67,46 @@
             <div class="row">
               <div class="col-sm-12">
                 <table
-                  id="add-row"
-                  class="display table table-striped table-hover dataTable"
-                  role="grid"
-                  aria-describedby="add-row_info"
-                >
-                  <thead>
-                    <tr role="row">
-                      <th
-                        class="sorting_asc"
-                        tabindex="0"
-                        aria-controls="add-row"
-                        rowspan="1"
-                        colspan="1"
-                        aria-sort="ascending"
-                        aria-label="Name: activate to sort column descending"
-                        style="width: 35px"
-                      >
-                        No
-                      </th>
-                      <th
-                        class="sorting_asc"
-                        tabindex="0"
-                        aria-controls="add-row"
-                        rowspan="1"
-                        colspan="1"
-                        aria-sort="ascending"
-                        aria-label="Name: activate to sort column descending"
-                        style="width: 359.125px"
-                      >
-                        NIK
-                      </th>
-                      <th
-                        class="sorting"
-                        tabindex="0"
-                        aria-controls="add-row"
-                        rowspan="1"
-                        colspan="1"
-                        aria-label="Position: activate to sort column ascending"
-                        style="width: 523.891px"
-                      >
-                        Nama Lengkap
-                      </th>
-                      <th
-                        class="sorting"
-                        tabindex="0"
-                        aria-controls="add-row"
-                        rowspan="1"
-                        colspan="1"
-                        aria-label="Office: activate to sort column ascending"
-                        style="width: 305.641px"
-                      >
-                        Email
-                      </th>
-                      <th
-                        class="sorting"
-                        tabindex="0"
-                        aria-controls="add-row"
-                        rowspan="1"
-                        colspan="1"
-                        aria-label="Office: activate to sort column ascending"
-                        style="width: 305.641px"
-                      >
-                        Password
-                      </th>
-                      <th
-                        style="width: 122.344px"
-                        class="sorting"
-                        tabindex="0"
-                        aria-controls="add-row"
-                        rowspan="1"
-                        colspan="1"
-                        aria-label="Action: activate to sort column ascending"
-                      >
-                        Action
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr role="row" class="odd">
-                      <td class="sorting_1">1. </td>
-                      <td>3329878787987</td>
-                      <td>Akhad Jaluli</td>
-                      <td>jajuli@gmail.com</td>
-                      <td>**********</td>
-                      <td>
-                        <div class="form-button-action">
-                          <button
-                            type="button"
-                            data-toggle="tooltip"
-                            title=""
-                            class="btn btn-link btn-primary btn-lg"
-                            data-original-title="Edit Task"
-                          >
-                            <i class="fa fa-edit"></i>
-                          </button>
-                          <button
-                            type="button"
-                            data-toggle="tooltip"
-                            title=""
-                            class="btn btn-link btn-danger"
-                            data-original-title="Remove"
-                          >
-                            <i class="fa fa-times"></i>
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-
-                  </tbody>
-                </table>
+                id="add-row"
+                class="display table table-striped table-hover dataTable"
+                role="grid"
+                aria-describedby="add-row_info"
+              >
+                <thead>
+                  <tr>
+                    <th width="1%">No</th>
+                    <th>NIK</th>
+                    <th>Nama Lengkap</th>
+                    <th>Email</th>
+                    <th>No HP</th>
+                    <th>Jenis Kelamin</th>
+                    <th>Tanggal Lahir</th>
+                    <th>Alamat</th>
+                    <th>Jabatan</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for dokter in dokters %}
+                  <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ dokter.nik }}</td>
+                    <td>{{ dokter.nama }}</td>
+                    <td>{{ dokter.email }}</td>
+                    <td>{{ dokter.no_hp }}</td>
+                    <td>
+                      {% if dokter.jenis_kelamin == 'lakilaki' %} Laki-laki
+                      {% elif dokter.jenis_kelamin == 'perempuan' %}
+                      Perempuan {% else %} {{ dokter.jenis_kelamin }}
+                      <!-- Show the value if not 'lakilaki' or 'perempuan' -->
+                      {% endif %}
+                    </td>
+                    <td>{{ dokter.tanggal_lahir }}</td>
+                    <td>{{ dokter.alamat }}</td>
+                    <td>{{ dokter.jabatan }}</td>
+                    {% endfor %}
+                  </tr>
+                </tbody>
+              </table>
               </div>
             </div>
             <div class="row">

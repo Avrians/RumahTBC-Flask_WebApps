@@ -637,7 +637,8 @@ def admin_pemeriksaan_tambah():
 @app.route('/admin/dokter')
 def admin_dokter():
     active = 'dokter'
-    return render_template('admin_dokter.html', aktif=active)
+    dokters = DataKaryawan.query.filter_by(jabatan="Dokter Spesialis").all()
+    return render_template('admin_dokter.html', aktif=active, dokters=dokters)
 
 # route untuk halaman data ulasan pengguna
 @app.route('/admin/review')
