@@ -238,20 +238,42 @@ def index():
 # fungsi route untuk tanya dokter
 @app.route('/chat/dokter')
 def chat_dokter():
+    if 'nik' in session:
+        hak_akses = session.get('hak_akses')
+        if hak_akses is not None:
+            if hak_akses == 'dokter':
+                return render_template('chat.html', nik=session['nik'], user='Fadillah')
+            elif hak_akses == 'admin':
+                return redirect(url_for('home'))
+            elif hak_akses == 'pengguna':
+                return redirect(url_for('home'))
+            else:
+                flash('Hak akses tidak valid.', 'danger')
+                return redirect(url_for('logout'))
+        else:
+            flash('Hak akses tidak tersedia.', 'danger')
+            return redirect(url_for('logout'))
+        return redirect(url_for('home'))
     return render_template('chat.html', user='Fadillah')
+
 @app.route('/chat/pasien')
 def chat_pasien():
-    return render_template('chat.html', user='Amar')
+    if 'nik' in session:
+        return render_template('chat.html', user='Amar')
+    return redirect(url_for('home'))
+
 @socketio.on('connect')
 def handle_connect():
     user_id = request.sid
     connected_users[user_id] = request.sid
     print(f"User {user_id} connected")
+    
 @socketio.on('disconnect')
 def handle_disconnect():
     user_id = request.sid
     del connected_users[user_id]
     print(f"User {user_id} disconnected")
+    
 @socketio.on('message')
 def handle_message(data):
     sender_id = request.sid
