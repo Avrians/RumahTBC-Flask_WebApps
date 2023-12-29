@@ -796,6 +796,7 @@ def riwayatuser():
             else:
                 return render_template('riwayatuser.html', aktif=active,user_profile=user_profile, riwayat_pemeriksaan=riwayat_pemeriksaan)
     
+    flash('Anda harus login terlebih dahulu.', 'warning')
     return redirect(url_for('login'))
 
 # Fungsi route untuk halaman artikel kesehatan user
