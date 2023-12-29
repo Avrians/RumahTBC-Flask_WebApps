@@ -565,6 +565,12 @@ def admin_pasiendaftar():
     patients = DataPasien.query.all()
     return render_template('admin_pasiendaftar.html', patients=patients,aktif=active)
 
+# Fungsi route untuk halaman tambah pasien
+@app.route('/admin/pasien/form')
+def admin_pasien_form():
+    active = 'pasien'
+    return render_template('admin_pasienform.html', aktif=active)
+
 # fungsi route untuk halaman daftar akun dokter/ admin
 @app.route('/admin/akun')
 def admin_akun():
@@ -639,6 +645,14 @@ def admin_dokter():
     active = 'dokter'
     dokters = DataKaryawan.query.filter_by(jabatan="Dokter Spesialis").all()
     return render_template('admin_dokter.html', aktif=active, dokters=dokters)
+
+# route halaman tambah data dokter
+@app.route('/admin/dokter/form')
+def admin_dokter():
+    active = 'dokter'
+    dokters = DataKaryawan.query.filter_by(jabatan="Dokter Spesialis").all()
+    return render_template('admin_dokter.html', aktif=active, dokters=dokters)
+
 
 # route untuk halaman data ulasan pengguna
 @app.route('/admin/review')
