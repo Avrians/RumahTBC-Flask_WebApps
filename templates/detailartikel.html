@@ -11,6 +11,10 @@
                           <h2>{{ article.judul }}</h2>
                           <h6 class="card-subtitle mb-2 text-muted text-center">Penulis: {{ article.penulis }}</h6>
                         </div>
+                        <img
+                        src="{{ url_for('static', filename='assets/gambar/artikel/miniparu.jpg' ) }}"
+                        alt="Gambar Rontgen" width="40%" class="img-fluid rounded mx-auto mb-2 d-block" style="margin-top: -30px;"
+                      />
                           <p class="card-text">
                             {{ article.isi | safe  }}
                           </p>
