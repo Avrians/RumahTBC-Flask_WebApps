@@ -111,7 +111,7 @@ if not is_table_empty(table_name):
     ulasan_bersih
 
     # Specify the file path of the pickle file
-    file_path = 'data/sentimen/afkar/TFIDF.pkl'
+    file_path = 'data/sentimen/model/TFIDF.pkl'
 
     # Read the pickle file
     with open(file_path, 'rb') as file:
@@ -122,7 +122,7 @@ if not is_table_empty(table_name):
     train_vector = vectorizer.fit_transform(data_train)
     reviews2 = ["".join(r) for r in ulasan_bersih]
 
-    load_model = pickle.load(open('data/sentimen/afkar/svm_model.pkl','rb'))
+    load_model = pickle.load(open('data/sentimen/model/svm_model.pkl','rb'))
 
     result = []
 
@@ -204,7 +204,7 @@ jumlah_negatif = len(data[data['label'] == 1])
 jumlah_netral = len(data[data['label'] == 3])
 
 # Membuat dashboard Streamlit
-st.title('Dashboard Analisis Sentimen Naive Bayes')
+st.title('Dashboard Analisis Sentimen Aplikasi RumahTBC')
 
 # Membuat kolom-kolom untuk menyusun metrik
 col1, col2, col3 = st.columns(3)
