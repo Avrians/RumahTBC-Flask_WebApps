@@ -89,7 +89,7 @@ class Users(db.Model):
         
 # untuk tabel input review
 class InputReview(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id_review = db.Column(db.Integer, primary_key=True)
     nama = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(255), nullable=False)
     tanggal = db.Column(db.Date, nullable=True)
