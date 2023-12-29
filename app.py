@@ -571,13 +571,13 @@ def admin_pasien_form():
     active = 'pasien'
     if request.method == 'POST':
         nik = request.form['nik']
-        nama = request.form['nama']
+        nama_lengkap = request.form['nama']
         no_hp = request.form['no_hp']
         email = request.form['email']
         jenis_kelamin = request.form['jenis_kelamin']
         tanggal_lahir = datetime.strptime(request.form['tanggal_lahir'], '%Y-%m-%d')
         alamat = request.form['alamat']
-        
+        filename = None 
         # Upload foto jika ada
         if 'gambar' in request.files:
             photo = request.files['gambar']
@@ -587,13 +587,13 @@ def admin_pasien_form():
                 photo.save(filepath)
 
         # Simpan data ke dalam database
-        karyawan_baru = DataKaryawan(nik=nik, nama=nama, no_hp=no_hp, email=email,
+        karyawan_baru = DataPasien(nik=nik, nama_lengkap=nama_lengkap, no_hp=no_hp, email=email,
                                  jenis_kelamin=jenis_kelamin, tanggal_lahir=tanggal_lahir,
                                  alamat=alamat, gambar=filename)
         db.session.add(karyawan_baru)
         db.session.commit()
-
         return redirect(url_for('admin_pasiendaftar'))
+    
     return render_template('admin_pasienform.html', aktif=active)
 
 # fungsi route untuk halaman daftar akun dokter/ admin
@@ -685,6 +685,8 @@ def admin_dokter_form():
         alamat = request.form['alamat']
         jabatan = "Dokter Spesialis"
         
+        filename = None 
+        
         # Upload foto jika ada
         if 'gambar' in request.files:
             photo = request.files['gambar']
@@ -699,8 +701,8 @@ def admin_dokter_form():
                                  alamat=alamat, gambar=filename, jabatan=jabatan)
         db.session.add(karyawan_baru)
         db.session.commit()
-
         return redirect(url_for('admin_dokter'))
+    
     return render_template('admin_dokterform.html', aktif=active)
 
 
