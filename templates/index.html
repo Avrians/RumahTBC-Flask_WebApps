@@ -163,8 +163,6 @@
     </header>
     <!-- End Header -->
 
-    {%block content%}
-
     <!-- Chatbot -->
     <button class="chatbot-toggler">
       <span class="material-symbols-rounded">mode_comment</span>
@@ -192,8 +190,10 @@
     </div>
     <!-- End Chatbot -->
 
+    {%block content%}
+
     <!-- ======= Hero Section ======= -->
-    <section id="hero">
+    <section id="hero" class="scrolled-offset">
       <div
         id="heroCarousel"
         data-bs-interval="5000"
@@ -380,7 +380,7 @@
                     </div>
                   </div>
 
-                  <p class="card-text">{{ article.isi | safe  }}</p>
+                  <p class="card-text">{{ article.isi | safe }}</p>
                   <a
                     href="/detailartikel/{{ article.id }}"
                     class="btn btn-success"

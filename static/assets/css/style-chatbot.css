@@ -7,9 +7,6 @@
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
-body {
-  background: #ffffff;
-}
 .chatbot-toggler {
   position: fixed;
   bottom: 100px;
