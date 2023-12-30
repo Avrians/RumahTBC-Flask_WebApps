@@ -1116,6 +1116,16 @@ def admin_updateakun(user_id):
 
     return redirect(url_for('admin_akun'))
 
+# route untuk meredirect ke ngrok
+# Route untuk melakukan redirect ke situs internet
+@app.route('/ngroksentimen')
+def ngrok_sentimen():
+    # Ganti URL berikut dengan URL situs yang Anda inginkan
+    target_url = 'http://localhost:8501/'
+    
+    # Lakukan redirect ke URL target
+    return redirect(target_url)
+
 @app.route('/tambah_review', methods=['POST'])
 def tambah_review():
     if request.method == 'POST':
