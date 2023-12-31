@@ -704,7 +704,43 @@ def admin_dokter_form():
     
     return render_template('admin_dokterform.html', aktif=active)
 
+# Route untuk halaman form ubah data dokter
+@app.route('/admin/dokter/update/<int:dokter_id>', methods=['GET', 'POST'])
+def admin_dokter_update(dokter_id):
+    active = 'dokter'
+    dokter = DataKaryawan.query.get(dokter_id)
+    if request.method == 'GET':
+        return render_template('admin_dokterformupdate.html', dokter=dokter, aktif=active)
 
+    elif request.method == 'POST':
+        nik = request.form['nik']
+        dokter.nik = request.form['nik']
+        dokter.nama = request.form['nama']
+        dokter.no_hp = request.form['no_hp']
+        dokter.email = request.form['email']
+        dokter.jenis_kelamin = request.form['jenis_kelamin']
+        dokter.tanggal_lahir = datetime.strptime(request.form['tanggal_lahir'], '%Y-%m-%d')
+        dokter.alamat = request.form['alamat']
+        dokter.jabatan = request.form['jabatan']
+        
+        if 'gambar' in request.files:
+            photo = request.files['gambar']
+            if photo.filename != '':
+                filename = secure_filename(f"{nik}_{photo.filename}")
+                filepath = os.path.join(UPLOAD_FOLDER_PROFILE, filename)
+                photo.save(filepath)
+                dokter.gambar = filename
+        
+        flash('Data Dokter berhasil diupdate', 'success')
+        return redirect(url_for('admin_dokter'))
+    else:
+        return redirect(url_for('index'))
+    
+    
+# Route untuk halaman form ubah data dokter
+@app.route('/admin/dokter/update/<int:dokter_id>', methods=['GET', 'POST'])
+def admin_dokter_update(dokter_id): 
+    
 # route untuk halaman data ulasan pengguna
 @app.route('/admin/review')
 def admin_review():

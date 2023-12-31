@@ -84,6 +84,7 @@
                       <th>Persentase</th>
                       <th>Gambar Rontgen</th>
                       <th>Hasil Analisa</th>
+                      <th>Aksi</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -107,6 +108,18 @@
                       </td>
                       <td>
                         {{ record.hasil_analisa}}
+                      </td>
+                      <td>
+                        <div class="form-button-action">
+                          <a
+                            href="/admin/dokter/update/{{ record.id }}"
+                            class="btn btn-link btn-primary btn-lg"
+                            data-toggle="tooltip"
+                            title="Edit Task"
+                          >
+                            <i class="fa fa-edit"></i>
+                          </a>
+                        </div>
                       </td>
                     </tr>
                     {% endfor %}
