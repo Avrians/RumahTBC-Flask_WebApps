@@ -709,37 +709,58 @@ def admin_dokter_form():
 def admin_dokter_update(dokter_id):
     active = 'dokter'
     dokter = DataKaryawan.query.get(dokter_id)
-    if request.method == 'GET':
-        return render_template('admin_dokterformupdate.html', dokter=dokter, aktif=active)
-
-    elif request.method == 'POST':
-        nik = request.form['nik']
-        dokter.nik = request.form['nik']
-        dokter.nama = request.form['nama']
-        dokter.no_hp = request.form['no_hp']
-        dokter.email = request.form['email']
-        dokter.jenis_kelamin = request.form['jenis_kelamin']
-        dokter.tanggal_lahir = datetime.strptime(request.form['tanggal_lahir'], '%Y-%m-%d')
-        dokter.alamat = request.form['alamat']
-        dokter.jabatan = request.form['jabatan']
-        
-        if 'gambar' in request.files:
-            photo = request.files['gambar']
-            if photo.filename != '':
-                filename = secure_filename(f"{nik}_{photo.filename}")
-                filepath = os.path.join(UPLOAD_FOLDER_PROFILE, filename)
-                photo.save(filepath)
+    
+    if dokter:
+        if request.method == 'POST':
+            dokter.nik = request.form['nik']
+            dokter.nama = request.form['nama']
+            dokter.no_hp = request.form['no_hp']
+            dokter.email = request.form['email']
+            dokter.jenis_kelamin = request.form['jenis_kelamin']
+            dokter.tanggal_lahir = datetime.strptime(request.form['tanggal_lahir'], '%Y-%m-%d')
+            dokter.alamat = request.form['alamat']
+            dokter.jabatan = request.form['jabatan']
+            
+            # Proses gambar
+            gambar = request.files['gambar']
+            if gambar and allowed_file(gambar.filename):
+                filename = secure_filename(gambar.filename)
+                gambar.save(os.path.join(UPLOAD_FOLDER_PROFILE, filename))
                 dokter.gambar = filename
-        
-        flash('Data Dokter berhasil diupdate', 'success')
-        return redirect(url_for('admin_dokter'))
+            elif 'hapus_gambar' in request.form:
+                dokter.gambar = None
+            
+            db.session.commit()
+            
+            flash('Data Dokter berhasil diupdate', 'success')
+            return redirect(url_for('admin_dokter'))
+            
+        return render_template('admin_dokterformupdate.html', dokter=dokter, aktif=active)
     else:
-        return redirect(url_for('index'))
+        flash('Dokter tidak ditemukan', 'danger')
+        return redirect(url_for('admin_dokter'))
     
-    
-# Route untuk halaman form ubah data dokter
-@app.route('/admin/dokter/update/<int:dokter_id>', methods=['GET', 'POST'])
-def admin_dokter_update(dokter_id): 
+# Fungsi route untuk menghapus data dokter
+@app.route('/admin/dokter/hapus/<int:dokter_id>', methods=['POST'])
+def admin_dokter_hapus(dokter_id):
+    dokter = DataKaryawan.query.get(dokter_id)
+
+    if dokter:
+        # Hapus gambar terkait dokter
+        if dokter.gambar:
+            gambar_path = os.path.join(UPLOAD_FOLDER_PROFILE, dokter.gambar)
+            if os.path.exists(gambar_path):
+                os.remove(gambar_path)
+
+        # Hapus artikel dari database
+        db.session.delete(dokter)
+        db.session.commit()
+
+        flash('Dokter berhasil dihapus', 'success')
+    else:
+        flash('Dokter tidak ditemukan', 'danger')
+
+    return redirect(url_for('admin_dokter'))
     
 # route untuk halaman data ulasan pengguna
 @app.route('/admin/review')
