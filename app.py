@@ -204,7 +204,7 @@ def processimg(img):
     crop=cv2.resize(equalized_img,(size,size))
     return crop
 
-# Load intents and other required files
+# Fungsi untuk chatbot
 intents_file = open('data/chatbot/data.json',)
 intents = json.load(intents_file)
 
@@ -254,6 +254,16 @@ def get_response(ints, intents_json):
             result = random.choice(i['responses'])
             break
     return result
+
+# fungsi route untuk chatbot
+@app.route('/chat', methods=['POST'])
+def chat():
+    user_message = request.form['user_message']
+    print(f"Received user message: {user_message}")  # Tambahkan baris ini
+    ints = predict_class(user_message, model)
+    response = get_response(ints, intents)
+    print(f"Generated response: {response}")  # Tambahkan baris ini
+    return jsonify({'response': response})
 
 # fungsi untuk mengambil kata pertama
 def ambil_kata_pertama(teks):
@@ -324,17 +334,6 @@ def handle_message(data):
     message = data['message']
     sender_name = data['sender_name']
     emit('message', {'sender': sender_name, 'message': message}, broadcast=True)
-
-
-# fungsi route untuk chatbot
-@app.route('/chat', methods=['POST'])
-def chat():
-    user_message = request.form['user_message']
-    print(f"Received user message: {user_message}")  # Tambahkan baris ini
-    ints = predict_class(user_message, model)
-    response = get_response(ints, intents)
-    print(f"Generated response: {response}")  # Tambahkan baris ini
-    return jsonify({'response': response})
 
 # Fungsi route untuk halaman login
 @app.route('/login', methods=['GET', 'POST'])
@@ -1121,7 +1120,7 @@ def admin_updateakun(user_id):
 @app.route('/ngroksentimen')
 def ngrok_sentimen():
     # Ganti URL berikut dengan URL situs yang Anda inginkan
-    target_url = 'http://localhost:8501/'
+    target_url = 'https://a8ea-36-68-52-57.ngrok-free.app/'
     
     # Lakukan redirect ke URL target
     return redirect(target_url)
