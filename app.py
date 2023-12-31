@@ -296,7 +296,7 @@ def chat_dokter():
         hak_akses = session.get('hak_akses')
         if hak_akses is not None:
             if hak_akses == 'dokter':
-                return render_template('chat.html', nik=session['nik'], user='Fadillah')
+                return render_template('chat.html', nik=session['nik'], user='Dr. Fadillah')
             elif hak_akses == 'admin':
                 return redirect(url_for('home'))
             elif hak_akses == 'pengguna':
@@ -313,7 +313,7 @@ def chat_dokter():
 @app.route('/chat/pasien')
 def chat_pasien():
     if 'nik' in session:
-        return render_template('chat.html', user='Amar')
+        return render_template('chat.html', user='Pasien')
     return redirect(url_for('home'))
 
 @socketio.on('connect')
