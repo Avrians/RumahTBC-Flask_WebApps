@@ -630,7 +630,27 @@ def admin_pasien_update(pasien_id):
         flash('Pasien tidak ditemukan', 'danger')
         return redirect(url_for('admin_pasien'))
 
+# Fungsi route untuk menghapus data pasien
+@app.route('/admin/pasien/hapus/<int:pasien_id>', methods=['POST'])
+def admin_pasien_hapus(pasien_id):
+    pasien = DataKaryawan.query.get(pasien_id)
 
+    if pasien:
+        # Hapus gambar terkait pasien
+        if pasien.gambar:
+            gambar_path = os.path.join(UPLOAD_FOLDER_PROFILE, pasien.gambar)
+            if os.path.exists(gambar_path):
+                os.remove(gambar_path)
+
+        # Hapus artikel dari database
+        db.session.delete(pasien)
+        db.session.commit()
+
+        flash('Pasien berhasil dihapus', 'success')
+    else:
+        flash('Pasien tidak ditemukan', 'danger')
+
+    return redirect(url_for('admin_pasien'))
 
 # fungsi route untuk halaman daftar akun dokter/ admin
 @app.route('/admin/akun')
