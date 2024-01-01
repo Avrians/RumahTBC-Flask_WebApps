@@ -595,6 +595,43 @@ def admin_pasien_form():
     
     return render_template('admin_pasienform.html', aktif=active)
 
+# Route untuk halaman form ubah data pasien
+@app.route('/admin/pasien/update/<int:pasien_id>', methods=['GET', 'POST'])
+def admin_pasien_update(pasien_id):
+    active = 'pasien'
+    pasien = DataKaryawan.query.get(pasien_id)
+    
+    if pasien:
+        if request.method == 'POST':
+            pasien.nik = request.form['nik']
+            pasien.nama = request.form['nama']
+            pasien.no_hp = request.form['no_hp']
+            pasien.email = request.form['email']
+            pasien.jenis_kelamin = request.form['jenis_kelamin']
+            pasien.tanggal_lahir = datetime.strptime(request.form['tanggal_lahir'], '%Y-%m-%d')
+            pasien.alamat = request.form['alamat']
+            
+            # Proses gambar
+            gambar = request.files['gambar']
+            if gambar and allowed_file(gambar.filename):
+                filename = secure_filename(gambar.filename)
+                gambar.save(os.path.join(UPLOAD_FOLDER_PROFILE, filename))
+                pasien.gambar = filename
+            elif 'hapus_gambar' in request.form:
+                pasien.gambar = None
+            
+            db.session.commit()
+            
+            flash('Data Pasien berhasil diupdate', 'success')
+            return redirect(url_for('admin_pasien'))
+            
+        return render_template('admin_pasienformupdate.html', pasien=pasien, aktif=active)
+    else:
+        flash('Pasien tidak ditemukan', 'danger')
+        return redirect(url_for('admin_pasien'))
+
+
+
 # fungsi route untuk halaman daftar akun dokter/ admin
 @app.route('/admin/akun')
 def admin_akun():
