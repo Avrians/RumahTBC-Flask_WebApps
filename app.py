@@ -71,6 +71,13 @@ class ArtikelKesehatan(db.Model):
         self.tanggal_publikasi = tanggal_publikasi
         self.kategori = kategori
         self.gambar = gambar  # Set nilai gambar dengan nilai yang diberikan atau None jika tidak ada gambar
+        
+    def cari_artikel(cls, kata_kunci):
+        return cls.query.filter(or_(
+            cls.judul.ilike(f"%{kata_kunci}%"),
+            cls.penulis.ilike(f"%{kata_kunci}%"),
+            cls.isi.ilike(f"%{kata_kunci}%")
+        )).all()
 
         
 # Model untuk tabel user
@@ -1234,7 +1241,7 @@ def admin_updateakun(user_id):
 @app.route('/ngroksentimen')
 def ngrok_sentimen():
     # Ganti URL berikut dengan URL situs yang Anda inginkan
-    target_url = 'https://a8ea-36-68-52-57.ngrok-free.app/'
+    target_url = 'http://localhost:8501/'
     
     # Lakukan redirect ke URL target
     return redirect(target_url)
