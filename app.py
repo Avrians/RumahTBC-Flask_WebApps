@@ -928,6 +928,18 @@ def artikel():
         artikel.isi = ambil_kata_pertama(artikel.isi)
     return render_template('artikel.html', latest_articles=latest_articles, aktif=active)
 
+@app.route('/artikel/cari', methods=['GET'])
+def artikel_cari():
+    query = request.args.get('query', '')
+    
+    if query:
+        hasil_pencarian = ArtikelKesehatan.cari_artikel(query)
+    else:
+        hasil_pencarian = ArtikelKesehatan.query.all()
+
+    return render_template('artikel.html', latest_articles=hasil_pencarian)
+
+
 # Fungsi route untuk halaman  detail artikel
 @app.route('/detailartikel')
 def detailartikel():
