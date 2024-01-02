@@ -20,6 +20,7 @@ from werkzeug.utils import secure_filename
 import pickle
 import json
 from flask_socketio import SocketIO, emit
+from sqlalchemy import or_
 
 
 
@@ -72,6 +73,7 @@ class ArtikelKesehatan(db.Model):
         self.kategori = kategori
         self.gambar = gambar  # Set nilai gambar dengan nilai yang diberikan atau None jika tidak ada gambar
         
+    @classmethod
     def cari_artikel(cls, kata_kunci):
         return cls.query.filter(or_(
             cls.judul.ilike(f"%{kata_kunci}%"),
@@ -934,8 +936,12 @@ def artikel_cari():
     
     if query:
         hasil_pencarian = ArtikelKesehatan.cari_artikel(query)
+        for artikel in hasil_pencarian:
+            artikel.isi = ambil_kata_pertama(artikel.isi)
     else:
         hasil_pencarian = ArtikelKesehatan.query.all()
+        for artikel in hasil_pencarian:
+            artikel.isi = ambil_kata_pertama(artikel.isi)
 
     return render_template('artikel.html', latest_articles=hasil_pencarian)
 

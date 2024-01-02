@@ -1,58 +1,60 @@
-{%extends "index.html"%} {%block content%}
+{% extends "index.html" %}
+{% block content %}
 <main id="main" class="scrolled-offset">
   <section>
-      <div class="row">
-          <div class="col-8 offset-2">
-              <div class="section-title">
-                <h2>Artikel Kesehatan</h2>
-              </div>
+    <div class="row">
+      <div class="col-8 offset-2">
+        <div class="section-title">
+          <h2>Artikel Kesehatan</h2>
+        </div>
 
-              <div class="row">
-                <div class="col-3"></div>
-                <div class="col-6">
-                  <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Search..." name="query" required>
-                    <div class="input-group-append">
-                    <button class="btn btn-outline-success " type="submit">Search</button>
-                    </div>
-                  </div>
+        <div class="row">
+          <div class="col-3"></div>
+          <div class="col-6">
+            <form method="GET" action="{{ url_for('artikel_cari') }}">
+              <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Search..." name="query" required>
+                <div class="input-group-append">
+                  <button class="btn btn-outline-success " type="submit">Search</button>
                 </div>
-                <div class="col-3"></div>
               </div>
-
-              <div class="row">
-
-                {% for article in latest_articles %}
-                <div class="col-6 mb-4">
-                  <div class="card border-0">
-                    <div class="card-body">
-                      <h4 class="card-title">{{ article.judul }}</h4>
-                      <div class="row"> 
-                        <div class="col-6">
-                          <h6 class="card-subtitle mb-2 text-muted">
-                            Penulis : {{ article.penulis }}
-                          </h6>
-                        </div>
-                        <div class="col-6">
-                          <h6 class="card-subtitle mb-2 text-muted">
-                            Kategori : {{ article.kategori }}
-                          </h6>
-                        </div>
-                      </div>
-    
-                      <p class="card-text">
-                        {{ article.isi | safe  }}
-                      </p>
-                      <a href="/detailartikel/{{ article.id }}" class="btn btn-success">Baca Selengkapnya</a>
-                    </div>
-                  </div>
-                </div>
-                {% endfor %}
-    
-              </div>
+            </form>
           </div>
+          <div class="col-3"></div>
+        </div>
+
+        <div class="row">
+          {% for article in latest_articles %}
+          <div class="col-6 mb-4">
+            <div class="card border-0">
+              <div class="card-body">
+                <h4 class="card-title">{{ article.judul }}</h4>
+                <div class="row">
+                  <div class="col-6">
+                    <h6 class="card-subtitle mb-2 text-muted">
+                      Penulis : {{ article.penulis }}
+                    </h6>
+                  </div>
+                  <div class="col-6">
+                    <h6 class="card-subtitle mb-2 text-muted">
+                      Kategori : {{ article.kategori }}
+                    </h6>
+                  </div>
+                </div>
+
+                <p class="card-text">
+                  {{ article.isi | safe  }}
+                </p>
+                <a href="/detailartikel/{{ article.id }}" class="btn btn-success">Baca Selengkapnya</a>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+
+        </div>
       </div>
-  </div>
+    </div>
+    </div>
   </section>
 </main>
-{%endblock%}
+{% endblock %}
