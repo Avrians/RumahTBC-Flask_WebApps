@@ -911,13 +911,21 @@ def riwayatuser():
         user_profile = DataPasien.query.filter_by(nik=nik).first()
 
         if user_profile:
-            riwayat_pemeriksaan = Pemeriksaan.query.filter_by(nik=nik).all()
+            if user_profile.nama_lengkap and user_profile.alamat and user_profile.tanggal_lahir and user_profile.jenis_kelamin:
+                riwayat_pemeriksaan = Pemeriksaan.query.filter_by(nik=nik).all()
 
-            if riwayat_pemeriksaan:
-                return render_template('riwayatuser.html', aktif=active,user_profile=user_profile, riwayat_pemeriksaan=riwayat_pemeriksaan)
+                if riwayat_pemeriksaan:
+                    return render_template('riwayatuser.html', aktif=active, user_profile=user_profile, riwayat_pemeriksaan=riwayat_pemeriksaan)
+                else:
+                    return render_template('riwayatuser.html', aktif=active, user_profile=user_profile, riwayat_pemeriksaan=riwayat_pemeriksaan)
             else:
-                return render_template('riwayatuser.html', aktif=active,user_profile=user_profile, riwayat_pemeriksaan=riwayat_pemeriksaan)
-    
+                # Redirect the user to complete their profile
+                flash('Silakan lengkapi data pasien terlebih dahulu.')
+                return redirect(url_for('profiluser'))
+        else:
+            # Handle the case where the user profile is not found
+            flash('Data pasien tidak ditemukan.')
+            return redirect(url_for('home'))
     flash('Anda harus login terlebih dahulu.', 'warning')
     return redirect(url_for('login'))
 
