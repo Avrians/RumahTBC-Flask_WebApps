@@ -138,10 +138,10 @@
             {% else %}
             <!-- Jika pengguna belum login -->
             <li class="nav-item">
-              <a class="nav-link getstarted" href="/login">Masuk</a>
+              <a class="nav-link getstarted" href="/login">Login</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link getregis" href="/register">Daftar</a>
+              <a class="nav-link getregis" href="/register">Register</a>
             </li>
             {% endif %}
           </ul>
@@ -180,7 +180,11 @@
         </li>
       </ul>
       <div class="chat-input">
-        <textarea placeholder="Enter a message..." spellcheck="false" required></textarea>
+        <textarea
+          placeholder="Tulis Sebuah Pesan disini..."
+          spellcheck="false"
+          required
+        ></textarea>
         <span id="send-btn" class="material-symbols-rounded">send</span>
       </div>
     </div>
@@ -216,11 +220,13 @@
                   informasi, layanan, dan dukungan yang Anda butuhkan dalam
                   perjuangan melawan penyakit TBC.
                 </p>
+                {% if 'email' in session %} {% else %}
                 <a
                   href="/register"
                   class="btn-get-started animate__animated animate__fadeInUp scrollto"
                   >Daftar Sekarang</a
                 >
+                {% endif %}
               </div>
             </div>
           </div>
@@ -329,9 +335,9 @@
                 </div>
                 <h4 class="title">Riwayat Pemeriksaan</h4>
                 <p class="description">
-                  Memberikan akses ke riwayat pemeriksaan sebelumnya, memungkinkan
-                  pasien untuk melacak perkembangan kondisi kesehatan terkait
-                  TBC.
+                  Memberikan akses ke riwayat pemeriksaan sebelumnya,
+                  memungkinkan pasien untuk melacak perkembangan kondisi
+                  kesehatan terkait TBC.
                 </p>
               </div>
             </div>
@@ -376,7 +382,7 @@
                     </div>
                   </div>
 
-                  <p class="card-text">{{ article.isi | safe }}</p>
+                  <p class="card-text">{{ article.isi | safe }} ......</p>
                   <a
                     href="/detailartikel/{{ article.id }}"
                     class="btn btn-success"

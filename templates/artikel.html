@@ -13,9 +13,9 @@
           <div class="col-6">
             <form method="GET" action="{{ url_for('artikel_cari') }}">
               <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Search..." name="query" required>
+                <input type="text" class="form-control" placeholder="Cari Artikel Disini..." name="query" required>
                 <div class="input-group-append">
-                  <button class="btn btn-outline-success " type="submit">Search</button>
+                  <button class="btn btn-outline-success " type="submit">Cari</button>
                 </div>
               </div>
             </form>
@@ -43,7 +43,7 @@
                 </div>
 
                 <p class="card-text">
-                  {{ article.isi | safe  }}
+                  {{ article.isi | safe  }} ......
                 </p>
                 <a href="/detailartikel/{{ article.id }}" class="btn btn-success">Baca Selengkapnya</a>
               </div>
