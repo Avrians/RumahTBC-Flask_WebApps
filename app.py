@@ -878,6 +878,7 @@ def update_profileuser():
             if user_profile:
                 user_profile.nama_lengkap = request.form.get('nama_lengkap')
                 user_profile.email = request.form.get('email')
+                user.email = request.form.get('email')
                 user_profile.no_hp = request.form.get('no_hp')
                 user_profile.jenis_kelamin = request.form.get('jenis_kelamin')
                 user_profile.tanggal_lahir = request.form.get('tanggal_lahir')
