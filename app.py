@@ -21,6 +21,9 @@ import pickle
 import json
 from flask_socketio import SocketIO, emit
 from sqlalchemy import or_
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 
 
@@ -1269,7 +1272,7 @@ def admin_updateakun(user_id):
 #Get user data by nik
 @app.route('/api/user/<int:nik>', methods=['GET'])
 def get_user_data_by_nik(nik):
-    user_data = UserData.query.get(nik)
+    user_data = DataPasien.query.get(nik)
     if user_data is None:
         return jsonify({'message': 'Data tidak ditemukan!'}), 404
     
@@ -1291,7 +1294,7 @@ def get_user_data_by_nik(nik):
 def add_user_data():
     # new_data = request.get_json()
 
-    user_data = UserData(
+    user_data = DataPasien(
         nik=request.form['nik'],
         nama=request.form['nama'],
         alamat=request.form['alamat'],
@@ -1311,7 +1314,7 @@ def add_user_data():
 #Update user data
 @app.route('/api/user/<int:nik>', methods=['PUT'])
 def update_user_data(nik):
-    user_data = UserData.query.get(nik)
+    user_data = DataPasien.query.get(nik)
     if user_data is None:
         return jsonify({'message': 'Data tidak ditemukan!'}), 404
     
@@ -1351,7 +1354,7 @@ def update_user_data(nik):
 #All Get Rontgen History
 @app.route('/api/rontgen', methods=['GET'])
 def get_all_rontgen_data():
-    tbc_data = RiwayatRontgen.query.all()
+    tbc_data = Pemeriksaan.query.all()
     tbc_data_list = []
     for data in tbc_data:
         tbc_data_list.append({
@@ -1371,7 +1374,7 @@ def get_all_rontgen_data():
 #Get Rontgen History by NIK
 @app.route('/api/rontgen/<int:nik>', methods=['GET'])
 def get_rontgen_data_nik(nik):
-    rontgen_data = RiwayatRontgen.query.filter(RiwayatRontgen.nik==nik)
+    rontgen_data = Pemeriksaan.query.filter(Pemeriksaan.nik==nik)
 
     if  rontgen_data is None:
         return jsonify({'message': 'Data tidak ditemukan!'}), 404
@@ -1404,7 +1407,7 @@ def add_rontgen_history():
     if fileImg:
         upload_result = cloudinary.uploader.upload(file=fileImg, folder="TBC/rontgen")
 
-        rontgen_history = RiwayatRontgen(
+        rontgen_history = Pemeriksaan(
             nik=request.form['nik'],
             rumah_sakit= request.form['rumah_sakit'],
             alamat= request.form['alamat'],
@@ -1425,7 +1428,7 @@ def add_rontgen_history():
 #delete rontgen history
 @app.route('/api/rontgen/<int:data_id>', methods=['DELETE'])
 def delete_rontgen_hostory(data_id):
-    data_to_delete = RiwayatRontgen.query.get(data_id)
+    data_to_delete = Pemeriksaan.query.get(data_id)
 
     if data_to_delete is None:
         return jsonify({'message': 'Data tidak ditemukan!'}), 404
