@@ -1263,6 +1263,259 @@ def admin_updateakun(user_id):
 
     return redirect(url_for('admin_akun'))
 
+
+
+###API User Data
+#Get user data by nik
+@app.route('/api/user/<int:nik>', methods=['GET'])
+def get_user_data_by_nik(nik):
+    user_data = UserData.query.get(nik)
+    if user_data is None:
+        return jsonify({'message': 'Data tidak ditemukan!'}), 404
+    
+    data = []
+
+    data.append({
+        'nik': user_data.nik,
+        'nama': user_data.nama,
+        'alamat': user_data.alamat,
+        'notelp': user_data.notelp,
+        'email': user_data.email,
+        'profileImg': user_data.profileImg
+    })
+    return jsonify(data)
+
+
+#Post user data
+@app.route('/api/user/add', methods=['POST'])
+def add_user_data():
+    # new_data = request.get_json()
+
+    user_data = UserData(
+        nik=request.form['nik'],
+        nama=request.form['nama'],
+        alamat=request.form['alamat'],
+        notelp=request.form['notelp'],
+        email=request.form['email'],
+        profileImg="TBC/blank-profile"
+    )
+
+    db.session.add(user_data)
+    db.session.commit()
+
+    return jsonify({
+        'message': 'Data berhasil ditambahkan!'
+    })
+
+
+#Update user data
+@app.route('/api/user/<int:nik>', methods=['PUT'])
+def update_user_data(nik):
+    user_data = UserData.query.get(nik)
+    if user_data is None:
+        return jsonify({'message': 'Data tidak ditemukan!'}), 404
+    
+    # input_data = request.get_json()
+    fileImg = request.files['profileImg']
+
+    if fileImg:
+        upload_result = cloudinary.uploader.upload(file=fileImg, folder="TBC/user_profile", public_id=nik, overwrite=True)
+
+        user_data.alamat = request.form['alamat']
+        user_data.email = request.form['email']
+        user_data.profileImg = upload_result['url']
+        user_data.notelp = request.form['notelp']
+        # user_data.nama = request.form['nama']
+
+        db.session.merge(user_data)
+        # db.session.flush()
+        db.session.commit()
+
+        return jsonify({
+            'message': 'Data berhasil diupdate!'
+        })
+    else:
+        user_data.alamat = request.form['alamat']
+        user_data.email = request.form['email']
+        user_data.notelp = request.form['notelp']
+        db.session.commit()
+
+        return jsonify({
+            'message': 'Data berhasil diupdate!'
+        })
+
+
+
+
+###API Rontgen History
+#All Get Rontgen History
+@app.route('/api/rontgen', methods=['GET'])
+def get_all_rontgen_data():
+    tbc_data = RiwayatRontgen.query.all()
+    tbc_data_list = []
+    for data in tbc_data:
+        tbc_data_list.append({
+            'id': data.id,
+            'nik': data.nik,
+            'rumah_sakit': data.rumah_sakit,
+            'alamat': data.alamat,
+            'tanggal_publikasi': str(data.tanggal_publikasi),
+            'dokter': data.dokter,
+            'gambar': data.gambar,
+            'analisa': data.analisa,
+            'rekomendasi': data.rekomendasi
+            
+        })
+    return jsonify(tbc_data_list)
+
+#Get Rontgen History by NIK
+@app.route('/api/rontgen/<int:nik>', methods=['GET'])
+def get_rontgen_data_nik(nik):
+    rontgen_data = RiwayatRontgen.query.filter(RiwayatRontgen.nik==nik)
+
+    if  rontgen_data is None:
+        return jsonify({'message': 'Data tidak ditemukan!'}), 404
+
+    rontgen_data_list = []
+    for data in rontgen_data:
+        rontgen_data_list.append({
+            'id': data.id,
+            'nik': data.nik,
+            'rumah_sakit': data.rumah_sakit,
+            'alamat': data.alamat,
+            'tanggal_publikasi': str(data.tanggal_publikasi),
+            'dokter': data.dokter,
+            'gambar': data.gambar,
+            'analisa': data.analisa,
+            'rekomendasi': data.rekomendasi
+            
+        })
+    return jsonify(rontgen_data_list)
+
+#add rontgen history
+@app.route('/api/rontgen/upload', methods=['POST'])
+def add_rontgen_history():
+
+    # cloudinary.config(cloud_name = os.getenv('drjnb5zxa'), api_key = os.getenv('929863485773151'),
+    #                   api_secret = os.getenv('sNNeW8Zupqzo7uoxBap4XXSYmYk'))
+    upload_result = None
+    # if request.method == 'POST':
+    fileImg = request.files['gambar']
+    if fileImg:
+        upload_result = cloudinary.uploader.upload(file=fileImg, folder="TBC/rontgen")
+
+        rontgen_history = RiwayatRontgen(
+            nik=request.form['nik'],
+            rumah_sakit= request.form['rumah_sakit'],
+            alamat= request.form['alamat'],
+            tanggal_publikasi= request.form['tanggal_publikasi'],
+            dokter= request.form['dokter'],
+            gambar= upload_result['public_id'],
+            analisa= request.form['analisa'],
+            rekomendasi= request.form['rekomendasi']
+        )
+
+        db.session.add(rontgen_history)
+        db.session.commit()
+        return jsonify({
+            'message': 'Data berhasil ditambahkan!'
+        })
+        # return jsonify(upload_result)
+
+#delete rontgen history
+@app.route('/api/rontgen/<int:data_id>', methods=['DELETE'])
+def delete_rontgen_hostory(data_id):
+    data_to_delete = RiwayatRontgen.query.get(data_id)
+
+    if data_to_delete is None:
+        return jsonify({'message': 'Data tidak ditemukan!'}), 404
+
+    db.session.delete(data_to_delete)
+    db.session.commit()
+
+    return jsonify({'message': 'Data berhasil dihapus!'})
+
+
+### Start API CRUD Artikel Kesehatan
+# Route untuk mengambil artikel (API)
+@app.route('/api/artikel', methods=['GET'])
+def get_all_tbc_data():
+    tbc_data = ArtikelKesehatan.query.all()
+    tbc_data_list = []
+    for data in tbc_data:
+        tbc_data_list.append({
+            'id': data.id,
+            'judul': data.judul,
+            'penulis': data.penulis,
+            'isi': data.isi,
+            'tanggal_publikasi': str(data.tanggal_publikasi),
+            'kategori': data.kategori,
+            'gambar': data.gambar
+        })
+    return jsonify(tbc_data_list)
+
+
+# Route untuk menambahkan artikel baru (POST)
+@app.route('/api/artikel', methods=['POST'])
+def add_tbc_data():
+    new_data = request.get_json()
+
+    artikel_tbc = ArtikelKesehatan(
+        judul=new_data['judul'],
+        penulis=new_data['penulis'],
+        isi=new_data['isi'],
+        tanggal_publikasi=new_data['tanggal_publikasi'],
+        kategori=new_data['kategori'],
+        gambar=new_data['gambar']
+    )
+
+    db.session.add(artikel_tbc)
+    db.session.commit()
+
+    return jsonify({
+        'message': 'Data berhasil ditambahkan!',
+        'data': artikel_tbc
+    })
+
+# Route untuk mengupdate artikel (PUT)
+@app.route('/api/artikel/<int:data_id>', methods=['PUT'])
+def update_tbc_data(data_id):
+    data_to_update = ArtikelKesehatan.query.get(data_id)
+
+    if data_to_update is None:
+        return jsonify({'message': 'Data tidak ditemukan!'}), 404
+
+    updated_data = request.get_json()
+
+    data_to_update.judul = updated_data['judul']
+    data_to_update.penulis = updated_data['penulis']
+    data_to_update.isi = updated_data['isi']
+    data_to_update.tanggal_publikasi = updated_data['tanggal_publikasi']
+    data_to_update.kategori = updated_data['kategori']
+
+    db.session.commit()
+
+    return jsonify({
+        'message': 'Data berhasil diupdate!',
+        'data': data_to_update
+    })
+
+# Route untuk menghapus artikel (DELETE)
+@app.route('/api/artikel/<int:data_id>', methods=['DELETE'])
+def delete_tbc_data(data_id):
+    data_to_delete = ArtikelKesehatan.query.get(data_id)
+
+    if data_to_delete is None:
+        return jsonify({'message': 'Data tidak ditemukan!'}), 404
+
+    db.session.delete(data_to_delete)
+    db.session.commit()
+
+    return jsonify({'message': 'Data berhasil dihapus!'})
+### Finish API
+
+
+
 # route untuk meredirect ke ngrok
 # Route untuk melakukan redirect ke situs internet
 @app.route('/ngroksentimen')
