@@ -1079,11 +1079,12 @@ def dokter_datadeteksi_update():
 
         db.session.commit()
         flash('Data diagnosa berhasil ditambahkan', 'success')
-        return render_template("dokter_datadeteksi.html", aktif=active)
+        return redirect(url_for('dokter_datadeteksi'))
     else:
         flash('Data pemeriksaan tidak ditemukan', 'danger')
     
-    return render_template("dokter_datadeteksi.html", aktif=active)
+    return redirect(url_for('dokter_datadeteksi'))
+
     
 
 # Fungsi route untuk memproses deteksi TBC dokter
