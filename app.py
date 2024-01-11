@@ -635,12 +635,12 @@ def admin_pasien_update(pasien_id):
             db.session.commit()
             
             flash('Data Pasien berhasil diupdate', 'success')
-            return redirect(url_for('admin_pasien'))
+            return redirect(url_for('admin_pasien_form'))
             
         return render_template('admin_pasienformupdate.html', pasien=pasien, aktif=active)
     else:
         flash('Pasien tidak ditemukan', 'danger')
-        return redirect(url_for('admin_pasien'))
+        return redirect(url_for('admin_pasien_form'))
 
 # Fungsi route untuk menghapus data pasien
 @app.route('/admin/pasien/hapus/<int:pasien_id>', methods=['POST'])
