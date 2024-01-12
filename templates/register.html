@@ -1,5 +1,5 @@
 {%extends "index.html"%} {%block content%}
-<main id="main"class="scrolled-offset">
+<main id="main" class="scrolled-offset">
   <section>
     <div class="row">
       <div class="col-5 offset-2">
@@ -47,7 +47,9 @@
         <h3 class="display-7 fw-bold">Register</h3>
         <form method="POST" action="{{ url_for('registerakun') }}">
           <div class="mb-3">
-            <label for="nik" class="form-label">NIK</label>
+            <label for="nik" class="form-label"
+              >NIK <span style="color: red">*</span></label
+            >
             <input
               type="number"
               class="form-control"
@@ -58,7 +60,33 @@
             />
           </div>
           <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
+            <label for="nama" class="form-label"
+              >Nama Lengkap <span style="color: red">*</span></label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="nama"
+              name="nama"
+              required
+              autofocus
+            />
+          </div>
+          <div class="mb-3">
+            <label for="no_hp" class="form-label"
+              >Nomor Telepon</label
+            >
+            <input
+              type="tel"
+              class="form-control"
+              id="no_hp"
+              name="no_hp"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label"
+              >Email <span style="color: red">*</span></label
+            >
             <input
               type="email"
               class="form-control"
@@ -68,7 +96,46 @@
             />
           </div>
           <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
+            <label for="jenis_kelamin" class="form-label"
+              >Jenis Kelamin <span style="color: red">*</span></label
+            >
+            <select
+              class="form-select"
+              id="jenis_kelamin"
+              name="jenis_kelamin"
+              required
+            >
+              <option value="lakilaki">Laki-laki</option>
+              <option value="perempuan">Perempuan</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="tanggal_lahir" class="form-label"
+              >Tanggal Lahir <span style="color: red">*</span></label
+            >
+            <input
+              type="date"
+              class="form-control"
+              id="tanggal_lahir"
+              name="tanggal_lahir"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="alamat" class="form-label"
+              >Alamat</label
+            >
+            <textarea
+              class="form-control"
+              id="alamat"
+              name="alamat"
+              rows="3"
+            ></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label"
+              >Password <span style="color: red">*</span></label
+            >
             <input
               type="password"
               class="form-control"
@@ -79,7 +146,6 @@
           </div>
           <button type="submit" class="btn btn-success">Register</button>
         </form>
-
         <p class="mt-3">
           Sudah memiliki akun? <a href="/login">Masuk sekarang</a>
         </p>

@@ -415,8 +415,13 @@ def register():
 def registerakun():
     if request.method == 'POST':
         nik = request.form['nik']
+        nama = request.form.get('nama')
         email = request.form['email']
         password = request.form['password']
+        no_hp = request.form.get('no_hp')
+        jenis_kelamin = request.form.get('jenis_kelamin')
+        tanggal_lahir = request.form.get('tanggal_lahir')
+        alamat = request.form.get('alamat')
         hak_akses = "pengguna"
 
         hashed_password = generate_password_hash(password)
@@ -426,7 +431,7 @@ def registerakun():
         db.session.commit()
         
         # Tambahkan data pasien secara otomatis ke tabel DataPasien
-        data_pasien = DataPasien(nik=nik, email=email)
+        data_pasien = DataPasien(nik=nik,nama_lengkap=nama, email=email, no_hp=no_hp, jenis_kelamin=jenis_kelamin, tanggal_lahir=tanggal_lahir, alamat=alamat)
         db.session.add(data_pasien)
         db.session.commit()
         
