@@ -325,7 +325,14 @@ def chat_dokter():
 @app.route('/chat/pasien')
 def chat_pasien():
     if 'nik' in session:
-        return render_template('chat.html', user='Pasien')
+        hak_akses = session.get('hak_akses')
+        if hak_akses is not None:
+            if hak_akses == 'pengguna':
+                return render_template('chat.html', nik=session['nik'], user='Anda')
+            else:
+                flash('Hak akses tidak valid.', 'danger')
+                return redirect(url_for('logout'))
+        return redirect(url_for('home'))
     return redirect(url_for('home'))
 
 @socketio.on('connect')

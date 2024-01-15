@@ -101,6 +101,7 @@
                 >Artikel Kesehatan</a
               >
             </li>
+            {% if 'email' in session %}
             <li>
               <a class="nav-link" href="/chat/pasien" target="_blank"
                 >Tanya Dokter</a
@@ -113,6 +114,7 @@
                 >Riwayat Pemeriksaan</a
               >
             </li>
+            {% else %} {% endif %}
             <li>
               <a
                 class="nav-link {{ 'active' if aktif == 'tentang' else '' }}"
