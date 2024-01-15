@@ -1252,23 +1252,47 @@ def admin_updateakun(user_id):
 
 
 
+##API Mobile
 ###API User Data
+#Get All user data
+@app.route('/api/userdata', methods=['GET'])
+def get_all_user_data():
+    user_data = DataPasien.query.all()
+
+    data_list = []
+    for data in user_data:
+        data_list.append({
+            'id': data.id,
+            'nik': data.nik,
+            'nama_lengkap': data.nama_lengkap,
+            'jenis_kelamin': data.jenis_kelamin,
+            'tanggal_lahir': data.tanggal_lahir,
+            'alamat': data.alamat,
+            'no_hp': data.no_hp,
+            'email': data.email,
+            'gambar': data.gambar
+        })
+        
+    return jsonify(data_list)
+
 #Get user data by nik
 @app.route('/api/user/<int:nik>', methods=['GET'])
 def get_user_data_by_nik(nik):
-    user_data = DataPasien.query.get(nik)
+    user_data = DataPasien.query.filter_by(nik=nik).first()
     if user_data is None:
-        return jsonify({'message': 'Data tidak ditemukan!'}), 404
+        return jsonify({'message': 'Data tidak ditemukana!'}), 404
     
     data = []
-
     data.append({
+        'id': user_data.id,
         'nik': user_data.nik,
-        'nama': user_data.nama,
+        'nama_lengkap': user_data.nama_lengkap,
+        'jenis_kelamin': user_data.jenis_kelamin,
+        'tanggal_lahir': user_data.tanggal_lahir,
         'alamat': user_data.alamat,
-        'notelp': user_data.notelp,
+        'no_hp': user_data.no_hp,
         'email': user_data.email,
-        'profileImg': user_data.profileImg
+        'gambar': user_data.gambar
     })
     return jsonify(data)
 
@@ -1280,11 +1304,13 @@ def add_user_data():
 
     user_data = DataPasien(
         nik=request.form['nik'],
-        nama=request.form['nama'],
+        nama_lengkap=request.form['nama_lengkap'],
+        jenis_kelamin=request.form['jenis_kelamin'],
+        tanggal_lahir=request.form['tanggal_lahir'],
         alamat=request.form['alamat'],
-        notelp=request.form['notelp'],
+        no_hp=request.form['no_hp'],
         email=request.form['email'],
-        profileImg="TBC/blank-profile"
+        gambar="https://res.cloudinary.com/drjnb5zxa/image/upload/v1698804785/TBC/blank-profile.png"
     )
 
     db.session.add(user_data)
@@ -1298,38 +1324,28 @@ def add_user_data():
 #Update user data
 @app.route('/api/user/<int:nik>', methods=['PUT'])
 def update_user_data(nik):
-    user_data = DataPasien.query.get(nik)
+    user_data = DataPasien.query.filter_by(nik=nik).first()
     if user_data is None:
-        return jsonify({'message': 'Data tidak ditemukan!'}), 404
+        return jsonify({'message': 'Data tidak ditemukan!'})
     
     # input_data = request.get_json()
-    fileImg = request.files['profileImg']
+    # fileImg = request.files['gambar']
 
-    if fileImg:
+    if 'gambar' in request.files:
+        fileImg = request.files['gambar']
         upload_result = cloudinary.uploader.upload(file=fileImg, folder="TBC/user_profile", public_id=nik, overwrite=True)
+        user_data.gambar = upload_result['url']
+    
+    user_data.alamat = request.form['alamat']
+    user_data.no_hp = request.form['no_hp']
+    db.session.merge(user_data)
+    db.session.commit()
 
-        user_data.alamat = request.form['alamat']
-        user_data.email = request.form['email']
-        user_data.profileImg = upload_result['url']
-        user_data.notelp = request.form['notelp']
-        # user_data.nama = request.form['nama']
+    return jsonify({
+        'message': 'Data berhasil diupdate!'
+    })
 
-        db.session.merge(user_data)
-        # db.session.flush()
-        db.session.commit()
 
-        return jsonify({
-            'message': 'Data berhasil diupdate!'
-        })
-    else:
-        user_data.alamat = request.form['alamat']
-        user_data.email = request.form['email']
-        user_data.notelp = request.form['notelp']
-        db.session.commit()
-
-        return jsonify({
-            'message': 'Data berhasil diupdate!'
-        })
 
 
 
@@ -1338,22 +1354,21 @@ def update_user_data(nik):
 #All Get Rontgen History
 @app.route('/api/rontgen', methods=['GET'])
 def get_all_rontgen_data():
-    tbc_data = Pemeriksaan.query.all()
-    tbc_data_list = []
-    for data in tbc_data:
-        tbc_data_list.append({
+    rontgen_data = Pemeriksaan.query.all()
+
+    rontgen_data_list = []
+    for data in rontgen_data:
+        dokter = DataKaryawan.query.get(data.id_dokter)
+        rontgen_data_list.append({
             'id': data.id,
             'nik': data.nik,
-            'rumah_sakit': data.rumah_sakit,
-            'alamat': data.alamat,
-            'tanggal_publikasi': str(data.tanggal_publikasi),
-            'dokter': data.dokter,
-            'gambar': data.gambar,
-            'analisa': data.analisa,
-            'rekomendasi': data.rekomendasi
-            
+            'nama_rumah_sakit': data.nama_rumah_sakit,
+            'tanggal_pemeriksaan': str(data.tanggal_pemeriksaan),
+            'dokter': dokter.nama,
+            'gambar_rontgen': data.gambar_rontgen,
+            'hasil_analisa': data.hasil_analisa
         })
-    return jsonify(tbc_data_list)
+    return rontgen_data_list
 
 #Get Rontgen History by NIK
 @app.route('/api/rontgen/<int:nik>', methods=['GET'])
@@ -1365,41 +1380,41 @@ def get_rontgen_data_nik(nik):
 
     rontgen_data_list = []
     for data in rontgen_data:
+        dokter = DataKaryawan.query.get(data.id_dokter)
         rontgen_data_list.append({
             'id': data.id,
             'nik': data.nik,
-            'rumah_sakit': data.rumah_sakit,
-            'alamat': data.alamat,
-            'tanggal_publikasi': str(data.tanggal_publikasi),
-            'dokter': data.dokter,
-            'gambar': data.gambar,
-            'analisa': data.analisa,
-            'rekomendasi': data.rekomendasi
-            
+            'nama_rumah_sakit': data.nama_rumah_sakit,
+            'tanggal_pemeriksaan': str(data.tanggal_pemeriksaan),
+            'dokter': dokter.nama,
+            'gambar_rontgen': data.gambar_rontgen,
+            'hasil_analisa': data.hasil_analisa            
         })
-    return jsonify(rontgen_data_list)
+    return rontgen_data_list
 
 #add rontgen history
 @app.route('/api/rontgen/upload', methods=['POST'])
 def add_rontgen_history():
+    upload_result = None    # if request.method == 'POST':
 
-    # cloudinary.config(cloud_name = os.getenv('drjnb5zxa'), api_key = os.getenv('929863485773151'),
-    #                   api_secret = os.getenv('sNNeW8Zupqzo7uoxBap4XXSYmYk'))
-    upload_result = None
-    # if request.method == 'POST':
-    fileImg = request.files['gambar']
+    fileImg = request.files['gambar_rontgen']
     if fileImg:
         upload_result = cloudinary.uploader.upload(file=fileImg, folder="TBC/rontgen")
+        img = ({
+            'url': upload_result['url'],
+            'public_id': upload_result['public_id']
+        })
 
         rontgen_history = Pemeriksaan(
-            nik=request.form['nik'],
-            rumah_sakit= request.form['rumah_sakit'],
-            alamat= request.form['alamat'],
-            tanggal_publikasi= request.form['tanggal_publikasi'],
-            dokter= request.form['dokter'],
-            gambar= upload_result['public_id'],
-            analisa= request.form['analisa'],
-            rekomendasi= request.form['rekomendasi']
+            nik= request.form['nik'],
+            nama= request.form['nama'],
+            nama_rumah_sakit= request.form['nama_rumah_sakit'],
+            tanggal_pemeriksaan= request.form['tanggal_pemeriksaan'],
+            id_dokter= request.form['id_dokter'],
+            gambar_rontgen= img,
+            hasil_analisa= request.form['hasil_analisa'],
+            status= request.form['status'],
+            persentase= request.form['persentase']
         )
 
         db.session.add(rontgen_history)
@@ -1423,6 +1438,9 @@ def delete_rontgen_hostory(data_id):
     return jsonify({'message': 'Data berhasil dihapus!'})
 
 
+
+
+
 ### Start API CRUD Artikel Kesehatan
 # Route untuk mengambil artikel (API)
 @app.route('/api/artikel', methods=['GET'])
@@ -1439,30 +1457,35 @@ def get_all_tbc_data():
             'kategori': data.kategori,
             'gambar': data.gambar
         })
-    return jsonify(tbc_data_list)
-
+    return tbc_data_list
 
 # Route untuk menambahkan artikel baru (POST)
 @app.route('/api/artikel', methods=['POST'])
 def add_tbc_data():
-    new_data = request.get_json()
+    upload_result = None    
 
-    artikel_tbc = ArtikelKesehatan(
-        judul=new_data['judul'],
-        penulis=new_data['penulis'],
-        isi=new_data['isi'],
-        tanggal_publikasi=new_data['tanggal_publikasi'],
-        kategori=new_data['kategori'],
-        gambar=new_data['gambar']
-    )
+    fileImg = request.files['gambar']
+    if fileImg:
+        upload_result = cloudinary.uploader.upload(file=fileImg, folder="TBC/article")
+        img = {
+            'url': upload_result['url'],
+            'public_id': upload_result['public_id']
+        }
 
-    db.session.add(artikel_tbc)
-    db.session.commit()
+        artikel_kesehatan = ArtikelKesehatan(
+            judul= request.form['judul'],
+            penulis= request.form['penulis'],
+            isi= request.form['isi'],
+            tanggal_publikasi= request.form['tanggal_publikasi'],
+            kategori= request.form['kategori'],
+            gambar= img,
+        )
 
-    return jsonify({
-        'message': 'Data berhasil ditambahkan!',
-        'data': artikel_tbc
-    })
+        db.session.add(artikel_kesehatan)
+        db.session.commit()
+        return jsonify({
+            'message': 'Data berhasil ditambahkan!'
+        })
 
 # Route untuk mengupdate artikel (PUT)
 @app.route('/api/artikel/<int:data_id>', methods=['PUT'])
@@ -1484,7 +1507,6 @@ def update_tbc_data(data_id):
 
     return jsonify({
         'message': 'Data berhasil diupdate!',
-        'data': data_to_update
     })
 
 # Route untuk menghapus artikel (DELETE)
@@ -1499,7 +1521,7 @@ def delete_tbc_data(data_id):
     db.session.commit()
 
     return jsonify({'message': 'Data berhasil dihapus!'})
-### Finish API
+### Finish API Mobile
 
 
 

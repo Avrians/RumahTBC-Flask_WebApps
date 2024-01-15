@@ -1557,7 +1557,7 @@ def delete_tbc_data(data_id):
     db.session.commit()
 
     return jsonify({'message': 'Data berhasil dihapus!'})
-### Finish API CRUD Artikel Kesehatan
+### Finish API Mobile
 
 
 
