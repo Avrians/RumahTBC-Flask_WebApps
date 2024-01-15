@@ -19,7 +19,7 @@ from keras.models import load_model
 from werkzeug.utils import secure_filename
 import pickle
 import json
-from flask_socketio import SocketIO, emit
+# from flask_socketio import SocketIO, emit
 from sqlalchemy import or_
 from flask_cors import CORS
 import cloudinary
@@ -29,18 +29,21 @@ import cloudinary.api
 
 
 app = Flask(__name__)
+CORS(app)
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 1
 size=224
+
 
 cloudinary.config(cloud_name = 'drjnb5zxa', 
                   api_key = '929863485773151',
                   api_secret = 'sNNeW8Zupqzo7uoxBap4XXSYmYk',
                   secure=True)
 
+
 # Untuk Chatroom
 app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app)
+# socketio = SocketIO(app)
 
 connected_users = {}
 
@@ -53,12 +56,36 @@ ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png'}
 app.secret_key = "Secrect Key"
 
 # Untuk menghubungkan ke database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:rootku@localhost/rumahtbc'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:123456@localhost/rumahtbc'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 migrate = Migrate(app, db)
+
+
+#Model untuk riwayat rontgen
+# class RiwayatRontgen(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     nik = db.Column(db.String(16), nullable=False) 
+#     rumah_sakit = db.Column(db.String(50), nullable=False)
+#     alamat = db.Column(db.String(100), nullable=False)
+#     tanggal_publikasi = db.Column(db.Date, nullable=False)
+#     dokter = db.Column(db.String(50), nullable=False)
+#     gambar = db.Column(db.String(1000), nullable=False)
+#     analisa = db.Column(db.String(1000), nullable=False)
+#     rekomendasi = db.Column(db.String(1000), nullable=False)
+
+#     def __init__(self, nik,rumah_sakit,alamat,tanggal_publikasi,dokter,gambar,analisa,rekomendasi):
+#         self.nik = nik
+#         self.rumah_sakit = rumah_sakit
+#         self.alamat = alamat
+#         self.tanggal_publikasi = tanggal_publikasi
+#         self.dokter = dokter
+#         self.gambar = gambar
+#         self.analisa = analisa
+#         self.rekomendasi = rekomendasi
+
 
 
 # Model untuk tabel artikel kesehatan
@@ -79,8 +106,8 @@ class ArtikelKesehatan(db.Model):
         self.isi = isi
         self.tanggal_publikasi = tanggal_publikasi
         self.kategori = kategori
-        self.gambar = gambar  # Set nilai gambar dengan nilai yang diberikan atau None jika tidak ada gambar
-        
+        self.gambar = gambar    # Set nilai gambar dengan nilai yang diberikan atau None jika tidak ada gambar
+
     @classmethod
     def cari_artikel(cls, kata_kunci):
         return cls.query.filter(or_(
@@ -135,7 +162,7 @@ class HasilSentimen(db.Model):
         self.review = review
         self.label = label
 
-# Model untuk Data Pasien/Pengguna
+#Model untuk tabel user_data
 class DataPasien(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nik = db.Column(db.String(20), unique=True, nullable=False)
@@ -157,6 +184,8 @@ class DataPasien(db.Model):
         self.tanggal_lahir = tanggal_lahir
         self.alamat = alamat
         self.gambar = gambar
+    
+
         
 # Model data karyawan
 class DataKaryawan(db.Model):
@@ -206,8 +235,8 @@ class Pemeriksaan(db.Model):
         self.status = status
         self.persentase = persentase
         self.gambar_rontgen = gambar_rontgen
-        self.hasil_analisa = hasil_analisa
-        
+        self.hasil_analisa = hasil_analisa      
+
 # Untuk membuat tabel di database
 with app.app_context():
     db.create_all()
@@ -330,34 +359,27 @@ def chat_dokter():
 @app.route('/chat/pasien')
 def chat_pasien():
     if 'nik' in session:
-        hak_akses = session.get('hak_akses')
-        if hak_akses is not None:
-            if hak_akses == 'pengguna':
-                return render_template('chat.html', nik=session['nik'], user='Anda')
-            else:
-                flash('Hak akses tidak valid.', 'danger')
-                return redirect(url_for('logout'))
-        return redirect(url_for('home'))
+        return render_template('chat.html', user='Pasien')
     return redirect(url_for('home'))
 
-@socketio.on('connect')
-def handle_connect():
-    user_id = request.sid
-    connected_users[user_id] = request.sid
-    print(f"User {user_id} connected")
+# @socketio.on('connect')
+# def handle_connect():
+#     user_id = request.sid
+#     connected_users[user_id] = request.sid
+#     print(f"User {user_id} connected")
     
-@socketio.on('disconnect')
-def handle_disconnect():
-    user_id = request.sid
-    del connected_users[user_id]
-    print(f"User {user_id} disconnected")
+# @socketio.on('disconnect')
+# def handle_disconnect():
+#     user_id = request.sid
+#     del connected_users[user_id]
+#     print(f"User {user_id} disconnected")
     
-@socketio.on('message')
-def handle_message(data):
-    sender_id = request.sid
-    message = data['message']
-    sender_name = data['sender_name']
-    emit('message', {'sender': sender_name, 'message': message}, broadcast=True)
+# @socketio.on('message')
+# def handle_message(data):
+#     sender_id = request.sid
+#     message = data['message']
+#     sender_name = data['sender_name']
+#     emit('message', {'sender': sender_name, 'message': message}, broadcast=True)
 
 # Fungsi route untuk halaman login
 @app.route('/login', methods=['GET', 'POST'])
@@ -366,6 +388,10 @@ def login():
         return redirect(url_for('home'))
     
     if request.method == 'POST':
+        # data = request.json
+        # email = data['email']
+        # password = data['password']
+
         email = request.form['email']
         password = request.form['password']
 
@@ -375,52 +401,29 @@ def login():
         print(f"User ditemukan: {user}")
         
         if user and check_password_hash(user.password, password):
+            user_data = []
+            user_data.append({
+                'nik': user.nik,
+                'code': '200',
+            })
+
+
+
             session['user_id'] = user.id  
             session['nik'] = user.nik 
             session['email'] = email  
             session['hak_akses'] = user.hak_akses 
             print(f"Login berhasil untuk email: {email}")
             flash('Login berhasil!', 'success')
-            return redirect(url_for('home'))
+            # return redirect(url_for('home'))
+            return ({'code': user.nik})
+        elif not user:
+            return ({'code': 404})
         else:
             flash('Login gagal. Periksa kembali username dan password Anda.', 'danger')
+            return ({'code': 500})
 
     return render_template('login.html')
-
-# Fungsi route untuk halaman login
-@app.route('/loginmobile', methods=['GET', 'POST'])
-def loginmobile():    
-        if request.method == 'POST':
-            email = request.form['email']
-            password = request.form['password']
-
-            user = Users.query.filter_by(email=email).first()
-
-            print(f"Upaya login untuk username: {email}, password: {password}")
-            print(f"User ditemukan: {user}")
-            
-            if user and check_password_hash(user.password, password):
-                user_data = []
-                user_data.append({
-                    'nik': user.nik,
-                    'code': '200',
-                })
-
-                session['user_id'] = user.id  
-                session['nik'] = user.nik 
-                session['email'] = email  
-                session['hak_akses'] = user.hak_akses 
-                print(f"Login berhasil untuk email: {email}")
-                flash('Login berhasil!', 'success')
-                # return redirect(url_for('home'))
-                return ({'code': user.nik})
-            elif not user:
-                return ({'code': 404})
-            else:
-                flash('Login gagal. Periksa kembali username dan password Anda.', 'danger')
-                return ({'code': 500})
-
-        return render_template('login.html')
 
 # Fungsi route untuk halaman home dokter/admin
 @app.route('/home')
@@ -462,13 +465,8 @@ def register():
 def registerakun():
     if request.method == 'POST':
         nik = request.form['nik']
-        nama = request.form.get('nama')
         email = request.form['email']
         password = request.form['password']
-        no_hp = request.form.get('no_hp')
-        jenis_kelamin = request.form.get('jenis_kelamin')
-        tanggal_lahir = request.form.get('tanggal_lahir')
-        alamat = request.form.get('alamat')
         hak_akses = "pengguna"
 
         hashed_password = generate_password_hash(password)
@@ -478,7 +476,7 @@ def registerakun():
         db.session.commit()
         
         # Tambahkan data pasien secara otomatis ke tabel DataPasien
-        data_pasien = DataPasien(nik=nik,nama_lengkap=nama, email=email, no_hp=no_hp, jenis_kelamin=jenis_kelamin, tanggal_lahir=tanggal_lahir, alamat=alamat)
+        data_pasien = DataPasien(nik=nik, email=email)
         db.session.add(data_pasien)
         db.session.commit()
         
@@ -687,12 +685,12 @@ def admin_pasien_update(pasien_id):
             db.session.commit()
             
             flash('Data Pasien berhasil diupdate', 'success')
-            return redirect(url_for('admin_pasien_form'))
+            return redirect(url_for('admin_pasien'))
             
         return render_template('admin_pasienformupdate.html', pasien=pasien, aktif=active)
     else:
         flash('Pasien tidak ditemukan', 'danger')
-        return redirect(url_for('admin_pasien_form'))
+        return redirect(url_for('admin_pasien'))
 
 # Fungsi route untuk menghapus data pasien
 @app.route('/admin/pasien/hapus/<int:pasien_id>', methods=['POST'])
@@ -933,7 +931,6 @@ def update_profileuser():
             if user_profile:
                 user_profile.nama_lengkap = request.form.get('nama_lengkap')
                 user_profile.email = request.form.get('email')
-                user.email = request.form.get('email')
                 user_profile.no_hp = request.form.get('no_hp')
                 user_profile.jenis_kelamin = request.form.get('jenis_kelamin')
                 user_profile.tanggal_lahir = request.form.get('tanggal_lahir')
@@ -967,21 +964,13 @@ def riwayatuser():
         user_profile = DataPasien.query.filter_by(nik=nik).first()
 
         if user_profile:
-            if user_profile.nama_lengkap and user_profile.alamat and user_profile.tanggal_lahir and user_profile.jenis_kelamin:
-                riwayat_pemeriksaan = Pemeriksaan.query.filter_by(nik=nik).all()
+            riwayat_pemeriksaan = Pemeriksaan.query.filter_by(nik=nik).all()
 
-                if riwayat_pemeriksaan:
-                    return render_template('riwayatuser.html', aktif=active, user_profile=user_profile, riwayat_pemeriksaan=riwayat_pemeriksaan)
-                else:
-                    return render_template('riwayatuser.html', aktif=active, user_profile=user_profile, riwayat_pemeriksaan=riwayat_pemeriksaan)
+            if riwayat_pemeriksaan:
+                return render_template('riwayatuser.html', aktif=active,user_profile=user_profile, riwayat_pemeriksaan=riwayat_pemeriksaan)
             else:
-                # Redirect the user to complete their profile
-                flash('Silakan lengkapi data pasien terlebih dahulu.')
-                return redirect(url_for('profiluser'))
-        else:
-            # Handle the case where the user profile is not found
-            flash('Data pasien tidak ditemukan.')
-            return redirect(url_for('home'))
+                return render_template('riwayatuser.html', aktif=active,user_profile=user_profile, riwayat_pemeriksaan=riwayat_pemeriksaan)
+    
     flash('Anda harus login terlebih dahulu.', 'warning')
     return redirect(url_for('login'))
 
@@ -1131,12 +1120,11 @@ def dokter_datadeteksi_update():
 
         db.session.commit()
         flash('Data diagnosa berhasil ditambahkan', 'success')
-        return redirect(url_for('dokter_datadeteksi'))
+        return render_template("dokter_datadeteksi.html", aktif=active)
     else:
         flash('Data pemeriksaan tidak ditemukan', 'danger')
     
-    return redirect(url_for('dokter_datadeteksi'))
-
+    return render_template("dokter_datadeteksi.html", aktif=active)
     
 
 # Fungsi route untuk memproses deteksi TBC dokter
@@ -1250,259 +1238,6 @@ def admin_updateakun(user_id):
 
     return redirect(url_for('admin_akun'))
 
-
-
-###API User Data
-#Get user data by nik
-@app.route('/api/user/<int:nik>', methods=['GET'])
-def get_user_data_by_nik(nik):
-    user_data = DataPasien.query.get(nik)
-    if user_data is None:
-        return jsonify({'message': 'Data tidak ditemukan!'}), 404
-    
-    data = []
-
-    data.append({
-        'nik': user_data.nik,
-        'nama': user_data.nama,
-        'alamat': user_data.alamat,
-        'notelp': user_data.notelp,
-        'email': user_data.email,
-        'profileImg': user_data.profileImg
-    })
-    return jsonify(data)
-
-
-#Post user data
-@app.route('/api/user/add', methods=['POST'])
-def add_user_data():
-    # new_data = request.get_json()
-
-    user_data = DataPasien(
-        nik=request.form['nik'],
-        nama=request.form['nama'],
-        alamat=request.form['alamat'],
-        notelp=request.form['notelp'],
-        email=request.form['email'],
-        profileImg="TBC/blank-profile"
-    )
-
-    db.session.add(user_data)
-    db.session.commit()
-
-    return jsonify({
-        'message': 'Data berhasil ditambahkan!'
-    })
-
-
-#Update user data
-@app.route('/api/user/<int:nik>', methods=['PUT'])
-def update_user_data(nik):
-    user_data = DataPasien.query.get(nik)
-    if user_data is None:
-        return jsonify({'message': 'Data tidak ditemukan!'}), 404
-    
-    # input_data = request.get_json()
-    fileImg = request.files['profileImg']
-
-    if fileImg:
-        upload_result = cloudinary.uploader.upload(file=fileImg, folder="TBC/user_profile", public_id=nik, overwrite=True)
-
-        user_data.alamat = request.form['alamat']
-        user_data.email = request.form['email']
-        user_data.profileImg = upload_result['url']
-        user_data.notelp = request.form['notelp']
-        # user_data.nama = request.form['nama']
-
-        db.session.merge(user_data)
-        # db.session.flush()
-        db.session.commit()
-
-        return jsonify({
-            'message': 'Data berhasil diupdate!'
-        })
-    else:
-        user_data.alamat = request.form['alamat']
-        user_data.email = request.form['email']
-        user_data.notelp = request.form['notelp']
-        db.session.commit()
-
-        return jsonify({
-            'message': 'Data berhasil diupdate!'
-        })
-
-
-
-
-###API Rontgen History
-#All Get Rontgen History
-@app.route('/api/rontgen', methods=['GET'])
-def get_all_rontgen_data():
-    tbc_data = Pemeriksaan.query.all()
-    tbc_data_list = []
-    for data in tbc_data:
-        tbc_data_list.append({
-            'id': data.id,
-            'nik': data.nik,
-            'rumah_sakit': data.rumah_sakit,
-            'alamat': data.alamat,
-            'tanggal_publikasi': str(data.tanggal_publikasi),
-            'dokter': data.dokter,
-            'gambar': data.gambar,
-            'analisa': data.analisa,
-            'rekomendasi': data.rekomendasi
-            
-        })
-    return jsonify(tbc_data_list)
-
-#Get Rontgen History by NIK
-@app.route('/api/rontgen/<int:nik>', methods=['GET'])
-def get_rontgen_data_nik(nik):
-    rontgen_data = Pemeriksaan.query.filter(Pemeriksaan.nik==nik)
-
-    if  rontgen_data is None:
-        return jsonify({'message': 'Data tidak ditemukan!'}), 404
-
-    rontgen_data_list = []
-    for data in rontgen_data:
-        rontgen_data_list.append({
-            'id': data.id,
-            'nik': data.nik,
-            'rumah_sakit': data.rumah_sakit,
-            'alamat': data.alamat,
-            'tanggal_publikasi': str(data.tanggal_publikasi),
-            'dokter': data.dokter,
-            'gambar': data.gambar,
-            'analisa': data.analisa,
-            'rekomendasi': data.rekomendasi
-            
-        })
-    return jsonify(rontgen_data_list)
-
-#add rontgen history
-@app.route('/api/rontgen/upload', methods=['POST'])
-def add_rontgen_history():
-
-    # cloudinary.config(cloud_name = os.getenv('drjnb5zxa'), api_key = os.getenv('929863485773151'),
-    #                   api_secret = os.getenv('sNNeW8Zupqzo7uoxBap4XXSYmYk'))
-    upload_result = None
-    # if request.method == 'POST':
-    fileImg = request.files['gambar']
-    if fileImg:
-        upload_result = cloudinary.uploader.upload(file=fileImg, folder="TBC/rontgen")
-
-        rontgen_history = Pemeriksaan(
-            nik=request.form['nik'],
-            rumah_sakit= request.form['rumah_sakit'],
-            alamat= request.form['alamat'],
-            tanggal_publikasi= request.form['tanggal_publikasi'],
-            dokter= request.form['dokter'],
-            gambar= upload_result['public_id'],
-            analisa= request.form['analisa'],
-            rekomendasi= request.form['rekomendasi']
-        )
-
-        db.session.add(rontgen_history)
-        db.session.commit()
-        return jsonify({
-            'message': 'Data berhasil ditambahkan!'
-        })
-        # return jsonify(upload_result)
-
-#delete rontgen history
-@app.route('/api/rontgen/<int:data_id>', methods=['DELETE'])
-def delete_rontgen_hostory(data_id):
-    data_to_delete = Pemeriksaan.query.get(data_id)
-
-    if data_to_delete is None:
-        return jsonify({'message': 'Data tidak ditemukan!'}), 404
-
-    db.session.delete(data_to_delete)
-    db.session.commit()
-
-    return jsonify({'message': 'Data berhasil dihapus!'})
-
-
-### Start API CRUD Artikel Kesehatan
-# Route untuk mengambil artikel (API)
-@app.route('/api/artikel', methods=['GET'])
-def get_all_tbc_data():
-    tbc_data = ArtikelKesehatan.query.all()
-    tbc_data_list = []
-    for data in tbc_data:
-        tbc_data_list.append({
-            'id': data.id,
-            'judul': data.judul,
-            'penulis': data.penulis,
-            'isi': data.isi,
-            'tanggal_publikasi': str(data.tanggal_publikasi),
-            'kategori': data.kategori,
-            'gambar': data.gambar
-        })
-    return jsonify(tbc_data_list)
-
-
-# Route untuk menambahkan artikel baru (POST)
-@app.route('/api/artikel', methods=['POST'])
-def add_tbc_data():
-    new_data = request.get_json()
-
-    artikel_tbc = ArtikelKesehatan(
-        judul=new_data['judul'],
-        penulis=new_data['penulis'],
-        isi=new_data['isi'],
-        tanggal_publikasi=new_data['tanggal_publikasi'],
-        kategori=new_data['kategori'],
-        gambar=new_data['gambar']
-    )
-
-    db.session.add(artikel_tbc)
-    db.session.commit()
-
-    return jsonify({
-        'message': 'Data berhasil ditambahkan!',
-        'data': artikel_tbc
-    })
-
-# Route untuk mengupdate artikel (PUT)
-@app.route('/api/artikel/<int:data_id>', methods=['PUT'])
-def update_tbc_data(data_id):
-    data_to_update = ArtikelKesehatan.query.get(data_id)
-
-    if data_to_update is None:
-        return jsonify({'message': 'Data tidak ditemukan!'}), 404
-
-    updated_data = request.get_json()
-
-    data_to_update.judul = updated_data['judul']
-    data_to_update.penulis = updated_data['penulis']
-    data_to_update.isi = updated_data['isi']
-    data_to_update.tanggal_publikasi = updated_data['tanggal_publikasi']
-    data_to_update.kategori = updated_data['kategori']
-
-    db.session.commit()
-
-    return jsonify({
-        'message': 'Data berhasil diupdate!',
-        'data': data_to_update
-    })
-
-# Route untuk menghapus artikel (DELETE)
-@app.route('/api/artikel/<int:data_id>', methods=['DELETE'])
-def delete_tbc_data(data_id):
-    data_to_delete = ArtikelKesehatan.query.get(data_id)
-
-    if data_to_delete is None:
-        return jsonify({'message': 'Data tidak ditemukan!'}), 404
-
-    db.session.delete(data_to_delete)
-    db.session.commit()
-
-    return jsonify({'message': 'Data berhasil dihapus!'})
-### Finish API
-
-
-
 # route untuk meredirect ke ngrok
 # Route untuk melakukan redirect ke situs internet
 @app.route('/ngroksentimen')
@@ -1534,6 +1269,296 @@ def tambah_review():
                 return redirect(url_for('index'))
         else:
             return jsonify({'status': 'error', 'message': 'Semua field harus diisi'}), 400
+        
+
+
+##API Mobile
+###API User Data
+#Get All user data
+@app.route('/api/userdata', methods=['GET'])
+def get_all_user_data():
+    user_data = DataPasien.query.all()
+
+    data_list = []
+    for data in user_data:
+        data_list.append({
+            'id': data.id,
+            'nik': data.nik,
+            'nama_lengkap': data.nama_lengkap,
+            'jenis_kelamin': data.jenis_kelamin,
+            'tanggal_lahir': data.tanggal_lahir,
+            'alamat': data.alamat,
+            'no_hp': data.no_hp,
+            'email': data.email,
+            'gambar': data.gambar
+        })
+        
+    return jsonify(data_list)
+
+#Get user data by nik
+@app.route('/api/user/<int:nik>', methods=['GET'])
+def get_user_data_by_nik(nik):
+    user_data = DataPasien.query.filter_by(nik=nik).first()
+    if user_data is None:
+        return jsonify({'message': 'Data tidak ditemukana!'}), 404
+    
+    data = []
+    data.append({
+        'id': user_data.id,
+        'nik': user_data.nik,
+        'nama_lengkap': user_data.nama_lengkap,
+        'jenis_kelamin': user_data.jenis_kelamin,
+        'tanggal_lahir': user_data.tanggal_lahir,
+        'alamat': user_data.alamat,
+        'no_hp': user_data.no_hp,
+        'email': user_data.email,
+        'gambar': user_data.gambar
+    })
+    return jsonify(data)
+
+
+#Post user data
+@app.route('/api/user/add', methods=['POST'])
+def add_user_data():
+    # new_data = request.get_json()
+
+    user_data = DataPasien(
+        nik=request.form['nik'],
+        nama_lengkap=request.form['nama_lengkap'],
+        jenis_kelamin=request.form['jenis_kelamin'],
+        tanggal_lahir=request.form['tanggal_lahir'],
+        alamat=request.form['alamat'],
+        no_hp=request.form['no_hp'],
+        email=request.form['email'],
+        gambar="https://res.cloudinary.com/drjnb5zxa/image/upload/v1698804785/TBC/blank-profile.png"
+    )
+
+    db.session.add(user_data)
+    db.session.commit()
+
+    return jsonify({
+        'message': 'Data berhasil ditambahkan!'
+    })
+
+
+#Update user data
+@app.route('/api/user/<int:nik>', methods=['PUT'])
+def update_user_data(nik):
+    user_data = DataPasien.query.filter_by(nik=nik).first()
+    if user_data is None:
+        return jsonify({'message': 'Data tidak ditemukan!'})
+    
+    # input_data = request.get_json()
+    # fileImg = request.files['gambar']
+
+    if 'gambar' in request.files:
+        fileImg = request.files['gambar']
+        upload_result = cloudinary.uploader.upload(file=fileImg, folder="TBC/user_profile", public_id=nik, overwrite=True)
+        user_data.gambar = upload_result['url']
+    
+    user_data.alamat = request.form['alamat']
+    user_data.no_hp = request.form['no_hp']
+    db.session.merge(user_data)
+    db.session.commit()
+
+    return jsonify({
+        'message': 'Data berhasil diupdate!'
+    })
+
+
+
+
+
+
+###API Rontgen History
+#All Get Rontgen History
+@app.route('/api/rontgen', methods=['GET'])
+def get_all_rontgen_data():
+    rontgen_data = Pemeriksaan.query.all()
+
+    rontgen_data_list = []
+    for data in rontgen_data:
+        dokter = DataKaryawan.query.get(data.id_dokter)
+        rontgen_data_list.append({
+            'id': data.id,
+            'nik': data.nik,
+            'nama_rumah_sakit': data.nama_rumah_sakit,
+            'tanggal_pemeriksaan': str(data.tanggal_pemeriksaan),
+            'dokter': dokter.nama,
+            'gambar_rontgen': data.gambar_rontgen,
+            'hasil_analisa': data.hasil_analisa
+        })
+    return rontgen_data_list
+
+#Get Rontgen History by NIK
+@app.route('/api/rontgen/<int:nik>', methods=['GET'])
+def get_rontgen_data_nik(nik):
+    rontgen_data = Pemeriksaan.query.filter(Pemeriksaan.nik==nik)
+
+    if  rontgen_data is None:
+        return jsonify({'message': 'Data tidak ditemukan!'}), 404
+
+    rontgen_data_list = []
+    for data in rontgen_data:
+        dokter = DataKaryawan.query.get(data.id_dokter)
+        rontgen_data_list.append({
+            'id': data.id,
+            'nik': data.nik,
+            'nama_rumah_sakit': data.nama_rumah_sakit,
+            'tanggal_pemeriksaan': str(data.tanggal_pemeriksaan),
+            'dokter': dokter.nama,
+            'gambar_rontgen': data.gambar_rontgen,
+            'hasil_analisa': data.hasil_analisa            
+        })
+    return rontgen_data_list
+
+#add rontgen history
+@app.route('/api/rontgen/upload', methods=['POST'])
+def add_rontgen_history():
+    upload_result = None    # if request.method == 'POST':
+
+    fileImg = request.files['gambar_rontgen']
+    if fileImg:
+        upload_result = cloudinary.uploader.upload(file=fileImg, folder="TBC/rontgen")
+        img = ({
+            'url': upload_result['url'],
+            'public_id': upload_result['public_id']
+        })
+
+        rontgen_history = Pemeriksaan(
+            nik= request.form['nik'],
+            nama= request.form['nama'],
+            nama_rumah_sakit= request.form['nama_rumah_sakit'],
+            tanggal_pemeriksaan= request.form['tanggal_pemeriksaan'],
+            id_dokter= request.form['id_dokter'],
+            gambar_rontgen= img,
+            hasil_analisa= request.form['hasil_analisa'],
+            status= request.form['status'],
+            persentase= request.form['persentase']
+        )
+
+        db.session.add(rontgen_history)
+        db.session.commit()
+        return jsonify({
+            'message': 'Data berhasil ditambahkan!'
+        })
+        # return jsonify(upload_result)
+
+#delete rontgen history
+@app.route('/api/rontgen/<int:data_id>', methods=['DELETE'])
+def delete_rontgen_hostory(data_id):
+    data_to_delete = Pemeriksaan.query.get(data_id)
+
+    if data_to_delete is None:
+        return jsonify({'message': 'Data tidak ditemukan!'}), 404
+
+    db.session.delete(data_to_delete)
+    db.session.commit()
+
+    return jsonify({'message': 'Data berhasil dihapus!'})
+
+
+
+
+
+### Start API CRUD Artikel Kesehatan
+# Route untuk mengambil artikel (API)
+@app.route('/api/artikel', methods=['GET'])
+def get_all_tbc_data():
+    tbc_data = ArtikelKesehatan.query.all()
+    tbc_data_list = []
+    for data in tbc_data:
+        tbc_data_list.append({
+            'id': data.id,
+            'judul': data.judul,
+            'penulis': data.penulis,
+            'isi': data.isi,
+            'tanggal_publikasi': str(data.tanggal_publikasi),
+            'kategori': data.kategori,
+            'gambar': data.gambar
+        })
+    return tbc_data_list
+
+# Route untuk menambahkan artikel baru (POST)
+@app.route('/api/artikel', methods=['POST'])
+def add_tbc_data():
+    upload_result = None    # if request.method == 'POST':
+
+    # artikel_tbc = ArtikelKesehatan(
+    #     judul=new_data['judul'],
+    #     penulis=new_data['penulis'],
+    #     isi=new_data['isi'],
+    #     tanggal_publikasi=new_data['tanggal_publikasi'],
+    #     kategori=new_data['kategori'],
+    #     gambar=new_data['gambar']
+    # )
+
+    # db.session.add(artikel_tbc)
+    # db.session.commit()
+
+    # return jsonify({
+    #     'message': 'Data berhasil ditambahkan!',
+    # })
+
+    fileImg = request.files['gambar']
+    if fileImg:
+        upload_result = cloudinary.uploader.upload(file=fileImg, folder="TBC/article")
+        img = {
+            'url': upload_result['url'],
+            'public_id': upload_result['public_id']
+        }
+
+        artikel_kesehatan = ArtikelKesehatan(
+            judul= request.form['judul'],
+            penulis= request.form['penulis'],
+            isi= request.form['isi'],
+            tanggal_publikasi= request.form['tanggal_publikasi'],
+            kategori= request.form['kategori'],
+            gambar= img,
+        )
+
+        db.session.add(artikel_kesehatan)
+        db.session.commit()
+        return jsonify({
+            'message': 'Data berhasil ditambahkan!'
+        })
+
+# Route untuk mengupdate artikel (PUT)
+@app.route('/api/artikel/<int:data_id>', methods=['PUT'])
+def update_tbc_data(data_id):
+    data_to_update = ArtikelKesehatan.query.get(data_id)
+
+    if data_to_update is None:
+        return jsonify({'message': 'Data tidak ditemukan!'}), 404
+
+    updated_data = request.get_json()
+
+    data_to_update.judul = updated_data['judul']
+    data_to_update.penulis = updated_data['penulis']
+    data_to_update.isi = updated_data['isi']
+    data_to_update.tanggal_publikasi = updated_data['tanggal_publikasi']
+    data_to_update.kategori = updated_data['kategori']
+
+    db.session.commit()
+
+    return jsonify({
+        'message': 'Data berhasil diupdate!',
+    })
+
+# Route untuk menghapus artikel (DELETE)
+@app.route('/api/artikel/<int:data_id>', methods=['DELETE'])
+def delete_tbc_data(data_id):
+    data_to_delete = ArtikelKesehatan.query.get(data_id)
+
+    if data_to_delete is None:
+        return jsonify({'message': 'Data tidak ditemukan!'}), 404
+
+    db.session.delete(data_to_delete)
+    db.session.commit()
+
+    return jsonify({'message': 'Data berhasil dihapus!'})
+### Finish API CRUD Artikel Kesehatan
+
 
 
 if __name__ == '__main__':
