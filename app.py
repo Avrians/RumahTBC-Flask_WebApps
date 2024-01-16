@@ -393,7 +393,6 @@ def loginmobile():
         if request.method == 'POST':
             email = request.form['email']
             password = request.form['password']
-
             user = Users.query.filter_by(email=email).first()
 
             print(f"Upaya login untuk username: {email}, password: {password}")
@@ -1362,6 +1361,7 @@ def get_all_rontgen_data():
         rontgen_data_list.append({
             'id': data.id,
             'nik': data.nik,
+            'nama': data.nama,
             'nama_rumah_sakit': data.nama_rumah_sakit,
             'tanggal_pemeriksaan': str(data.tanggal_pemeriksaan),
             'dokter': dokter.nama,
@@ -1458,6 +1458,29 @@ def get_all_tbc_data():
             'gambar': data.gambar
         })
     return tbc_data_list
+
+# API untuk mengambil artikel berdasarkan ID
+@app.route('/api/artikel/<int:article_id>', methods=['GET'])
+def get_article_by_id(article_id):
+    # Query the database to get the article by ID
+    article = ArtikelKesehatan.query.get(article_id)
+
+    # Check if the article with the given ID exists
+    if article is None:
+        return jsonify({'error': 'Article not found'}), 404
+
+    # Prepare the response data
+    article_data = {
+        'id': article.id,
+        'judul': article.judul,
+        'penulis': article.penulis,
+        'isi': article.isi,
+        'tanggal_publikasi': str(article.tanggal_publikasi),
+        'kategori': article.kategori,
+        'gambar': article.gambar
+    }
+
+    return jsonify(article_data)
 
 # Route untuk menambahkan artikel baru (POST)
 @app.route('/api/artikel', methods=['POST'])
