@@ -56,7 +56,7 @@ ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png'}
 app.secret_key = "Secrect Key"
 
 # Untuk menghubungkan ke database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:123456@localhost/rumahtbc'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:rootku@localhost/rumahtbc'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)

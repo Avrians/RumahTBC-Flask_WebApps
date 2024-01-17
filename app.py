@@ -29,6 +29,7 @@ import cloudinary.api
 
 
 app = Flask(__name__)
+CORS(app)
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 1
 size=224
