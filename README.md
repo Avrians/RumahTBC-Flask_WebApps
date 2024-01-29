@@ -58,9 +58,15 @@ Pastikan Anda telah menginstal Python dan pip di sistem Anda sebelum memulai. Be
 
 Aplikasi ini menyediakan artikel kesehatan terkait TBC yang dapat diakses oleh pengguna. Artikel-artikel ini memberikan informasi penting mengenai gejala, pengobatan, dan pencegahan TBC.
 
+![alt text](https://github.com/Avrians/RumahTBC-Flask_WebApps/blob/main/hasilss/artikelkesehatan.png?raw=true)
+
+
+
 ### 2. Chatbot
 
 Chatbot yang terintegrasi membantu pengguna dalam mendapatkan informasi dasar mengenai TBC, memberikan saran umum, dan membantu dalam navigasi aplikasi.
+
+![alt text](https://github.com/Avrians/RumahTBC-Flask_WebApps/blob/main/hasilss/chatbot.png?raw=true)
 
 ### 3. Riwayat Pemeriksaan
 
