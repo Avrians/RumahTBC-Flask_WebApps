@@ -60,7 +60,7 @@ Aplikasi ini menyediakan artikel kesehatan terkait TBC yang dapat diakses oleh p
 
 ![alt text](https://github.com/Avrians/RumahTBC-Flask_WebApps/blob/main/hasilss/artikelkesehatan.png?raw=true)
 
-
+![alt text](https://github.com/Avrians/RumahTBC-Flask_WebApps/blob/main/hasilss/detailartikel.png?raw=true)
 
 ### 2. Chatbot
 
