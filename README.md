@@ -72,12 +72,23 @@ Chatbot yang terintegrasi membantu pengguna dalam mendapatkan informasi dasar me
 
 Pasien dapat melihat riwayat pemeriksaan mereka, termasuk hasil tes, catatan dari dokter, dan rekomendasi pengobatan. Ini membantu dalam memantau perkembangan penyakit.
 
+![alt text](https://github.com/Avrians/RumahTBC-Flask_WebApps/blob/main/hasilss/riwayatpemeriksaan.png?raw=true)
+
 ### 4. Tanya Dokter
 
 Fitur ini memungkinkan pengguna untuk mengajukan pertanyaan kepada dokter. Dokter yang terdaftar dalam aplikasi akan memberikan jawaban dan saran berdasarkan pertanyaan yang diajukan.
+
+![alt text](https://github.com/Avrians/RumahTBC-Flask_WebApps/blob/main/hasilss/tanyadokter.png?raw=true)
 
 ### 5. Deteksi untuk Dokter
 
 Dokter dapat menggunakan fitur ini untuk melakukan deteksi TBC berdasarkan data pemeriksaan pasien. Algoritma deteksi yang terintegrasi membantu dokter dalam membuat keputusan yang lebih akurat.
 
+![alt text](https://github.com/Avrians/RumahTBC-Flask_WebApps/blob/main/hasilss/hasil%20pemeriksaan.png?raw=true)
+
 ## Kontributor
+
+Avriansyah Bahtiar 
+Firda Auli Rakhmah
+Lulu Nadiatun Anissa
+Balkis Arifatul Fadia
