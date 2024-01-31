@@ -84,7 +84,7 @@ Fitur ini memungkinkan pengguna untuk mengajukan pertanyaan kepada dokter. Dokte
 
 Dokter dapat menggunakan fitur ini untuk melakukan deteksi TBC berdasarkan data pemeriksaan pasien. Algoritma deteksi yang terintegrasi membantu dokter dalam membuat keputusan yang lebih akurat.
 
-![alt text](https://github.com/Avrians/RumahTBC-Flask_WebApps/blob/main/hasilss/hasil%20pemeriksaan.png?raw=true)
+![alt text](https://github.com/Avrians/RumahTBC-Flask_WebApps/blob/main/hasilss/dokter/hasil%20pemeriksaan.png?raw=true)
 
 ## Kontributor
 
